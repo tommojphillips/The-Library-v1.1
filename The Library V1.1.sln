@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TM-Db Lib", "TM-Db Lib\TM-Db Lib.csproj", "{BB52C94B-E6C1-4385-86BD-EE01B627D4EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing Search Logic", "Testing\Testing Search Logic\Testing Search Logic.csproj", "{93FD7E1F-8A36-4650-BA3B-BB35F38CDDC4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BB52C94B-E6C1-4385-86BD-EE01B627D4EC} = {BB52C94B-E6C1-4385-86BD-EE01B627D4EC}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +20,10 @@ Global
 		{BB52C94B-E6C1-4385-86BD-EE01B627D4EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB52C94B-E6C1-4385-86BD-EE01B627D4EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB52C94B-E6C1-4385-86BD-EE01B627D4EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93FD7E1F-8A36-4650-BA3B-BB35F38CDDC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93FD7E1F-8A36-4650-BA3B-BB35F38CDDC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93FD7E1F-8A36-4650-BA3B-BB35F38CDDC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93FD7E1F-8A36-4650-BA3B-BB35F38CDDC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
