@@ -47,6 +47,9 @@
   <ItemGroup>
     <Compile Include="ApplicationInfomation.cs" />
     <Compile Include="FileReference.cs" />
+    <Compile Include="Genre.cs" />
+    <Compile Include="MovieMedia\MovieResult.cs" />
+    <Compile Include="MovieMedia\MovieStatusEnum.cs" />
     <Compile Include="Net\DelayingEventArgs.cs" />
     <Compile Include="Net\RequestFailedEventArgs.cs" />
     <Compile Include="Net\RequestSendingEventArgs.cs" />
@@ -58,8 +61,6 @@
     <Compile Include="Search\MovieSearchResult.cs" />
     <Compile Include="Search\TvSearchResult.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MovieMedia\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
