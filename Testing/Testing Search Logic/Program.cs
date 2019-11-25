@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TM_Db_Lib.Search;
+using TM_Db_Lib.MovieMedia;
+using TM_Db_Lib.TvSeriesMedia;
 
 namespace Testing_Search_Logic
 {
@@ -70,12 +72,24 @@ namespace Testing_Search_Logic
                         if (result is TvSearchResult)
                         {
                             Console.WriteLine("[TV] Selected, {0}", (result as TvSearchResult).name);
+
+                            TvSeriesResult tvResult = new TvSeriesResult();
+                            Console.WriteLine("Retrieving tv series details for ID: {0}..", result.id);
+                            await tvResult.retrieveDetailsAsync(result.id);
+                            Console.WriteLine("\nDETAILS RETRIEVED:\nName: {0}\nFirst Aired: {1}\nOverview: {2}\nRating: {3}\nSeasons #: {4}\nEpisodes #: {5}\nAvg ep runtime: {6}minutes\nType: {7}\nStatus: {8}",
+                                tvResult.name, tvResult.first_air_date, tvResult.overview, tvResult.vote_average, tvResult.number_of_seasons, tvResult.number_of_episodes, tvResult.episode_run_time[0], tvResult.type, tvResult.status);
                         }
                         else
                         {
                             if (result is MovieSearchResult) 
                             {
                                 Console.WriteLine("[MOVIE] Selected, {0}", (result as MovieSearchResult).title);
+
+                                MovieResult movieResult = new MovieResult();
+                                Console.WriteLine("Retrieving movie details for ID: {0}..", result.id);
+                                await movieResult.retrieveDetailsAsync(result.id);
+                                Console.WriteLine("\nDETAILS RETRIEVED:\nName: {0}\nRelease Date: {1}\nOverview: {2}\nRating: {3}",
+                                    movieResult.title, movieResult.release_date, movieResult.overview, movieResult.vote_average);
                             }
                         }
                     }

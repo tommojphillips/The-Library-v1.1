@@ -50,6 +50,7 @@
     <Compile Include="Genre.cs" />
     <Compile Include="MovieMedia\MovieResult.cs" />
     <Compile Include="MovieMedia\MovieStatusEnum.cs" />
+    <Compile Include="Network.cs" />
     <Compile Include="Net\DelayingEventArgs.cs" />
     <Compile Include="Net\RequestFailedEventArgs.cs" />
     <Compile Include="Net\RequestSendingEventArgs.cs" />
@@ -60,6 +61,11 @@
     <Compile Include="Search\MediaSearchResult.cs" />
     <Compile Include="Search\MovieSearchResult.cs" />
     <Compile Include="Search\TvSearchResult.cs" />
+    <Compile Include="TvSeriesMedia\Episode.cs" />
+    <Compile Include="TvSeriesMedia\Season.cs" />
+    <Compile Include="TvSeriesMedia\TvSeriesResult.cs" />
+    <Compile Include="TvSeriesMedia\TvSeriesStatusEnum.cs" />
+    <Compile Include="TvSeriesMedia\TvSeriesTypeEnum.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

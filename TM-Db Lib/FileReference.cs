@@ -5,7 +5,7 @@ namespace TM_Db_Lib
     /// <summary>
     /// Represents an abstract class that holds infomation about a reference to a file.
     /// </summary>
-    internal abstract class FileReference
+    public abstract class FileReference
     {
         // Written, 24.11.2019
 
