@@ -162,19 +162,24 @@ namespace TM_Db_Lib.TvSeriesMedia
             }
             return tsse;
         }
+        public static async Task<TvSeriesResult> retrieveDetailsAsync(int inTvID) 
+        {
+            // Written, 27.11.2019
+
+            string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.TV_BASE_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
+            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            return jObject.ToObject<TvSeriesResult>();
+        }
         /// <summary>
         /// Gets the details of the tv series.
         /// </summary>
         /// <param name="inTvID">the tv series id.</param>
         /// <returns></returns>
-        public async Task retrieveDetailsAsync(int inTvID)
+        public async Task retrieveDetailsAsync()
         {
             // Written, 13.04.2018
 
-            string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.TV_BASE_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            TvSeriesResult tvResult = new TvSeriesResult();
-            tvResult = jObject.ToObject<TvSeriesResult>();
+            TvSeriesResult tvResult = await retrieveDetailsAsync(this.id);
 
             this.backdrop_path = tvResult.backdrop_path;
             this.poster_path = tvResult.poster_path;

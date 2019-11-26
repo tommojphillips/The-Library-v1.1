@@ -89,17 +89,24 @@ namespace TM_Db_Lib.MovieMedia
 
         #region Methods
 
-        /// <summary>
-        /// Gets the details of the movie.
-        /// </summary>
-        /// <param name="inMovieID">The id of the movie to get details about.</param>
-        public async Task retrieveDetailsAsync(int inMovieID)
+        public static async Task<MovieResult> retrieveDetailsAsync(int inMovieID)
         {
             // Written, 07.04.2018
 
             string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.MOVIE_BASE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            MovieResult mf = jObject.ToObject<MovieResult>();
+            return jObject.ToObject<MovieResult>();
+        }
+
+        /// <summary>
+        /// Gets the details of the movie.
+        /// </summary>
+        /// <param name="inMovieID">The id of the movie to get details about.</param>
+        public async Task retrieveDetailsAsync()
+        {
+            // Written, 07.04.2018
+
+            MovieResult mf = await retrieveDetailsAsync(this.id);
 
             this.adult = mf.adult;
             this.backdrop_path = mf.backdrop_path;

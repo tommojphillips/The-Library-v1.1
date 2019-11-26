@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Drawing;
 using System.IO;
@@ -79,6 +80,7 @@ namespace TM_Db_Lib.Net
             {"Email not verified", 401 },
             {"Resource not found", 401 },
         };
+        private static Stopwatch onSendingStopWatch = new Stopwatch();
 
         #endregion
 
@@ -201,6 +203,7 @@ namespace TM_Db_Lib.Net
         {
             // Written, 24.11.2019
 
+            onSendingStopWatch.Restart();
             Console.WriteLine("Requesting from the URL, {0}", inUri.AbsoluteUri.Replace(ApplicationInfomation.API_KEY, "<api_key>"));
             RequestSending?.Invoke(null, new RequestSendingEventArgs(inUri));
         }
@@ -211,8 +214,9 @@ namespace TM_Db_Lib.Net
         {
             // Written, 02.09.2017
 
+            onSendingStopWatch.Stop();
             requestsSentThisSession++;
-            Console.WriteLine("Request Completed: Total RS: {0}", requestsSentThisSession);
+            Console.WriteLine("Request Completed: Total RS: {0} ({1}ms)", requestsSentThisSession, onSendingStopWatch.Elapsed.TotalMilliseconds.ToString("F2"));
             RequestSent?.Invoke(null, new RequestSentEventArgs(inUri, inResponse));
         }
         /// <summary>
