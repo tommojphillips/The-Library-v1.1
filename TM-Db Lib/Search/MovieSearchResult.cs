@@ -1,8 +1,6 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using TM_Db_Lib.Net;
 
 namespace TM_Db_Lib.Search
 {
@@ -69,28 +67,11 @@ namespace TM_Db_Lib.Search
         /// <param name="inPagesToShow">Represents how many pages to show/report.</param>
         public static async Task<MovieSearchResult[]> searchAsync(string inSearchPhrase, int inPagesToShow)
         {
-            // Written, 26.03.2018
+            // Written, 26.11.2019
 
-            string address = String.Format("{0}?api_key={1}&query={2}", ApplicationInfomation.MOVIE_SEARCH_ADDRESS, ApplicationInfomation.API_KEY, inSearchPhrase.Replace(" ", "+"));
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            int totalPages = jObject["total_pages"].ToObject<JValue>().ToObject<int>();
             List<MovieSearchResult> results = new List<MovieSearchResult>();
-
-            for (int i = 1; i <= totalPages; i++)
-            {
-                if (i > inPagesToShow)
-                    break;
-                if (i > 1)
-                    jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(String.Format("{0}&page={1}", address, i))));
-                if (jObject != null)
-                {
-                    JArray jResults = jObject["results"].ToObject<JArray>();
-                    for (int j = 0; j < jResults.Count; j++)
-                    {
-                        results.Add(jResults[j].ToObject<MovieSearchResult>());
-                    }
-                }
-            }
+            (await getJTokensAsync(inSearchPhrase, inPagesToShow, ApplicationInfomation.MOVIE_SEARCH_ADDRESS)).ToList()
+                .ForEach(jToken => results.Add(jToken.ToObject<MovieSearchResult>()));
             return results.ToArray();
         }
 
