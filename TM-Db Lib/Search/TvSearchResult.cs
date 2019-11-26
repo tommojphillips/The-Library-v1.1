@@ -1,8 +1,6 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using TM_Db_Lib.Net;
 
 namespace TM_Db_Lib.Search
 {
@@ -59,7 +57,14 @@ namespace TM_Db_Lib.Search
         /// <param name="inPagesToShow">Represents how many pages to show/report.</param>
         public static async Task<TvSearchResult[]> searchAsync(string inSearchPhrase, int inPagesToShow)
         {
-            // Written, 26.03.2018
+            // Written, 26.11.2019
+
+            List<TvSearchResult> results = new List<TvSearchResult>();
+            (await getJTokensAsync(inSearchPhrase, inPagesToShow, ApplicationInfomation.TV_SEARCH_ADDRESS)).ToList()
+                .ForEach(jToken => results.Add(jToken.ToObject<TvSearchResult>()));
+            return results.ToArray();
+
+            /*// Written, 26.03.2018
 
             string address = String.Format("{0}?api_key={1}&query={2}", ApplicationInfomation.TV_SEARCH_ADDRESS, ApplicationInfomation.API_KEY, inSearchPhrase.Replace(" ", "+"));
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
@@ -82,7 +87,7 @@ namespace TM_Db_Lib.Search
                     }
                 }
             }
-            return results.ToArray();
+            return results.ToArray();*/
         }
 
         #endregion

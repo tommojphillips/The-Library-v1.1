@@ -47,59 +47,65 @@ namespace Testing_Search_Logic
             }
             if (searchOK) 
             {
-                Console.WriteLine("Enter movie or tv series number to retrieve details.");
-                if (Int32.TryParse(Console.ReadLine(), out int searchNum))
+                if (movieSearchResults.GetLength(0) + tvSearchResults.GetLength(0) > 0)
                 {
-                    try 
+                    Console.WriteLine("Enter movie or tv series number to retrieve details.");
+                    if (Int32.TryParse(Console.ReadLine(), out int searchNum))
                     {
-                        MediaSearchResult result = null;
+                        try
+                        {
+                            MediaSearchResult result = null;
 
-                        if (searchNum <= movieSearchResults.GetLength(0))
-                        {
-                            result = movieSearchResults[searchNum - 1]; 
-                        }
-                        else
-                        {
-                            int tvSearchNum = searchNum - movieSearchResults.GetLength(0);
-                            if (tvSearchNum <= tvSearchResults.GetLength(0)) 
+                            if (searchNum <= movieSearchResults.GetLength(0))
                             {
-                                result = tvSearchResults[tvSearchNum - 1];
+                                result = movieSearchResults[searchNum - 1];
+                            }
+                            else
+                            {
+                                int tvSearchNum = searchNum - movieSearchResults.GetLength(0);
+                                if (tvSearchNum <= tvSearchResults.GetLength(0))
+                                {
+                                    result = tvSearchResults[tvSearchNum - 1];
+                                }
+                            }
+                            if (result is null)
+                                throw new NullReferenceException();
+
+                            if (result is TvSearchResult)
+                            {
+                                Console.WriteLine("[TV] Selected, {0}", (result as TvSearchResult).name);
+
+                                TvSeriesResult tvResult = new TvSeriesResult();
+                                Console.WriteLine("Retrieving tv series details for ID: {0}..", result.id);
+                                await tvResult.retrieveDetailsAsync(result.id);
+                                Console.WriteLine("\nDETAILS RETRIEVED:\nName: {0}\nFirst Aired: {1}\nOverview: {2}\nRating: {3}\nSeasons #: {4}\nEpisodes #: {5}\nAvg ep runtime: {6}minutes\nType: {7}\nStatus: {8}",
+                                    tvResult.name, tvResult.first_air_date, tvResult.overview, tvResult.vote_average, tvResult.number_of_seasons, tvResult.number_of_episodes, tvResult.episode_run_time[0], tvResult.type, tvResult.status);
+                            }
+                            else
+                            {
+                                if (result is MovieSearchResult)
+                                {
+                                    Console.WriteLine("[MOVIE] Selected, {0}", (result as MovieSearchResult).title);
+
+                                    MovieResult movieResult = new MovieResult();
+                                    Console.WriteLine("Retrieving movie details for ID: {0}..", result.id);
+                                    await movieResult.retrieveDetailsAsync(result.id);
+                                    Console.WriteLine("\nDETAILS RETRIEVED:\nName: {0}\nRelease Date: {1}\nOverview: {2}\nRating: {3}",
+                                        movieResult.title, movieResult.release_date, movieResult.overview, movieResult.vote_average);
+                                }
                             }
                         }
-                        if (result is null)
-                            throw new NullReferenceException();
-
-                        if (result is TvSearchResult)
+                        catch (NullReferenceException)
                         {
-                            Console.WriteLine("[TV] Selected, {0}", (result as TvSearchResult).name);
-
-                            TvSeriesResult tvResult = new TvSeriesResult();
-                            Console.WriteLine("Retrieving tv series details for ID: {0}..", result.id);
-                            await tvResult.retrieveDetailsAsync(result.id);
-                            Console.WriteLine("\nDETAILS RETRIEVED:\nName: {0}\nFirst Aired: {1}\nOverview: {2}\nRating: {3}\nSeasons #: {4}\nEpisodes #: {5}\nAvg ep runtime: {6}minutes\nType: {7}\nStatus: {8}",
-                                tvResult.name, tvResult.first_air_date, tvResult.overview, tvResult.vote_average, tvResult.number_of_seasons, tvResult.number_of_episodes, tvResult.episode_run_time[0], tvResult.type, tvResult.status);
-                        }
-                        else
-                        {
-                            if (result is MovieSearchResult) 
-                            {
-                                Console.WriteLine("[MOVIE] Selected, {0}", (result as MovieSearchResult).title);
-
-                                MovieResult movieResult = new MovieResult();
-                                Console.WriteLine("Retrieving movie details for ID: {0}..", result.id);
-                                await movieResult.retrieveDetailsAsync(result.id);
-                                Console.WriteLine("\nDETAILS RETRIEVED:\nName: {0}\nRelease Date: {1}\nOverview: {2}\nRating: {3}",
-                                    movieResult.title, movieResult.release_date, movieResult.overview, movieResult.vote_average);
-                            }
+                            Console.WriteLine("Error: NullReferenceException. Probably number out of range.");
                         }
                     }
-                    catch (NullReferenceException)
-                    {
-                        Console.WriteLine("Error: NullReferenceException. Probably Number out of range.");
-                    }
+                    else
+                        Console.WriteLine("\nError: number expected");
                 }
                 else
-                    Console.WriteLine("Error: Number expected");
+                    Console.WriteLine("\nNo results found");
+
             }
             Console.WriteLine("\n\nPress R to restart or press any key to exit");
             if (Console.ReadKey().Key == ConsoleKey.R)
