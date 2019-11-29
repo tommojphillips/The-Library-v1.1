@@ -1,4 +1,6 @@
-﻿namespace TM_Db_Lib
+﻿using System;
+
+namespace TM_Db_Lib
 {
     /// <summary>
     /// Represents data used by all parts of the application.
@@ -12,48 +14,52 @@
         /// </summary>
         internal const string API_KEY = "70b2d4ba8f50d9f2c4bd12c87cae3b68";
         /// <summary>
+        /// Represents the tmdb verson 3 address.
+        /// </summary>
+        internal const string TMDB_V3_ADDRESS = "https://api.themoviedb.org/3";
+        /// <summary>
         /// Represents the search base address.
         /// </summary>
-        private const string SEARCH_BASE_ADDRESS = "https://api.themoviedb.org/3/search";
+        private static string SEARCH_BASE_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "search");
         /// <summary>
         /// Represents the base url for certifications.
         /// </summary>
-        internal const string CERTIFICATIONS_BASE_ADDRESS = "https://api.themoviedb.org/3/certification";
+        internal static string CERTIFICATIONS_BASE_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "certification");
         /// <summary>
         /// Represents the base url address for movies.
         /// </summary>
-        internal const string MOVIE_BASE_ADDRESS = "https://api.themoviedb.org/3/movie";
+        internal static string MOVIE_BASE_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "movie");
         /// <summary>
         /// Represents the base url address for tv series.
         /// </summary>
-        internal const string TV_BASE_ADDRESS = "https://api.themoviedb.org/3/tv";
+        internal static string TV_BASE_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "tv");
         /// <summary>
         /// Represents the base url address for images.
         /// </summary>
-        internal const string IMAGE_BASE_ADDRESS = "https://image.tmdb.org/t/p/original";
+        internal static string IMAGE_BASE_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "original");
         /// <summary>
         /// Represents the base url address for networks.
         /// </summary>
-        internal const string NETWORK_BASE_ADDRESS = "https://api.themoviedb.org/3/network";
+        internal static string NETWORK_BASE_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "network");
+        /// <summary>
+        /// Represents the base url address for people.
+        /// </summary>
+        internal static string PERSON_BASE_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "person");
         /// <summary>
         /// Represents the movie search address
         /// </summary>
-        internal static string MOVIE_SEARCH_ADDRESS 
-        {
-            get
-            {
-                return string.Join("/", SEARCH_BASE_ADDRESS, "movie");
-            }
-        }
+        internal static string MOVIE_SEARCH_ADDRESS => String.Join("/", SEARCH_BASE_ADDRESS, "movie");
         /// <summary>
         /// Represents the tv search address
+        /// </summary> 
+        internal static string TV_SEARCH_ADDRESS => String.Join("/", SEARCH_BASE_ADDRESS, "tv");
+        /// <summary>
+        /// Represents the people search address.
         /// </summary>
-        internal static string TV_SEARCH_ADDRESS
-        {
-            get
-            {
-                return string.Join("/", SEARCH_BASE_ADDRESS, "tv");
-            }
-        }
+        internal static string PEOPLE_SEARCH_ADDRESS => String.Join("/", SEARCH_BASE_ADDRESS, "person");
+        /// <summary>
+        /// Represents the multi search address.
+        /// </summary>
+        internal static string MULTI_SEARCH_ADDRESS => String.Join("/", SEARCH_BASE_ADDRESS, "multi");
     }
 }

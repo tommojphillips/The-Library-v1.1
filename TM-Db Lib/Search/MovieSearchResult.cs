@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace TM_Db_Lib.Search
 {
@@ -12,31 +13,38 @@ namespace TM_Db_Lib.Search
         // Written, 10.03.2018
 
         #region Properties
-        
+
         /// <summary>
-        /// Represents the current title for the movie.
+        /// Represents the name (title) of the movie.
         /// </summary>
-        public string title
+        [JsonProperty("title")]
+        public override string name
         {
-            get;
-            set;
+            get
+            {
+                return base.name;
+            }
+
+            set
+            {
+                base.name = value;
+            }
         }
         /// <summary>
-        /// Represents the original title for the movie. This value maybe equal to <see cref="title"/>
-        /// as this property only differs if the title has been changed after release (<see cref="release_date"/>).
+        /// Represents the original name (title) of the movie.
         /// </summary>
-        public string original_title
+        [JsonProperty("original_title")]
+        public override string original_name
         {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Represents the release date for the movie.
-        /// </summary>
-        public string release_date
-        {
-            get;
-            set;
+            get
+            {
+                return base.original_name;
+            }
+
+            set
+            {
+                base.original_name = value;
+            }
         }
         /// <summary>
         /// i dont fuckin know - 26.03.2018
@@ -70,7 +78,7 @@ namespace TM_Db_Lib.Search
             // Written, 26.11.2019
 
             List<MovieSearchResult> results = new List<MovieSearchResult>();
-            (await getJTokensAsync(inSearchPhrase, inPagesToShow, ApplicationInfomation.MOVIE_SEARCH_ADDRESS)).ToList()
+            (await retrieveJTokensAsync(inSearchPhrase, inPagesToShow, ApplicationInfomation.MOVIE_SEARCH_ADDRESS)).ToList()
                 .ForEach(jToken => results.Add(jToken.ToObject<MovieSearchResult>()));
             return results.ToArray();
         }

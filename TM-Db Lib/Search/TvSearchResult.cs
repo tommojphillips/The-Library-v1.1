@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace TM_Db_Lib.Search
 {
@@ -14,12 +15,20 @@ namespace TM_Db_Lib.Search
         #region Properties
 
         /// <summary>
-        /// Represents the first air date for the tv series.
+        /// Represents the release date (first-air date) for the tv series.
         /// </summary>
-        public string first_air_date
+        [JsonProperty("first_air_date")]
+        public override string release_date
         {
-            get;
-            set;
+            get
+            {
+                return base.release_date;
+            }
+
+            set
+            {
+                base.release_date = value;
+            }
         }
         /// <summary>
         /// Represents an array of involved countries for the tv series.
@@ -28,23 +37,7 @@ namespace TM_Db_Lib.Search
         {
             get;
             set;
-        }
-        /// <summary>
-        /// Represents the name for the tv series.
-        /// </summary>
-        public string name
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Represents the original name for the tv series.
-        /// </summary>
-        public string original_name
-        {
-            get;
-            set;
-        }
+        }        
 
         #endregion
 
@@ -60,7 +53,7 @@ namespace TM_Db_Lib.Search
             // Written, 26.11.2019
 
             List<TvSearchResult> results = new List<TvSearchResult>();
-            (await getJTokensAsync(inSearchPhrase, inPagesToShow, ApplicationInfomation.TV_SEARCH_ADDRESS)).ToList()
+            (await retrieveJTokensAsync(inSearchPhrase, inPagesToShow, ApplicationInfomation.TV_SEARCH_ADDRESS)).ToList()
                 .ForEach(jToken => results.Add(jToken.ToObject<TvSearchResult>()));
             return results.ToArray();
         }

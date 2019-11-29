@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TM_Db_Lib.Search;
-using TM_Db_Lib.MovieMedia;
-using TM_Db_Lib.TvSeriesMedia;
+using TM_Db_Lib.Media;
 
 namespace Testing_Search_Logic
 {
@@ -23,7 +22,7 @@ namespace Testing_Search_Logic
             {
                 movieSearchResults = await MovieSearchResult.searchAsync(searchPhrase, 1);
                 for (int i = 0; i < movieSearchResults.GetLength(0); i++)
-                    Console.WriteLine("{0}.) {1}", i + 1, movieSearchResults[i].title);
+                    Console.WriteLine("{0}.) {1}", i + 1, movieSearchResults[i].name);
                 Console.WriteLine("Total Results: " + movieSearchResults.GetLength(0));
             }
             catch (Exception ex) 
@@ -37,7 +36,7 @@ namespace Testing_Search_Logic
             {
                 tvSearchResults = await TvSearchResult.searchAsync(searchPhrase, 1);
                 for (int i = 0; i < tvSearchResults.GetLength(0); i++)
-                    Console.WriteLine("{0}.) {1}", i + movieSearchResults.GetLength(0) + 1, tvSearchResults[i].original_name);
+                    Console.WriteLine("{0}.) {1}", i + movieSearchResults.GetLength(0) + 1, tvSearchResults[i].name);
                 Console.WriteLine("Total Results: " + tvSearchResults.GetLength(0));
             }
             catch (Exception ex)
@@ -67,25 +66,24 @@ namespace Testing_Search_Logic
                                 {
                                     result = tvSearchResults[tvSearchNum - 1];
                                 }
+                                else
+                                    throw new NullReferenceException("result is null.");
                             }
-                            if (result is null)
-                                throw new NullReferenceException();
-
                             if (result is TvSearchResult)
                             {
                                 Console.WriteLine("[TV] Selected, {0}\nRetrieving tv series details for ID: {1}..", (result as TvSearchResult).name, result.id);
                                 TvSeriesResult tvResult = await TvSeriesResult.retrieveDetailsAsync(result.id);
                                 Console.WriteLine("\nDETAILS RETRIEVED:\nName: {0}\nFirst Aired: {1}\nOverview: {2}\nRating: {3}\nSeasons #: {4}\nEpisodes #: {5}\nAvg ep runtime: {6}minutes\nType: {7}\nStatus: {8}",
-                                    tvResult.name, tvResult.first_air_date, tvResult.overview, tvResult.vote_average, tvResult.number_of_seasons, tvResult.number_of_episodes, tvResult.episode_run_time[0], tvResult.type, tvResult.status);
+                                    tvResult.name, tvResult.release_date, tvResult.overview, tvResult.vote_average, tvResult.number_of_seasons, tvResult.number_of_episodes, tvResult.episode_run_time[0], tvResult.type, tvResult.status);
                             }
                             else
                             {
                                 if (result is MovieSearchResult)
                                 {
-                                    Console.WriteLine("[MOVIE] Selected, {0}\nRetrieving movie details for ID: {1}..", (result as MovieSearchResult).title, result.id);
+                                    Console.WriteLine("[MOVIE] Selected, {0}\nRetrieving movie details for ID: {1}..", (result as MovieSearchResult).name, result.id);
                                     MovieResult movieResult = await MovieResult.retrieveDetailsAsync(result.id);
                                     Console.WriteLine("\nDETAILS RETRIEVED:\nName: {0}\nRelease Date: {1}\nOverview: {2}\nRating: {3}",
-                                        movieResult.title, movieResult.release_date, movieResult.overview, movieResult.vote_average);
+                                        movieResult.name, movieResult.release_date, movieResult.overview, movieResult.vote_average);
                                 }
                             }
                         }
@@ -99,7 +97,6 @@ namespace Testing_Search_Logic
                 }
                 else
                     Console.WriteLine("\nNo results found");
-
             }
             Console.WriteLine("\n\nPress R to restart or press any key to exit");
             if (Console.ReadKey().Key == ConsoleKey.R)

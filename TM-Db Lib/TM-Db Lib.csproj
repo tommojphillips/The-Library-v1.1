@@ -48,8 +48,8 @@
     <Compile Include="ApplicationInfomation.cs" />
     <Compile Include="FileReference.cs" />
     <Compile Include="Genre.cs" />
-    <Compile Include="MovieMedia\MovieResult.cs" />
-    <Compile Include="MovieMedia\MovieStatusEnum.cs" />
+    <Compile Include="Media\MovieMedia\MovieResult.cs" />
+    <Compile Include="Media\MovieMedia\MovieStatusEnum.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="Net\DelayingEventArgs.cs" />
     <Compile Include="Net\RequestFailedEventArgs.cs" />
@@ -57,15 +57,21 @@
     <Compile Include="Net\RequestSentEventArgs.cs" />
     <Compile Include="Net\TMDbStatusResponse.cs" />
     <Compile Include="Net\WebResponse.cs" />
+    <Compile Include="Media\PeopleMedia\PersonResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Media\IdResultObject.cs" />
+    <Compile Include="Media\IdResultObjectWithMediaType.cs" />
     <Compile Include="Search\MediaSearchResult.cs" />
+    <Compile Include="Media\MediaTypeEnum.cs" />
     <Compile Include="Search\MovieSearchResult.cs" />
+    <Compile Include="Search\MultiSearchResult.cs" />
+    <Compile Include="Search\PeopleSearchResult.cs" />
     <Compile Include="Search\TvSearchResult.cs" />
-    <Compile Include="TvSeriesMedia\Episode.cs" />
-    <Compile Include="TvSeriesMedia\Season.cs" />
-    <Compile Include="TvSeriesMedia\TvSeriesResult.cs" />
-    <Compile Include="TvSeriesMedia\TvSeriesStatusEnum.cs" />
-    <Compile Include="TvSeriesMedia\TvSeriesTypeEnum.cs" />
+    <Compile Include="Media\TvSeriesMedia\Episode.cs" />
+    <Compile Include="Media\TvSeriesMedia\Season.cs" />
+    <Compile Include="Media\TvSeriesMedia\TvSeriesResult.cs" />
+    <Compile Include="Media\TvSeriesMedia\TvSeriesStatusEnum.cs" />
+    <Compile Include="Media\TvSeriesMedia\TvSeriesTypeEnum.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

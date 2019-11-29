@@ -1,26 +1,37 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Drawing;
-using System.Collections.Generic;
-using TM_Db_Lib.Net;
-using Newtonsoft.Json.Linq;
-
+﻿using System.Drawing;
+using TM_Db_Lib.Media;
 
 namespace TM_Db_Lib.Search
 {
     /// <summary>
     /// Represents information for a derived class.
     /// </summary>
-    public abstract class MediaSearchResult
+    public class MediaSearchResult : IdResultObject
     {
         // Written, 06.04.2018
 
         #region Properties
 
         /// <summary>
-        /// Represents the ID for the result.
+        /// Represents the name of the media item.
         /// </summary>
-        public int id
+        public virtual string name 
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Represents the original name for the media item.
+        /// </summary>        
+        public virtual string original_name
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Represents the release date for the media item.
+        /// </summary>
+        public virtual string release_date
         {
             get;
             set;
@@ -106,39 +117,6 @@ namespace TM_Db_Lib.Search
             protected set;
         }
 
-        #endregion
-
-        private static async Task<JObject> getJObjectAsync(string inSearchAddressPrefix, string inSearchPhrase, int inPage) 
-        {
-            // Written, 26.11.2019
-
-            string address = String.Format("{0}?api_key={1}&query={2}&page={3}", inSearchAddressPrefix, ApplicationInfomation.API_KEY, inSearchPhrase.Replace(" ", "+"), inPage);
-            return await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-        }
-        public static async Task<JToken[]> getJTokensAsync(string inSearchPhrase, int inPagesToShow, string inSearchAddressPrefix) 
-        {
-            // Written, 26.11.2019
-
-            List<JToken> results = new List<JToken>();
-            int totalPages = 1;
-
-            for (int pageNum = 1; pageNum <= totalPages; pageNum++)
-            {
-                if (pageNum > inPagesToShow)
-                    break;
-                JObject jObject = await getJObjectAsync(inSearchAddressPrefix, inSearchPhrase, pageNum);
-                if (pageNum == 1)
-                    totalPages = jObject["total_pages"].ToObject<JValue>().ToObject<int>();                
-                if (jObject != null)
-                {
-                    JArray jResults = jObject["results"].ToObject<JArray>();
-                    for (int i = 0; i < jResults.Count; i++)
-                    {
-                        results.Add(jResults[i]);
-                    }
-                }
-            }
-            return results.ToArray();
-        }
+        #endregion        
     }
 }

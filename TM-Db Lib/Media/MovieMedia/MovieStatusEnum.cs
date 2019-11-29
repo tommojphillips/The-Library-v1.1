@@ -1,4 +1,4 @@
-﻿namespace TM_Db_Lib.MovieMedia
+﻿namespace TM_Db_Lib.Media
 {
     /// <summary>
     /// Represents the status' for a movie.

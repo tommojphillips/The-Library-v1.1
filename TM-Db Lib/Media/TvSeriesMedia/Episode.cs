@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using TM_Db_Lib.Net;
 
-namespace TM_Db_Lib.TvSeriesMedia
+namespace TM_Db_Lib.Media
 {
     /// <summary>
     /// Represents an episode for a season.

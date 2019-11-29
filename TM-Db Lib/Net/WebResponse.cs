@@ -45,7 +45,7 @@ namespace TM_Db_Lib.Net
         /// <summary>
         /// Represents all tmdb status codes.
         /// </summary>
-        internal static Dictionary<string, int> TMDb_Codes = new Dictionary<string, int>() 
+        private readonly static Dictionary<string, int> TMDb_Codes = new Dictionary<string, int>() 
         {
             {"Success", 200 },
             {"Invaild service", 501 },
@@ -80,7 +80,10 @@ namespace TM_Db_Lib.Net
             {"Email not verified", 401 },
             {"Resource not found", 401 },
         };
-        private static Stopwatch onSendingStopWatch = new Stopwatch();
+        /// <summary>
+        /// Represents the stopwatch for timing requests,
+        /// </summary>
+        private readonly static Stopwatch onSendingStopWatch = new Stopwatch();
 
         #endregion
 

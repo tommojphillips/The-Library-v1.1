@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TM_Db_Lib.Net;
+using TM_Db_Lib.Search;
 
-namespace TM_Db_Lib.MovieMedia
+namespace TM_Db_Lib.Media
 {
     /// <summary>
-    /// Represensts a movie result. Gets the primary infomation about a movie by id; id obtained by <see cref="Search.MovieSearchResult"/>,
-    /// derived from <see cref="Search.MovieSearchResult"/>.
+    /// Represensts a movie result. Gets the primary infomation about a movie by id; id obtained by <see cref="MovieSearchResult"/>,
+    /// derived from <see cref="MovieSearchResult"/>.
     /// </summary>
-    public class MovieResult : Search.MovieSearchResult
+    public class MovieResult : MovieSearchResult
     {
         // Written, 25.11.2019
 
@@ -89,6 +90,10 @@ namespace TM_Db_Lib.MovieMedia
 
         #region Methods
 
+        /// <summary>
+        /// Gets the details of the movie.
+        /// </summary>
+        /// <param name="inMovieID">The movie's ID</param>
         public static async Task<MovieResult> retrieveDetailsAsync(int inMovieID)
         {
             // Written, 07.04.2018
@@ -99,7 +104,7 @@ namespace TM_Db_Lib.MovieMedia
         }
 
         /// <summary>
-        /// Gets the details of the movie.
+        /// Gets the details of the movie. note: Expects <see cref="Search.IdResultObject.id"/> to be filled with the media's ID.
         /// </summary>
         /// <param name="inMovieID">The id of the movie to get details about.</param>
         public async Task retrieveDetailsAsync()
@@ -120,13 +125,13 @@ namespace TM_Db_Lib.MovieMedia
             this.id = mf.id;
             this.imdb_id = mf.imdb_id;
             this.original_laugauge = mf.original_laugauge;
-            this.original_title = mf.original_title;
+            this.original_name = mf.original_name;
             this.overview = mf.overview;
             this.popularity = mf.popularity;
             this.release_date = mf.release_date;
             this.status = mf.status;
             this.tagline = mf.tagline;
-            this.title = mf.title;
+            this.name = mf.name;
             this.video = mf.video;
             this.vote_average = mf.vote_average;
             this.vote_count = mf.vote_count;
@@ -134,7 +139,7 @@ namespace TM_Db_Lib.MovieMedia
         /// <summary>
         /// Gets a list of similar movies.
         /// </summary>
-        /// <param name="inMovieID"></param>
+        /// <param name="inMovieID">The movie ID.</param>
         public static async Task<List<Search.MovieSearchResult>> getSimilarMoviesAsync(int inMovieID)
         {
             // Written, 07.04.2018
@@ -175,7 +180,7 @@ namespace TM_Db_Lib.MovieMedia
         /// <summary>
         /// Gets a list of recommended movies.
         /// </summary>
-        /// <param name="inMovieID"></param>
+        /// <param name="inMovieID">The movie ID.</param>
         /// <returns></returns>
         public static async Task<List<Search.MovieSearchResult>> getRecommendationsAsync(int inMovieID)
         {

@@ -1,4 +1,4 @@
-﻿namespace TM_Db_Lib.TvSeriesMedia
+﻿namespace TM_Db_Lib.Media
 {
     /// <summary>
     /// Represents tv series types.

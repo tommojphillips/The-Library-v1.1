@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TM_Db_Lib.Net;
 
-namespace TM_Db_Lib.TvSeriesMedia
+namespace TM_Db_Lib.Media
 {
     /// <summary>
     /// Represents the primary tv show details by id; id obtained by <see cref="Search.TvSearchResult"/>, derived from <see cref="Search.TvSearchResult"/>
@@ -162,6 +162,10 @@ namespace TM_Db_Lib.TvSeriesMedia
             }
             return tsse;
         }
+        /// <summary>
+        /// Gets the details of the tv series.
+        /// </summary>
+        /// <param name="inTvID">the tv series id.</param>
         public static async Task<TvSeriesResult> retrieveDetailsAsync(int inTvID) 
         {
             // Written, 27.11.2019
@@ -171,10 +175,8 @@ namespace TM_Db_Lib.TvSeriesMedia
             return jObject.ToObject<TvSeriesResult>();
         }
         /// <summary>
-        /// Gets the details of the tv series.
+        /// Gets the details of the tv series. note: Expects <see cref="Search.IdResultObject.id"/> to be filled with the media's ID.
         /// </summary>
-        /// <param name="inTvID">the tv series id.</param>
-        /// <returns></returns>
         public async Task retrieveDetailsAsync()
         {
             // Written, 13.04.2018
@@ -185,7 +187,7 @@ namespace TM_Db_Lib.TvSeriesMedia
             this.poster_path = tvResult.poster_path;
             this.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_BASE_ADDRESS + this.backdrop_path));
             this.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_BASE_ADDRESS + this.poster_path));
-            this.first_air_date = tvResult.first_air_date;
+            this.release_date = tvResult.release_date;
             this.genres = tvResult.genres;
             this.homepage = tvResult.homepage;
             this.id = tvResult.id;

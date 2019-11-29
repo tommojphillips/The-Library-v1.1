@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using TM_Db_Lib.Net;
 
-namespace TM_Db_Lib.TvSeriesMedia
+namespace TM_Db_Lib.Media
 {
     /// <summary>
     /// Represents a season for a tv series.
