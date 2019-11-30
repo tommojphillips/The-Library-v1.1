@@ -23,10 +23,9 @@ namespace Testing_Multi_Search_Logic
                     Console.WriteLine("{0}.) [{1}] {2}", i + 1, mediaResults[i].mediaTypeString, mediaResults[i].id);
                 Console.WriteLine("Total Results: " + mediaResults.GetLength(0));
             }
-            catch (Exception ex)
+            catch
             {
                 searchOK = false;
-                Console.WriteLine("An Error occured whilist attempting to test movie search function. Error: {0}", ex.Message);
             }
 
             if (searchOK)

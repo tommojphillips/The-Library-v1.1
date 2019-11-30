@@ -25,10 +25,9 @@ namespace Testing_Search_People_Logic
                     Console.WriteLine("{0}.) {1}", i + 1, peopleSearchResults[i].id);
                 Console.WriteLine("Total Results: " + peopleSearchResults.GetLength(0));
             }
-            catch (Exception ex)
+            catch
             {
                 searchOK = false;
-                Console.WriteLine("An Error occured whilist attempting to test people search function. Error: {0}\nSTACKTACE:\n{1}", ex.Message, ex.StackTrace);
             }
             if (searchOK)
             {

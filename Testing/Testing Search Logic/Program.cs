@@ -25,10 +25,9 @@ namespace Testing_Search_Logic
                     Console.WriteLine("{0}.) {1}", i + 1, movieSearchResults[i].name);
                 Console.WriteLine("Total Results: " + movieSearchResults.GetLength(0));
             }
-            catch (Exception ex) 
+            catch 
             {
                 searchOK = false;
-                Console.WriteLine("An Error occured whilist attempting to test movie search function. Error: {0}", ex.Message);
             }
             TvSearchResult[] tvSearchResults = null;
             Console.WriteLine("\n\nTv Search Function\n----------------------------------------------");
@@ -39,10 +38,9 @@ namespace Testing_Search_Logic
                     Console.WriteLine("{0}.) {1}", i + movieSearchResults.GetLength(0) + 1, tvSearchResults[i].name);
                 Console.WriteLine("Total Results: " + tvSearchResults.GetLength(0));
             }
-            catch (Exception ex)
+            catch
             {
                 searchOK = false;
-                Console.WriteLine("An Error occured whilist attempting to test tv search function. Error: {0}", ex.Message);
             }
             if (searchOK) 
             {

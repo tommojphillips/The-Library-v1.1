@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
@@ -97,10 +98,11 @@ namespace TM_Db_Lib.Net
         {
             // Written, 05.06.2018
 
-            onRequestSending(inUri);
             HttpWebRequest request = WebRequest.Create(inUri) as HttpWebRequest;
-            HttpWebResponse response;            
-
+            HttpWebResponse response = null;
+            TMDbStatusResponse statusResponse = null;
+            Exception pingException = null;
+            onRequestSending(inUri);
             try
             {
                 response = await request.GetResponseAsync() as HttpWebResponse;
@@ -109,19 +111,36 @@ namespace TM_Db_Lib.Net
             }
             catch (WebException ex)
             {
-                response = ex.Response as HttpWebResponse;
-                TMDbStatusResponse statusResponse = (await toJObject(response)).ToObject<TMDbStatusResponse>();
-                onRequestFailed(inUri, response, statusResponse);
-                HttpStatusCode statusCode = response.StatusCode;
-                bool isInt = Int32.TryParse(statusCode.ToString(), out int code);
-
-                if (isInt && code == TMDb_Codes["Request Limit Exceeded"]) // Too many requests error code
+                bool successfulPing = false;
+                try
                 {
-                    delay = Int32.Parse(response.Headers.Get("Retry-After"));
-                    if (delay > 0)
-                        await onDelay();
-                    return await sendRequestAsync(inUri);
+                    successfulPing = new Ping().Send(inUri.Host).Status == IPStatus.Success;
                 }
+                catch (Exception ex1)
+                {
+                    pingException = ex1;
+                    statusResponse = new TMDbStatusResponse()
+                    {
+                        status_message = String.Format("Check internet connection. Error ({0})", pingException?.GetType()?.Name ?? "null"),
+                        status_code = 401
+                    };
+                }
+                if (successfulPing)
+                {
+                    response = ex.Response as HttpWebResponse;
+                    statusResponse = (await toJObject(response)).ToObject<TMDbStatusResponse>();                    
+                    HttpStatusCode statusCode = response.StatusCode;
+                    bool isInt = Int32.TryParse(statusCode.ToString(), out int code);
+
+                    if (isInt && code == TMDb_Codes["Request Limit Exceeded"]) // Too many requests error code
+                    {
+                        delay = Int32.Parse(response.Headers.Get("Retry-After"));
+                        if (delay > 0)
+                            await onDelay();
+                        return await sendRequestAsync(inUri);
+                    }
+                }
+                onRequestFailed(inUri, response, statusResponse);
                 throw;
             }
         }
@@ -230,7 +249,7 @@ namespace TM_Db_Lib.Net
         {
             // Written, 24.11.2019
 
-            Console.WriteLine("Request failed: {0} Code {1}.", inStatusResponse.status_message, inStatusResponse.status_code);
+            Console.WriteLine("Request failed: {0} Code {1}.", inStatusResponse.status_message, inStatusResponse.status_code);            
             RequestFailed?.Invoke(null, new RequestFailedEventArgs(inUri, inResponse, inStatusResponse));
         }
         /// <summary>
