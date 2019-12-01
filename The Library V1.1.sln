@@ -20,6 +20,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing Multi-Search Logic"
 		{BB52C94B-E6C1-4385-86BD-EE01B627D4EC} = {BB52C94B-E6C1-4385-86BD-EE01B627D4EC}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing Reviews", "Testing\Testing Reviews\Testing Reviews.csproj", "{5D3CF11F-D083-4FF1-BABD-2317724DF022}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BB52C94B-E6C1-4385-86BD-EE01B627D4EC} = {BB52C94B-E6C1-4385-86BD-EE01B627D4EC}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +47,10 @@ Global
 		{71CEB07E-2A36-450A-8F36-3BACA32AAA6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71CEB07E-2A36-450A-8F36-3BACA32AAA6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71CEB07E-2A36-450A-8F36-3BACA32AAA6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D3CF11F-D083-4FF1-BABD-2317724DF022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D3CF11F-D083-4FF1-BABD-2317724DF022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D3CF11F-D083-4FF1-BABD-2317724DF022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D3CF11F-D083-4FF1-BABD-2317724DF022}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

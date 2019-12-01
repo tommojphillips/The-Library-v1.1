@@ -102,7 +102,6 @@ namespace TM_Db_Lib.Media
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject.ToObject<MovieResult>();
         }
-
         /// <summary>
         /// Gets the details of the movie. note: Expects <see cref="Search.IdResultObject.id"/> to be filled with the media's ID.
         /// </summary>
@@ -140,7 +139,7 @@ namespace TM_Db_Lib.Media
         /// Gets a list of similar movies.
         /// </summary>
         /// <param name="inMovieID">The movie ID.</param>
-        public static async Task<List<Search.MovieSearchResult>> getSimilarMoviesAsync(int inMovieID)
+        public static async Task<List<MovieSearchResult>> retrieveSimilarMoviesAsync(int inMovieID)
         {
             // Written, 07.04.2018
 
@@ -161,7 +160,7 @@ namespace TM_Db_Lib.Media
         /// </summary>
         /// <param name="inMovieID">the movie to get similar movies from.</param>
         /// <returns></returns>
-        public static async Task<List<int>> getSimilarMoviesMovieIdAsync(int inMovieID)
+        public static async Task<List<int>> retrieveSimilarMoviesMovieIdAsync(int inMovieID)
         {
             // Written, 19.04.2018
 
@@ -182,7 +181,7 @@ namespace TM_Db_Lib.Media
         /// </summary>
         /// <param name="inMovieID">The movie ID.</param>
         /// <returns></returns>
-        public static async Task<List<Search.MovieSearchResult>> getRecommendationsAsync(int inMovieID)
+        public static async Task<List<MovieSearchResult>> retrieveRecommendationsAsync(int inMovieID)
         {
             // Written, 07.04.2018
 
@@ -203,7 +202,7 @@ namespace TM_Db_Lib.Media
         /// </summary>
         /// <param name="inMovieID">the movie id to get recommendid movies</param>
         /// <returns></returns>
-        public static async Task<List<int>> getRecommendationsMovieIdAsync(int inMovieID)
+        public static async Task<int[]> retrieveRecommendationsMovieIdAsync(int inMovieID)
         {
             // Written, 19.04.2018
 
@@ -217,7 +216,27 @@ namespace TM_Db_Lib.Media
                 movie_ids.Add(jResults[j].ToObject<Search.MovieSearchResult>().id);
             }
 
-            return movie_ids;
+            return movie_ids.ToArray();
+        }
+        /// <summary>
+        /// Gets a list of reviews for the movie.
+        /// </summary>
+        /// <param name="inMovieID">The movie ID to get reviews for.</param>
+        public static async Task<Review[]> retrieveReviewsAsync(int inMovieID) 
+        {
+            // Written, 01.12.2019
+
+            string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.MOVIE_BASE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
+            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            List<Review> reviews = new List<Review>();
+
+            JArray jResults = jObject["results"].ToObject<JArray>();
+            for (int j = 0; j < jResults.Count; j++)
+            {
+                reviews.Add(jResults[j].ToObject<Review>());
+            }
+
+            return reviews.ToArray();
         }
 
         #endregion

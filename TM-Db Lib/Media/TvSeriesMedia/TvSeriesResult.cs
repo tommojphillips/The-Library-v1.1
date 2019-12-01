@@ -210,6 +210,26 @@ namespace TM_Db_Lib.Media
             this.networks = tvResult.networks;
             this.networks.ToList().ForEach(async nw => await nw.retrieveDetails(nw.id));
         }
+        /// <summary>
+        /// Gets a list of reviews for the tv series.
+        /// </summary>
+        /// <param name="inTvID">The tv series ID to get reviews for.</param>
+        public static async Task<Review[]> retrieveReviewsAsync(int inTvID)
+        {
+            // Written, 01.12.2019
+
+            string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.TV_BASE_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
+            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            List<Review> reviews = new List<Review>();
+
+            JArray jResults = jObject["results"].ToObject<JArray>();
+            for (int j = 0; j < jResults.Count; j++)
+            {
+                reviews.Add(jResults[j].ToObject<Review>());
+            }
+
+            return reviews.ToArray();
+        }
 
         #endregion
     }

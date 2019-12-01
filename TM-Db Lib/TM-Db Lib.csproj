@@ -50,6 +50,7 @@
     <Compile Include="Genre.cs" />
     <Compile Include="Media\MovieMedia\MovieResult.cs" />
     <Compile Include="Media\MovieMedia\MovieStatusEnum.cs" />
+    <Compile Include="Media\Review.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="Net\DelayingEventArgs.cs" />
     <Compile Include="Net\RequestFailedEventArgs.cs" />
