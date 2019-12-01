@@ -101,7 +101,6 @@ namespace TM_Db_Lib.Net
             HttpWebRequest request = WebRequest.Create(inUri) as HttpWebRequest;
             HttpWebResponse response = null;
             TMDbStatusResponse statusResponse = null;
-            Exception pingException = null;
             onRequestSending(inUri);
             try
             {
@@ -116,12 +115,11 @@ namespace TM_Db_Lib.Net
                 {
                     successfulPing = new Ping().Send(inUri.Host).Status == IPStatus.Success;
                 }
-                catch (Exception ex1)
+                catch (PingException pingEx)
                 {
-                    pingException = ex1;
                     statusResponse = new TMDbStatusResponse()
                     {
-                        status_message = String.Format("Check internet connection. Error ({0})", pingException?.GetType()?.Name ?? "null"),
+                        status_message = String.Format("Check internet connection. Error ({0})", pingEx.GetType().Name),
                         status_code = 401
                     };
                 }
