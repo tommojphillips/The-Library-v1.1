@@ -128,7 +128,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 21.04.2018
 
-            string address = String.Format("{0}/{1}/season/{2}?api_key={3}", ApplicationInfomation.TV_BASE_ADDRESS, inTvID, inSeasonNumber, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}/season/{2}?api_key={3}", ApplicationInfomation.TV_ADDRESS, inTvID, inSeasonNumber, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             Season seasonResult;
             seasonResult = jObject.ToObject<Season>();

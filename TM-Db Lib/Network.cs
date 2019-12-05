@@ -68,7 +68,7 @@ namespace TM_Db_Lib
         {
             // Written, 30.05.2018
 
-            string address = String.Format(@"{0}/{1}?api_key={2}", ApplicationInfomation.NETWORK_BASE_ADDRESS, network_id, ApplicationInfomation.API_KEY);
+            string address = String.Format(@"{0}/{1}?api_key={2}", ApplicationInfomation.NETWORK_ADDRESS, network_id, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             Network searchedNetwork = jObject.ToObject<Network>();
 

@@ -122,7 +122,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 29.11.2019
 
-            string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.PERSON_BASE_ADDRESS, inPersonID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.PERSON_ADDRESS, inPersonID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject.ToObject<PersonResult>();
         }
@@ -149,7 +149,7 @@ namespace TM_Db_Lib.Media
             this.place_of_birth = person.place_of_birth;
             this.popularity = person.popularity;
             this.profile_path = person.profile_path;
-            this.profileImage = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_BASE_ADDRESS + this.profile_path));
+            this.profileImage = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ADDRESS + this.profile_path));
 
         }
 

@@ -170,7 +170,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 27.11.2019
 
-            string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.TV_BASE_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.TV_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject.ToObject<TvSeriesResult>();
         }
@@ -185,8 +185,8 @@ namespace TM_Db_Lib.Media
 
             this.backdrop_path = tvResult.backdrop_path;
             this.poster_path = tvResult.poster_path;
-            this.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_BASE_ADDRESS + this.backdrop_path));
-            this.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_BASE_ADDRESS + this.poster_path));
+            this.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ADDRESS + this.backdrop_path));
+            this.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ADDRESS + this.poster_path));
             this.release_date = tvResult.release_date;
             this.genres = tvResult.genres;
             this.homepage = tvResult.homepage;
@@ -218,7 +218,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 01.12.2019
 
-            string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.TV_BASE_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.TV_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             List<Review> reviews = new List<Review>();
 

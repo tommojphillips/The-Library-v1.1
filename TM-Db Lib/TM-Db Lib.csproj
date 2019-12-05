@@ -45,12 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account\User.cs" />
     <Compile Include="ApplicationInfomation.cs" />
+    <Compile Include="Auth\Session.cs" />
+    <Compile Include="Auth\Token.cs" />
     <Compile Include="FileReference.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Media\MovieMedia\MovieResult.cs" />
     <Compile Include="Media\MovieMedia\MovieStatusEnum.cs" />
-    <Compile Include="Media\Review.cs" />
+    <Compile Include="Review.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="Net\DelayingEventArgs.cs" />
     <Compile Include="Net\RequestFailedEventArgs.cs" />
@@ -73,6 +76,9 @@
     <Compile Include="Media\TvSeriesMedia\TvSeriesResult.cs" />
     <Compile Include="Media\TvSeriesMedia\TvSeriesStatusEnum.cs" />
     <Compile Include="Media\TvSeriesMedia\TvSeriesTypeEnum.cs" />
+    <Compile Include="Trending.cs" />
+    <Compile Include="TrendingAllowedMediaTypesEnum.cs" />
+    <Compile Include="TrendingTimeWindowEnum.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

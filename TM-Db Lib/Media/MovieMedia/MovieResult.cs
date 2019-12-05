@@ -98,7 +98,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 07.04.2018
 
-            string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.MOVIE_BASE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject.ToObject<MovieResult>();
         }
@@ -115,8 +115,8 @@ namespace TM_Db_Lib.Media
             this.adult = mf.adult;
             this.backdrop_path = mf.backdrop_path;
             this.poster_path = mf.poster_path;
-            this.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_BASE_ADDRESS + this.backdrop_path));
-            this.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_BASE_ADDRESS + this.poster_path));
+            this.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ADDRESS + this.backdrop_path));
+            this.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ADDRESS + this.poster_path));
             this.belongs_to_collection = mf.belongs_to_collection;
             this.budget = mf.budget;
             this.genres = mf.genres;
@@ -143,7 +143,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 07.04.2018
 
-            string address = String.Format("{0}/{1}/similar?api_key={2}", ApplicationInfomation.MOVIE_BASE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}/similar?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             List<Search.MovieSearchResult> similarMovies = new List<Search.MovieSearchResult>();
 
@@ -164,7 +164,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 19.04.2018
 
-            string address = String.Format("{0}/{1}/similar?api_key={2}", ApplicationInfomation.MOVIE_BASE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}/similar?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             List<int> movie_ids = new List<int>();
 
@@ -185,7 +185,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 07.04.2018
 
-            string address = String.Format("{0}/{1}/recommendations?api_key={2}", ApplicationInfomation.MOVIE_BASE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}/recommendations?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             List<Search.MovieSearchResult> recommendations = new List<Search.MovieSearchResult>();
 
@@ -206,7 +206,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 19.04.2018
 
-            string address = String.Format("{0}/{1}/recommendations?api_key={2}", ApplicationInfomation.MOVIE_BASE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}/recommendations?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             List<int> movie_ids = new List<int>();
 
@@ -226,7 +226,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 01.12.2019
 
-            string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.MOVIE_BASE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             List<Review> reviews = new List<Review>();
 

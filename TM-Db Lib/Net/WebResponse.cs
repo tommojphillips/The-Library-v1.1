@@ -94,7 +94,7 @@ namespace TM_Db_Lib.Net
         /// Sends a request to the provided url, and returns a <see cref="HttpWebResponse"/>.
         /// </summary>
         /// <param name="inUri">The url to request from.</param>
-        public static async Task<HttpWebResponse> sendRequestAsync(Uri inUri)
+        public static async Task<HttpWebResponse> sendRequestAsync(Uri inUri, byte[] inData = null)
         {
             // Written, 05.06.2018
 
@@ -104,6 +104,19 @@ namespace TM_Db_Lib.Net
             onRequestSending(inUri);
             try
             {
+                if (inData != null)
+                {
+                    request.AllowWriteStreamBuffering = true;
+                    request.Method = "POST";
+                    request.ContentType = "application/json";
+                    request.ContentLength = inData.Length;
+                    using (Stream post = request.GetRequestStream())
+                    {
+                        post.Write(inData, 0, inData.Length);
+                        post.Close();
+                    }
+                }
+
                 response = await request.GetResponseAsync() as HttpWebResponse;
                 onRequestSent(inUri, response);
                 return response;
@@ -113,7 +126,10 @@ namespace TM_Db_Lib.Net
                 bool successfulPing = false;
                 try
                 {
-                    successfulPing = new Ping().Send(inUri.Host).Status == IPStatus.Success;
+                    Ping ping = new Ping();
+                    PingReply reply = await ping.SendPingAsync(inUri.Host, 5000);
+                    successfulPing = (reply.Status == IPStatus.Success || reply.Status == IPStatus.TimedOut);
+                    Console.WriteLine("REPLY: {0}", reply.Status);
                 }
                 catch (PingException pingEx)
                 {

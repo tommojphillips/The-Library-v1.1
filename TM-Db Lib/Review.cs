@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
 
-namespace TM_Db_Lib.Media
+namespace TM_Db_Lib
 {
+    /// <summary>
+    /// Represents a review. Get the user reviews for a media item, (movie or tv series).
+    /// </summary>
     public class Review
     {
         // Written, 01.12.2019
