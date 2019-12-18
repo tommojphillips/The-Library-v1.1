@@ -172,7 +172,10 @@ namespace TM_Db_Lib.Media
 
             string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.TV_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            return jObject.ToObject<TvSeriesResult>();
+            TvSeriesResult result = jObject.ToObject<TvSeriesResult>();
+            //result.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + result.poster_path));
+            //result.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + result.backdrop_image));
+            return result;
         }
         /// <summary>
         /// Gets the details of the tv series. note: Expects <see cref="Search.IdResultObject.id"/> to be filled with the media's ID.
@@ -184,9 +187,7 @@ namespace TM_Db_Lib.Media
             TvSeriesResult tvResult = await retrieveDetailsAsync(this.id);
 
             this.backdrop_path = tvResult.backdrop_path;
-            this.poster_path = tvResult.poster_path;
-            this.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ADDRESS + this.backdrop_path));
-            this.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ADDRESS + this.poster_path));
+            this.poster_path = tvResult.poster_path;            
             this.release_date = tvResult.release_date;
             this.genres = tvResult.genres;
             this.homepage = tvResult.homepage;
@@ -220,15 +221,7 @@ namespace TM_Db_Lib.Media
 
             string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.TV_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            List<Review> reviews = new List<Review>();
-
-            JArray jResults = jObject["results"].ToObject<JArray>();
-            for (int j = 0; j < jResults.Count; j++)
-            {
-                reviews.Add(jResults[j].ToObject<Review>());
-            }
-
-            return reviews.ToArray();
+            return jObject["results"].ToObject<Review[]>();
         }
 
         #endregion

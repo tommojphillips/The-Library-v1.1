@@ -49,6 +49,9 @@
     <Compile Include="ApplicationInfomation.cs" />
     <Compile Include="Auth\Session.cs" />
     <Compile Include="Auth\Token.cs" />
+    <Compile Include="Configuration\ApiConfigObject.cs" />
+    <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Configuration\ImageConfigObject.cs" />
     <Compile Include="FileReference.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Media\MovieMedia\MovieResult.cs" />

@@ -32,7 +32,13 @@ namespace TM_Db_Lib.Media
             string address = String.Format("{0}?api_key={1}&query={2}&page={3}", inSearchAddressPrefix, ApplicationInfomation.API_KEY, inSearchPhrase.Replace(" ", "+"), inPage);
             return await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
         }
-        public static async Task<JToken[]> retrieveJTokensAsync(string inSearchPhrase, int inPagesToShow, string inSearchAddressPrefix)
+        /// <summary>
+        /// Retrieves jtokens
+        /// </summary>
+        /// <param name="inSearchPhrase">The search phrase to search for.</param>
+        /// <param name="inPagesToShow">The number of pages to enumerate through. (show).</param>
+        /// <param name="inSearchAddressPrefix">The search address prefix.</param>
+        internal static async Task<JToken[]> retrieveJTokensAsync(string inSearchPhrase, int inPagesToShow, string inSearchAddressPrefix)
         {
             // Written, 26.11.2019
 

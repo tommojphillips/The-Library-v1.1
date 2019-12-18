@@ -127,7 +127,7 @@ namespace TM_Db_Lib.Net
                 try
                 {
                     Ping ping = new Ping();
-                    PingReply reply = await ping.SendPingAsync(inUri.Host, 5000);
+                    PingReply reply = await ping.SendPingAsync(inUri.Host, 2000);
                     successfulPing = (reply.Status == IPStatus.Success || reply.Status == IPStatus.TimedOut);
                     Console.WriteLine("REPLY: {0}", reply.Status);
                 }
@@ -155,7 +155,10 @@ namespace TM_Db_Lib.Net
                     }
                 }
                 onRequestFailed(inUri, response, statusResponse);
-                throw;
+                if (statusResponse is null)
+                    throw;
+                else
+                    throw new Exception(String.Format("{0}: Code {1}", statusResponse.status_message, statusResponse.status_code));
             }
         }
         /// <summary>

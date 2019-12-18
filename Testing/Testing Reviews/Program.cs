@@ -69,7 +69,7 @@ namespace Testing_Reviews
                             }
                             if (result is MovieSearchResult)
                             {
-                                Console.WriteLine("[MOVIE] Selected, {0}\nRetrieving movie reviews for ID: {1}..", (result as MovieSearchResult).name, result.id);
+                                Console.WriteLine("[MOVIE] Selected, {0}\nRetrieving movie reviews for ID: {1}..", result.name, result.id);
                                 reviews = await MovieResult.retrieveReviewsAsync(result.id);
                                 for (int i = 0; i < reviews.GetLength(0); i++)
                                 {
@@ -81,7 +81,7 @@ namespace Testing_Reviews
                             {
                                 if (result is TvSearchResult)
                                 {
-                                    Console.WriteLine("[TV] Selected, {0}\nRetrieving tv series reviews for ID: {1}..", (result as TvSearchResult).name, result.id);
+                                    Console.WriteLine("[TV] Selected, {0}\nRetrieving tv series reviews for ID: {1}..", result.name, result.id);
                                     reviews = await TvSeriesResult.retrieveReviewsAsync(result.id);
 
                                     for (int i = 0; i < reviews.GetLength(0); i++)

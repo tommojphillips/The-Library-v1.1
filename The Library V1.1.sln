@@ -35,6 +35,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing Sessions", "Testing
 		{BB52C94B-E6C1-4385-86BD-EE01B627D4EC} = {BB52C94B-E6C1-4385-86BD-EE01B627D4EC}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View Account", "Programs\View Account\View Account.csproj", "{FA0711D3-26C5-4229-9DFD-C8AB435E36FC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BB52C94B-E6C1-4385-86BD-EE01B627D4EC} = {BB52C94B-E6C1-4385-86BD-EE01B627D4EC}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +74,10 @@ Global
 		{047C906E-F1B6-4EF9-B74D-C2EC2A52FE10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{047C906E-F1B6-4EF9-B74D-C2EC2A52FE10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{047C906E-F1B6-4EF9-B74D-C2EC2A52FE10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA0711D3-26C5-4229-9DFD-C8AB435E36FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA0711D3-26C5-4229-9DFD-C8AB435E36FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA0711D3-26C5-4229-9DFD-C8AB435E36FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA0711D3-26C5-4229-9DFD-C8AB435E36FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

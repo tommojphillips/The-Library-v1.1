@@ -123,8 +123,7 @@ namespace TM_Db_Lib.Media
 
             string address = String.Format("{0}/{1}/season/{2}/episode/{3}?api_key={4}", ApplicationInfomation.TV_ADDRESS, inTvID, inSeasonNumber, inEpisodeNumber, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            Episode episodeResult;
-            episodeResult = jObject.ToObject<Episode>();
+            Episode episodeResult = jObject.ToObject<Episode>();
 
             this.air_date = episodeResult.air_date;
             this.episode_number = episodeResult.episode_number;

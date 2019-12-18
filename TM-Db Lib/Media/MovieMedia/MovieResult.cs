@@ -93,130 +93,42 @@ namespace TM_Db_Lib.Media
         /// <summary>
         /// Gets the details of the movie.
         /// </summary>
-        /// <param name="inMovieID">The movie's ID</param>
+        /// <param name="inMovieID">The movie ID</param>
         public static async Task<MovieResult> retrieveDetailsAsync(int inMovieID)
         {
             // Written, 07.04.2018
 
             string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            return jObject.ToObject<MovieResult>();
+            MovieResult result = jObject.ToObject<MovieResult>();
+            //result.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + result.poster_path));
+            //result.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + result.backdrop_image));
+            return result;
         }
         /// <summary>
-        /// Gets the details of the movie. note: Expects <see cref="Search.IdResultObject.id"/> to be filled with the media's ID.
-        /// </summary>
-        /// <param name="inMovieID">The id of the movie to get details about.</param>
-        public async Task retrieveDetailsAsync()
-        {
-            // Written, 07.04.2018
-
-            MovieResult mf = await retrieveDetailsAsync(this.id);
-
-            this.adult = mf.adult;
-            this.backdrop_path = mf.backdrop_path;
-            this.poster_path = mf.poster_path;
-            this.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ADDRESS + this.backdrop_path));
-            this.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ADDRESS + this.poster_path));
-            this.belongs_to_collection = mf.belongs_to_collection;
-            this.budget = mf.budget;
-            this.genres = mf.genres;
-            this.homepage = mf.homepage;
-            this.id = mf.id;
-            this.imdb_id = mf.imdb_id;
-            this.original_laugauge = mf.original_laugauge;
-            this.original_name = mf.original_name;
-            this.overview = mf.overview;
-            this.popularity = mf.popularity;
-            this.release_date = mf.release_date;
-            this.status = mf.status;
-            this.tagline = mf.tagline;
-            this.name = mf.name;
-            this.video = mf.video;
-            this.vote_average = mf.vote_average;
-            this.vote_count = mf.vote_count;
-        }
-        /// <summary>
-        /// Gets a list of similar movies.
+        /// Retrieves similar movies.
         /// </summary>
         /// <param name="inMovieID">The movie ID.</param>
-        public static async Task<List<MovieSearchResult>> retrieveSimilarMoviesAsync(int inMovieID)
+        public async Task<MovieSearchResult[]> retrieveSimilarMoviesAsync()
         {
             // Written, 07.04.2018
 
-            string address = String.Format("{0}/{1}/similar?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}/similar?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, this.id, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            List<Search.MovieSearchResult> similarMovies = new List<Search.MovieSearchResult>();
-
-            JArray jResults = jObject["results"].ToObject<JArray>();
-            for (int j = 0; j < jResults.Count; j++)
-            {
-                similarMovies.Add(jResults[j].ToObject<Search.MovieSearchResult>());
-            }
-
-            return similarMovies;
+            return jObject["results"].ToObject<MovieSearchResult[]>();
         }
         /// <summary>
-        /// Gets a list of movie ids of similar movies to the movieID
-        /// </summary>
-        /// <param name="inMovieID">the movie to get similar movies from.</param>
-        /// <returns></returns>
-        public static async Task<List<int>> retrieveSimilarMoviesMovieIdAsync(int inMovieID)
-        {
-            // Written, 19.04.2018
-
-            string address = String.Format("{0}/{1}/similar?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            List<int> movie_ids = new List<int>();
-
-            JArray jResults = jObject["results"].ToObject<JArray>();
-            for (int j = 0; j < jResults.Count; j++)
-            {
-                movie_ids.Add(jResults[j].ToObject<Search.MovieSearchResult>().id);
-            }
-
-            return movie_ids;
-        }
-        /// <summary>
-        /// Gets a list of recommended movies.
+        /// Retrieves recommended movies.
         /// </summary>
         /// <param name="inMovieID">The movie ID.</param>
         /// <returns></returns>
-        public static async Task<List<MovieSearchResult>> retrieveRecommendationsAsync(int inMovieID)
+        public async Task<MovieSearchResult[]> retrieveRecommendationsAsync()
         {
             // Written, 07.04.2018
 
-            string address = String.Format("{0}/{1}/recommendations?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
+            string address = String.Format("{0}/{1}/recommendations?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, this.id, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            List<Search.MovieSearchResult> recommendations = new List<Search.MovieSearchResult>();
-
-            JArray jResults = jObject["results"].ToObject<JArray>();
-            for (int j = 0; j < jResults.Count; j++)
-            {
-                recommendations.Add(jResults[j].ToObject<Search.MovieSearchResult>());
-            }
-
-            return recommendations;
-        }
-        /// <summary>
-        /// Gets a list of movie ids of recommended movies.
-        /// </summary>
-        /// <param name="inMovieID">the movie id to get recommendid movies</param>
-        /// <returns></returns>
-        public static async Task<int[]> retrieveRecommendationsMovieIdAsync(int inMovieID)
-        {
-            // Written, 19.04.2018
-
-            string address = String.Format("{0}/{1}/recommendations?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            List<int> movie_ids = new List<int>();
-
-            JArray jResults = jObject["results"].ToObject<JArray>();
-            for (int j = 0; j < jResults.Count; j++)
-            {
-                movie_ids.Add(jResults[j].ToObject<Search.MovieSearchResult>().id);
-            }
-
-            return movie_ids.ToArray();
+            return jObject["results"].ToObject<MovieSearchResult[]>();
         }
         /// <summary>
         /// Gets a list of reviews for the movie.
@@ -228,15 +140,7 @@ namespace TM_Db_Lib.Media
 
             string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            List<Review> reviews = new List<Review>();
-
-            JArray jResults = jObject["results"].ToObject<JArray>();
-            for (int j = 0; j < jResults.Count; j++)
-            {
-                reviews.Add(jResults[j].ToObject<Review>());
-            }
-
-            return reviews.ToArray();
+            return jObject["results"].ToObject<Review[]>();
         }
 
         #endregion

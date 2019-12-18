@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TM_Db_Lib.Search;
-using TM_Db_Lib.Media;
+using TM_Db_Lib;
 
 namespace Testing_Multi_Search_Logic
 {
@@ -13,80 +13,50 @@ namespace Testing_Multi_Search_Logic
 
             Console.WriteLine("The Library v1.1 Multi-Search Test\nEnter Phrase and press Enter to search for movies, tv series and people as a multi-search request.");
             string searchPhrase = Console.ReadLine();
-            bool searchOK = true;
-            IdResultObjectWithMediaType[] mediaResults = null;
+            MultiSearchResult multiSearch = null;
             Console.WriteLine("\n\nMulti-Search Function\n-------------------------------------------");
             try
             {
-                mediaResults = await MultiSearchResult.searchAsync(searchPhrase, 1);
-                for (int i = 0; i < mediaResults.GetLength(0); i++)
-                    Console.WriteLine("{0}.) [{1}] {2}", i + 1, mediaResults[i].mediaTypeString, mediaResults[i].id);
-                Console.WriteLine("Total Results: " + mediaResults.GetLength(0));
+                multiSearch = await MultiSearchResult.searchAsync(searchPhrase, 1);
             }
-            catch
+            catch (AggregateException ex)
             {
-                searchOK = false;
+                string exMessage = ex.Message;
+                for (int i = 0; i < ex.InnerExceptions.Count; i++)
+                    exMessage += String.Format("\n{0}.) {1}", i + 1, ex.InnerExceptions[i].Message);
+                Console.WriteLine("An error occured while performing multi-search function: {0}", exMessage);
             }
 
-            if (searchOK)
+            int totalResults = 0;
+            for (int i = 0; i < ApplicationInfomation.NUMBER_OF_ITEMS_PER_PAGE; i++)
             {
-                Console.WriteLine("SEARCH OK");
-                if (mediaResults.GetLength(0) > 0)
+                MovieSearchResult movie = multiSearch.movies[i];
+                if (movie != null)
                 {
-                    Console.WriteLine("Enter media number to retrieve details.");
-                    if (Int32.TryParse(Console.ReadLine(), out int searchNum))
-                    {
-                        try
-                        {
-                            IdResultObjectWithMediaType result = null;
-
-                            if (searchNum <= mediaResults.GetLength(0))
-                            {
-                                result = mediaResults[searchNum - 1];
-                            }
-                            else
-                                throw new NullReferenceException("result is null.");                            
-                            MediaSearchResult mediaSearchResult = null;
-                            PersonResult personResult = null;
-                            switch (result.mediaType)
-                            {
-                                case MediaTypeEnum.movie:
-                                    mediaSearchResult = await MovieResult.retrieveDetailsAsync(result.id);
-                                    break;
-                                case MediaTypeEnum.tv:
-                                    mediaSearchResult = await TvSeriesResult.retrieveDetailsAsync(result.id);
-                                    break;
-                                case MediaTypeEnum.person:
-                                    personResult = await PersonResult.retrieveDetailsAsync(result.id);
-                                    break;
-                            }
-                            Console.WriteLine("Selected *{1}* ID: {0}", result.id, result.mediaTypeString);
-                            if (mediaSearchResult != null)
-                            {
-                                Console.WriteLine("\t{0} ({1})", mediaSearchResult.name, mediaSearchResult.release_date);
-                            }
-                            else
-                            {
-                                if (personResult != null)
-                                {
-                                    Console.WriteLine("\t{0} ({1})", personResult.name, personResult.birthday);
-                                }
-                                else
-                                    Console.WriteLine("Result Array was null");
-                            }
-
-                        }
-                        catch (NullReferenceException ex)
-                        {
-                            Console.WriteLine("Error: NullReferenceException. Probably number out of range. INNER ERROR: {0}", ex.StackTrace);
-                        }
-                    }
-                    else
-                        Console.WriteLine("\nError: number expected");
+                    Console.WriteLine("\t[MOVIE] {0} ({1})", movie.name, movie.release_date);
+                    totalResults++;
                 }
                 else
-                    Console.WriteLine("\nNo results found");
+                {
+                    TvSearchResult tvSeries = multiSearch.tvSeries[i];
+                    if (tvSeries != null)
+                    {
+                        Console.WriteLine("\t[TV] {0} ({1})", tvSeries.name, tvSeries.release_date);
+                        totalResults++;
+                    }
+                    else
+                    {
+                        PeopleSearchResult person = multiSearch.people[i];
+                        if (person != null)
+                        {
+                            Console.WriteLine("\t[PERSON] {0} ({1})", person.id, person.profile_path);
+                            totalResults++;
+                        }
+                    }
+                }
             }
+            Console.WriteLine("Total Results: {0}", totalResults);
+
             Console.WriteLine("\n\nPress R to restart or press any key to exit");
             if (Console.ReadKey().Key == ConsoleKey.R)
             {

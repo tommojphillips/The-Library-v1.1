@@ -22,6 +22,10 @@ namespace TM_Db_Lib
         /// </summary>
         internal const string TMDB_V3_ADDRESS = "https://api.themoviedb.org/3";
         /// <summary>
+        /// Represents the base url for certifications.
+        /// </summary>
+        internal static string CONFIGURATION_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "configuration");
+        /// <summary>
         /// Represents the search base address.
         /// </summary>
         private static string SEARCH_BASE_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "search");
@@ -29,6 +33,9 @@ namespace TM_Db_Lib
         /// Represents the base url for certifications.
         /// </summary>
         internal static string CERTIFICATIONS_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "certification");
+        /// Represents the base url address for priginal images.
+        /// </summary>
+        internal static string IMAGE_ORIGINAL_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "original");
         /// <summary>
         /// Represents the base url address for movies.
         /// </summary>
@@ -37,10 +44,6 @@ namespace TM_Db_Lib
         /// Represents the base url address for tv series.
         /// </summary>
         internal static string TV_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "tv");
-        /// <summary>
-        /// Represents the base url address for images.
-        /// </summary>
-        internal static string IMAGE_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "original");
         /// <summary>
         /// Represents the networks url address.
         /// </summary>
@@ -97,5 +100,9 @@ namespace TM_Db_Lib
         /// Represents the multi search address.
         /// </summary>
         internal static string MULTI_SEARCH_ADDRESS => String.Join("/", SEARCH_BASE_ADDRESS, "multi");
+        /// <summary>
+        /// Represents the number of items per page.
+        /// </summary>
+        public const int NUMBER_OF_ITEMS_PER_PAGE = 20;
     }
 }

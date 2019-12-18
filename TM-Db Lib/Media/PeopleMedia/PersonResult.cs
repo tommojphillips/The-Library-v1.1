@@ -149,8 +149,7 @@ namespace TM_Db_Lib.Media
             this.place_of_birth = person.place_of_birth;
             this.popularity = person.popularity;
             this.profile_path = person.profile_path;
-            this.profileImage = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ADDRESS + this.profile_path));
-
+            //this.profileImage = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + this.profile_path));
         }
 
         #endregion
