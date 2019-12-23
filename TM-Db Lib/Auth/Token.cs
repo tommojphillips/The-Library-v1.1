@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Threading.Tasks;
 using TM_Db_Lib.Net;
-using Newtonsoft.Json.Linq;
 
 namespace TM_Db_Lib.Auth
 {
@@ -22,7 +22,7 @@ namespace TM_Db_Lib.Auth
         /// <summary>
         /// Represents when the <see cref="request_token"/> will expire (60minutes from time requested in UTC).
         /// </summary>
-        public string expires_at 
+        public string expires_at
         {
             get;
             set;
@@ -30,7 +30,7 @@ namespace TM_Db_Lib.Auth
         /// <summary>
         /// Represents the request token.
         /// </summary>
-        public string request_token 
+        public string request_token
         {
             get;
             set;

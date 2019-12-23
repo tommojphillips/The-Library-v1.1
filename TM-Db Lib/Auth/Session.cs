@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Threading.Tasks;
 using TM_Db_Lib.Net;
-using Newtonsoft.Json.Linq;
 
 namespace TM_Db_Lib.Auth
 {
@@ -17,7 +17,7 @@ namespace TM_Db_Lib.Auth
         /// <summary>
         /// Represents if the request for a session was a success.
         /// </summary>
-        public bool success 
+        public bool success
         {
             get;
             set;
@@ -25,7 +25,7 @@ namespace TM_Db_Lib.Auth
         /// <summary>
         /// Represents the session id.
         /// </summary>
-        public string session_id 
+        public string session_id
         {
             get;
             set;

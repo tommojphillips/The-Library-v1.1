@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using TM_Db_Lib.Net;
 using TM_Db_Lib.Search;
-using Newtonsoft.Json.Linq;
 
 namespace TM_Db_Lib.Media
 {
@@ -16,7 +16,7 @@ namespace TM_Db_Lib.Media
         /// <summary>
         /// Represents the profile image of the person.
         /// </summary>
-        public Image profileImage 
+        public Image profileImage
         {
             get;
             private set;

@@ -35,7 +35,7 @@ namespace TM_Db_Lib
             get
             {
                 return Path.GetExtension(this.path);
-                    }
+            }
         }
 
 

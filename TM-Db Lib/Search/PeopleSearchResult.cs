@@ -14,7 +14,7 @@ namespace TM_Db_Lib.Search
         /// <summary>
         /// Represents the path to the person's profile.
         /// </summary>
-        public string profile_path 
+        public string profile_path
         {
             get;
             set;
@@ -22,7 +22,7 @@ namespace TM_Db_Lib.Search
         /// <summary>
         /// Represents if the person is adult-content related.
         /// </summary>
-        public bool adult 
+        public bool adult
         {
             get;
             set;

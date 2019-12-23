@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TM_Db_Lib.Net;
-using Newtonsoft.Json.Linq;
 
 namespace TM_Db_Lib.Media
 {
@@ -15,7 +15,7 @@ namespace TM_Db_Lib.Media
         /// <summary>
         /// Represents the id of the result object.
         /// </summary>
-        public int id 
+        public int id
         {
             get;
             set;

@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TM_Db_Lib.Net;
@@ -101,8 +100,7 @@ namespace TM_Db_Lib.Media
             string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             MovieResult result = jObject.ToObject<MovieResult>();
-            //result.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + result.poster_path));
-            //result.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + result.backdrop_image));
+            result.retrieveMediaImages();
             return result;
         }
         /// <summary>
@@ -134,7 +132,7 @@ namespace TM_Db_Lib.Media
         /// Gets a list of reviews for the movie.
         /// </summary>
         /// <param name="inMovieID">The movie ID to get reviews for.</param>
-        public static async Task<Review[]> retrieveReviewsAsync(int inMovieID) 
+        public static async Task<Review[]> retrieveReviewsAsync(int inMovieID)
         {
             // Written, 01.12.2019
 

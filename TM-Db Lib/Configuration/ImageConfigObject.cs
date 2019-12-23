@@ -13,7 +13,7 @@
         /// <summary>
         /// Represents the base url for retrieving images.
         /// </summary>
-        public string base_url 
+        public string base_url
         {
             get;
             set;
@@ -21,7 +21,7 @@
         /// <summary>
         /// Represents the secure base url for retrieving images.
         /// </summary>
-        public string secure_base_url 
+        public string secure_base_url
         {
             get;
             set;
@@ -29,7 +29,7 @@
         /// <summary>
         /// Represents all vaild backdrop image sizes.
         /// </summary>
-        public string[] backdrop_sizes 
+        public string[] backdrop_sizes
         {
             get;
             set;

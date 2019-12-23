@@ -15,7 +15,7 @@ namespace TM_Db_Lib.Net
         /// <summary>
         /// Representrs the tmdb status response of the request.
         /// </summary>
-        public TMDbStatusResponse statusResponse 
+        public TMDbStatusResponse statusResponse
         {
             get;
             private set;

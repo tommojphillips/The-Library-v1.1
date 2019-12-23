@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Threading.Tasks;
-using TM_Db_Lib.Search;
 using TM_Db_Lib.Media;
 using TM_Db_Lib.Net;
-using Newtonsoft.Json.Linq;
+using TM_Db_Lib.Search;
 
 namespace TM_Db_Lib.Account
 {
@@ -27,7 +27,7 @@ namespace TM_Db_Lib.Account
         /// <summary>
         /// Represents the users username.
         /// </summary>
-        public string username 
+        public string username
         {
             get;
             set;
@@ -35,7 +35,7 @@ namespace TM_Db_Lib.Account
         /// <summary>
         /// Represents the users name
         /// </summary>
-        public string name 
+        public string name
         {
             get;
             set;
@@ -67,12 +67,12 @@ namespace TM_Db_Lib.Account
         /// <summary>
         /// Represents the auth session.
         /// </summary>
-        public Auth.Session session 
+        public Auth.Session session
         {
             get;
             set;
         }
-        
+
         #endregion
 
         #region Methods
@@ -81,12 +81,12 @@ namespace TM_Db_Lib.Account
         /// Retrieves user details.
         /// </summary>
         /// <param name="inSessionId">The session id.</param>
-        public static async Task<User> retrieveUserDetailsAsync(string inSessionId) 
+        public static async Task<User> retrieveUserDetailsAsync(string inSessionId)
         {
             // Written, 04.12.2019
 
             string address = String.Format("{0}?session_id={1}&api_key={2}", ApplicationInfomation.ACCOUNT_ADDRESS, inSessionId, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));            
+            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             User user = jObject.ToObject<User>();
             user.session = new Auth.Session()
             {
@@ -101,7 +101,7 @@ namespace TM_Db_Lib.Account
         /// <param name="inMediaType">The media item type to favorite. Either, <see cref="MediaTypeEnum.movie"/> or <see cref="MediaTypeEnum.tv"/>.</param>
         /// <param name="inMediaId">The media's ID.</param>
         /// <param name="inFavorite">Favorite or unfavorite media item.</param>
-        public async Task favoriteMediaItem(MediaTypeEnum inMediaType, int inMediaId, bool inFavorite) 
+        public async Task favoriteMediaItem(MediaTypeEnum inMediaType, int inMediaId, bool inFavorite)
         {
             // Written, 05.12.2019
 
@@ -119,7 +119,7 @@ namespace TM_Db_Lib.Account
         /// Retrieves favorited movies.
         /// </summary>
         /// <param name="inPage">The page of favorites to retrieve</param>
-        public async Task<MovieSearchResult[]> getFavoriteMovies(int inPage = 1) 
+        public async Task<MovieSearchResult[]> getFavoriteMovies(int inPage = 1)
         {
             // Written, 06.12.2019
 

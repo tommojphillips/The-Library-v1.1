@@ -96,6 +96,8 @@ namespace View_Account
                 favoritedMedia.AddRange(this.viewAccount.favoritedTvSeries);
                 bool favorited = favoritedMedia.Any(_fm => _fm.id == result.id);
                 this.favoriteMediaItem_button.Text = !favorited ? "favorite" : "unfavorite";
+                this.viewDetails_button.Text = "View Details: " + result.name;
+                //this.mediaItemPoster_pictureBox.Image = result.poster_image;
             }
             else
             {
@@ -103,7 +105,9 @@ namespace View_Account
                 this.viewDetails_button.Enabled = false;
                 this.viewDetails_button.Visible = false;
                 this.favoriteMediaItem_button.Enabled = false;
+                this.viewDetails_button.Text = "View Details";
                 this.favoriteMediaItem_button.Visible = false;
+                //this.mediaItemPoster_pictureBox.Image = null;
             }
         }
 
@@ -194,6 +198,17 @@ namespace View_Account
                     break;
             }
             this.updateMediaActions();
+        }
+
+        private void viewDetails_button_Click(object sender, EventArgs e)
+        {
+            // Written, 17.12.2019
+
+            ViewMediaDialog viewMediaDialog = new ViewMediaDialog(this.searchResults_listView.SelectedItems[0].Tag as MediaSearchResult);
+            if (viewMediaDialog.ShowDialog() == DialogResult.OK) 
+            {
+                
+            }
         }
     }
 }

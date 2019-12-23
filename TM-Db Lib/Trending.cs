@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TM_Db_Lib.Search;
 using TM_Db_Lib.Media;
 using TM_Db_Lib.Net;
-using Newtonsoft.Json.Linq;
+using TM_Db_Lib.Search;
 
 namespace TM_Db_Lib
 {
@@ -24,7 +22,7 @@ namespace TM_Db_Lib
         /// Represents the trending results retrieved from <see cref="retrieveTrendingAsync(TrendingAllowedMediaTypesEnum, TrendingTimeWindowEnum)"/>. could be type: one of,
         /// <see cref="MovieSearchResult"/>, <see cref="TvSearchResult"/>, or <see cref="PeopleSearchResult"/>.
         /// </summary>
-        public IdResultObject[] trendingResults 
+        public IdResultObject[] trendingResults
         {
             get;
             set;
@@ -39,7 +37,7 @@ namespace TM_Db_Lib
         /// </summary>
         /// <param name="inTrendingAllowedMediaTypes">Trending media to retrieve, (all, movie, tv, or people.</param>
         /// <param name="inTrendingTimeWindow">Trending time scale, (day or week)</param>
-        public static async Task<Trending> retrieveTrendingAsync(TrendingAllowedMediaTypesEnum inTrendingAllowedMediaTypes, TrendingTimeWindowEnum inTrendingTimeWindow) 
+        public static async Task<Trending> retrieveTrendingAsync(TrendingAllowedMediaTypesEnum inTrendingAllowedMediaTypes, TrendingTimeWindowEnum inTrendingTimeWindow)
         {
             // Written, 01.12.2019
 

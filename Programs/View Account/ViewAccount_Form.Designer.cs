@@ -132,6 +132,7 @@
             this.viewDetails_button.TabIndex = 0;
             this.viewDetails_button.Text = "viewDetails_button";
             this.viewDetails_button.UseVisualStyleBackColor = true;
+            this.viewDetails_button.Click += new System.EventHandler(this.viewDetails_button_Click);
             // 
             // searchResults_listView
             // 

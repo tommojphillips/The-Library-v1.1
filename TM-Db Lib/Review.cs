@@ -17,7 +17,7 @@ namespace TM_Db_Lib
         [JsonProperty("id")]
         public string reviewID
         {
-            get;set;
+            get; set;
         }
         /// <summary>
         /// Represents the author of the review
@@ -38,7 +38,7 @@ namespace TM_Db_Lib
         /// <summary>
         /// Represents the url for the review.
         /// </summary>
-        public string url 
+        public string url
         {
             get;
             set;

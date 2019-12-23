@@ -12,7 +12,7 @@
         /// <summary>
         /// Holds image config data.
         /// </summary>
-        public ImageConfigObject images 
+        public ImageConfigObject images
         {
             get;
             set;

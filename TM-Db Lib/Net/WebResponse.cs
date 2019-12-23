@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net;
-using System.Net.NetworkInformation;
 using System.Drawing;
 using System.IO;
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 
 namespace TM_Db_Lib.Net
 {
@@ -46,7 +46,7 @@ namespace TM_Db_Lib.Net
         /// <summary>
         /// Represents all tmdb status codes.
         /// </summary>
-        private readonly static Dictionary<string, int> TMDb_Codes = new Dictionary<string, int>() 
+        private readonly static Dictionary<string, int> TMDb_Codes = new Dictionary<string, int>()
         {
             {"Success", 200 },
             {"Invaild service", 501 },
@@ -142,7 +142,7 @@ namespace TM_Db_Lib.Net
                 if (successfulPing)
                 {
                     response = ex.Response as HttpWebResponse;
-                    statusResponse = (await toJObject(response)).ToObject<TMDbStatusResponse>();                    
+                    statusResponse = (await toJObject(response)).ToObject<TMDbStatusResponse>();
                     HttpStatusCode statusCode = response.StatusCode;
                     bool isInt = Int32.TryParse(statusCode.ToString(), out int code);
 
@@ -238,7 +238,7 @@ namespace TM_Db_Lib.Net
         /// Raises the <see cref="RequestSending"/> event. Note, sender is null.
         /// </summary>
         /// <param name="inUri"></param>
-        internal static void onRequestSending(Uri inUri) 
+        internal static void onRequestSending(Uri inUri)
         {
             // Written, 24.11.2019
 
@@ -266,7 +266,7 @@ namespace TM_Db_Lib.Net
         {
             // Written, 24.11.2019
 
-            Console.WriteLine("Request failed: {0} Code {1}.", inStatusResponse.status_message, inStatusResponse.status_code);            
+            Console.WriteLine("Request failed: {0} Code {1}.", inStatusResponse.status_message, inStatusResponse.status_code);
             RequestFailed?.Invoke(null, new RequestFailedEventArgs(inUri, inResponse, inStatusResponse));
         }
         /// <summary>

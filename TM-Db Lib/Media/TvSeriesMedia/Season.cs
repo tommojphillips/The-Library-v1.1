@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 using TM_Db_Lib.Net;
 
 namespace TM_Db_Lib.Media
@@ -97,28 +97,28 @@ namespace TM_Db_Lib.Media
 
         #region Methods
 
-       /* /// <summary>
-        /// Returns <see langword="true"/> if TMDb has that episode by num.
-        /// </summary>
-        /// <param name="tvID">Tv ID.</param>
-        /// <param name="epNum">Episode Number.</param>
-        /// <returns></returns>
-        public async Task<bool> hasEpisode(int tvID, int epNum)
-        {
-            // Written, 02.05.2018
+        /* /// <summary>
+         /// Returns <see langword="true"/> if TMDb has that episode by num.
+         /// </summary>
+         /// <param name="tvID">Tv ID.</param>
+         /// <param name="epNum">Episode Number.</param>
+         /// <returns></returns>
+         public async Task<bool> hasEpisode(int tvID, int epNum)
+         {
+             // Written, 02.05.2018
 
-            Episode episode = new Episode(null);
-            try
-            {
-                await episode.retrieveDetailsAsync(tvID, this.season_number, epNum);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+             Episode episode = new Episode(null);
+             try
+             {
+                 await episode.retrieveDetailsAsync(tvID, this.season_number, epNum);
+                 return true;
+             }
+             catch
+             {
+                 return false;
+             }
 
-        }*/
+         }*/
         /// <summary>
         /// Retrieves details about a tv series season.
         /// </summary>

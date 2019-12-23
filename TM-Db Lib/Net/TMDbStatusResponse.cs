@@ -20,7 +20,7 @@
         /// <summary>
         /// Represents the status message for the stat response.
         /// </summary>
-        public string status_message 
+        public string status_message
         {
             get;
             set;

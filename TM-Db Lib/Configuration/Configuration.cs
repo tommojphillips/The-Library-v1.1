@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Threading.Tasks;
 using TM_Db_Lib.Net;
-using Newtonsoft.Json.Linq;
 
 namespace TM_Db_Lib.Configuration
 {
@@ -18,7 +18,7 @@ namespace TM_Db_Lib.Configuration
         /// <summary>
         /// Holds the data relevant to building image URLs as well as the change key map.
         /// </summary>
-        public ApiConfigObject apiConfig 
+        public ApiConfigObject apiConfig
         {
             get;
             private set;
@@ -31,7 +31,7 @@ namespace TM_Db_Lib.Configuration
         /// <summary>
         /// Retrieves API Configuration data.
         /// </summary>
-        public async Task retrieveApiConfig() 
+        public async Task retrieveApiConfig()
         {
             // Written, 09.12.2019
 

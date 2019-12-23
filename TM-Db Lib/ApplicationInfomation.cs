@@ -22,6 +22,10 @@ namespace TM_Db_Lib
         /// </summary>
         internal const string TMDB_V3_ADDRESS = "https://api.themoviedb.org/3";
         /// <summary>
+        /// Represents the tmdb image base-adress prefix.
+        /// </summary>
+        internal const string TMDB_IMAGE_ADDRESS = "https://image.tmdb.org/t/p";
+        /// <summary>
         /// Represents the base url for certifications.
         /// </summary>
         internal static string CONFIGURATION_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "configuration");
@@ -35,7 +39,7 @@ namespace TM_Db_Lib
         internal static string CERTIFICATIONS_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "certification");
         /// Represents the base url address for priginal images.
         /// </summary>
-        internal static string IMAGE_ORIGINAL_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "original");
+        internal static string IMAGE_ORIGINAL_ADDRESS => String.Join("/", TMDB_IMAGE_ADDRESS, "original");
         /// <summary>
         /// Represents the base url address for movies.
         /// </summary>

@@ -54,6 +54,7 @@
     <Compile Include="Configuration\ImageConfigObject.cs" />
     <Compile Include="FileReference.cs" />
     <Compile Include="Genre.cs" />
+    <Compile Include="Image\ImageExtentions.cs" />
     <Compile Include="Media\MovieMedia\MovieResult.cs" />
     <Compile Include="Media\MovieMedia\MovieStatusEnum.cs" />
     <Compile Include="Review.cs" />

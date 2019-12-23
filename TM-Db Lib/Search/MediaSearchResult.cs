@@ -1,5 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using TM_Db_Lib.Media;
+using TM_Db_Lib.Net;
 
 namespace TM_Db_Lib.Search
 {
@@ -15,7 +17,7 @@ namespace TM_Db_Lib.Search
         /// <summary>
         /// Represents the name of the media item.
         /// </summary>
-        public virtual string name 
+        public virtual string name
         {
             get;
             set;
@@ -117,6 +119,20 @@ namespace TM_Db_Lib.Search
             protected set;
         }
 
-        #endregion        
+        #endregion
+
+        #region Methods
+
+        public async void retrieveMediaImages() 
+        {
+            // Written, 24.12.2019
+
+            if (!string.IsNullOrWhiteSpace(this.poster_path))
+                this.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + this.poster_path));
+            if (!string.IsNullOrWhiteSpace(this.backdrop_path))
+                this.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + this.backdrop_path));
+        }
+
+        #endregion
     }
 }

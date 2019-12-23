@@ -166,50 +166,15 @@ namespace TM_Db_Lib.Media
         /// Gets the details of the tv series.
         /// </summary>
         /// <param name="inTvID">the tv series id.</param>
-        public static async Task<TvSeriesResult> retrieveDetailsAsync(int inTvID) 
+        public static async Task<TvSeriesResult> retrieveDetailsAsync(int inTvID)
         {
             // Written, 27.11.2019
 
             string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.TV_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             TvSeriesResult result = jObject.ToObject<TvSeriesResult>();
-            //result.poster_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + result.poster_path));
-            //result.backdrop_image = await WebResponse.downloadImageAsync(new Uri(ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS + result.backdrop_image));
+            result.retrieveMediaImages();
             return result;
-        }
-        /// <summary>
-        /// Gets the details of the tv series. note: Expects <see cref="Search.IdResultObject.id"/> to be filled with the media's ID.
-        /// </summary>
-        public async Task retrieveDetailsAsync()
-        {
-            // Written, 13.04.2018
-
-            TvSeriesResult tvResult = await retrieveDetailsAsync(this.id);
-
-            this.backdrop_path = tvResult.backdrop_path;
-            this.poster_path = tvResult.poster_path;            
-            this.release_date = tvResult.release_date;
-            this.genres = tvResult.genres;
-            this.homepage = tvResult.homepage;
-            this.id = tvResult.id;
-            this.last_air_date = tvResult.last_air_date;
-            this.name = tvResult.name;
-            this.number_of_episodes = tvResult.number_of_episodes;
-            this.number_of_seasons = tvResult.number_of_seasons;
-            this.original_laugauge = tvResult.original_laugauge;
-            this.original_name = tvResult.original_name;
-            this.origin_country = tvResult.origin_country;
-            this.overview = tvResult.overview;
-            this.popularity = tvResult.popularity;
-            this.status = tvResult.status;
-            this.statusEnum = this.phraseTvSeries(this.status);
-            this.type = tvResult.type;
-            this.vote_average = tvResult.vote_average;
-            this.vote_count = tvResult.vote_count;
-            this.episode_run_time = tvResult.episode_run_time;
-            this.languages = tvResult.languages;
-            this.networks = tvResult.networks;
-            this.networks.ToList().ForEach(async nw => await nw.retrieveDetails(nw.id));
         }
         /// <summary>
         /// Gets a list of reviews for the tv series.

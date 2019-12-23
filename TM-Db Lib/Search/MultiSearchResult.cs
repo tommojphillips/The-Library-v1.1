@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TM_Db_Lib.Media;
@@ -47,7 +46,7 @@ namespace TM_Db_Lib.Search
         /// <summary>
         /// Initializes a new instance of multi-search.
         /// </summary>
-        public MultiSearchResult() 
+        public MultiSearchResult()
         {
             // Written, 17.12.2019
 
@@ -75,7 +74,7 @@ namespace TM_Db_Lib.Search
             MultiSearchResult multiSearch = new MultiSearchResult();
             for (int i = 0; i < tokens.Length; i++)
             {
-                switch (results[i].mediaType) 
+                switch (results[i].mediaType)
                 {
                     case MediaTypeEnum.movie:
                         multiSearch.movies[i] = tokens[i].ToObject<MovieSearchResult>();
