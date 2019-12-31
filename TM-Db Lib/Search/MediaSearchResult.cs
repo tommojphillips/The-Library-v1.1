@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using TM_Db_Lib.Media;
 using TM_Db_Lib.Net;
 
@@ -123,7 +124,7 @@ namespace TM_Db_Lib.Search
 
         #region Methods
 
-        public async void retrieveMediaImages() 
+        public async Task retrieveMediaImages() 
         {
             // Written, 24.12.2019
 

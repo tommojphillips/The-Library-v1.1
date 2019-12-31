@@ -8,6 +8,8 @@ namespace View_Account
 {
     static class Program
     {
+        static viewAccount_Form viewAccount_Form;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,7 +18,12 @@ namespace View_Account
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new viewAccount_Form());
+
+            viewAccount_Form = new viewAccount_Form();
+            if (viewAccount_Form.loginTMDbAsync().Result)
+            {
+                Application.Run(viewAccount_Form);
+            }
         }
     }
 }

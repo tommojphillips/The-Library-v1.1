@@ -47,14 +47,6 @@ namespace View_Account
             this.mediaName_label.Text = "Loading..";
             this.mediaReleaseDate_label.Text = String.Empty;
             this.mediaVotesAvg_label.Text = String.Empty;
-
-            if (this.media is MovieSearchResult)
-                this.media = await MovieResult.retrieveDetailsAsync(this.media.id);
-            else
-            {
-                if (this.media is TvSearchResult)
-                    this.media = await TvSeriesResult.retrieveDetailsAsync(this.media.id);
-            }
             this.poster_pictureBox.Image = media.poster_image.resizeImage(this.poster_pictureBox.Size.Width, this.poster_pictureBox.Size.Height);
             this.mediaName_label.Text = this.media.name;
             this.mediaReleaseDate_label.Text = this.media.release_date;

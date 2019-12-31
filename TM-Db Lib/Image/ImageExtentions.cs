@@ -20,30 +20,33 @@ namespace TM_Db_Lib
         {
             // Written, 17.12.2019
 
-            Image image = inImage;
-            int _originalWidth = image.Width;
-            int _originalHeight = image.Height;
+            if (inImage != null)
+            {
+                int _originalWidth = inImage.Width;
+                int _originalHeight = inImage.Height;
 
-            Image thumbnail = new Bitmap(inCanvasWidth, inCanvasHeight);
-            Graphics graphic = Graphics.FromImage(thumbnail);
-            graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            graphic.SmoothingMode = SmoothingMode.HighQuality;
-            graphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            graphic.CompositingQuality = CompositingQuality.HighQuality;
+                Image thumbnail = new Bitmap(inCanvasWidth, inCanvasHeight);
+                Graphics graphic = Graphics.FromImage(thumbnail);
+                graphic.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphic.SmoothingMode = SmoothingMode.HighQuality;
+                graphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphic.CompositingQuality = CompositingQuality.HighQuality;
 
-            // Figure out the ratio
-            double ratioX = inCanvasWidth / (double)_originalWidth;
-            double ratioY = inCanvasHeight / (double)_originalHeight;
-            double ratio = ratioX < ratioY ? ratioX : ratioY;
-            int newHeight = Convert.ToInt32(_originalHeight * ratio);
-            int newWidth = Convert.ToInt32(_originalWidth * ratio);
-            int posX = Convert.ToInt32((inCanvasWidth - (_originalWidth * ratio)) / 2);
-            int posY = Convert.ToInt32((inCanvasHeight - (_originalHeight * ratio)) / 2);
+                // Figure out the ratio
+                double ratioX = inCanvasWidth / (double)_originalWidth;
+                double ratioY = inCanvasHeight / (double)_originalHeight;
+                double ratio = ratioX < ratioY ? ratioX : ratioY;
+                int newHeight = Convert.ToInt32(_originalHeight * ratio);
+                int newWidth = Convert.ToInt32(_originalWidth * ratio);
+                int posX = Convert.ToInt32((inCanvasWidth - (_originalWidth * ratio)) / 2);
+                int posY = Convert.ToInt32((inCanvasHeight - (_originalHeight * ratio)) / 2);
 
-            graphic.Clear(Color.White);
-            graphic.DrawImage(image, posX, posY, newWidth, newHeight);
+                graphic.Clear(Color.White);
+                graphic.DrawImage(inImage, posX, posY, newWidth, newHeight);
 
-            return thumbnail;
+                return thumbnail;
+            }
+            return null;
         }
     }
 }

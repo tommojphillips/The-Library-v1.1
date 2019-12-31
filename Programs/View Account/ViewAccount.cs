@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TM_Db_Lib.Account;
-using TM_Db_Lib.Media;
+using TM_Db_Lib.Search;
 
 namespace View_Account
 {
@@ -9,22 +9,37 @@ namespace View_Account
     {
         // Written, 09.12.2019
 
-        public User user 
+        /// <summary>
+        /// Represents the current user.
+        /// </summary>
+        internal User user 
         {
             get;
             private set;
         }
-        public IdResultObject[] favoritedMovies
+        /// <summary>
+        /// Represents favorited movies of the user.
+        /// </summary>
+        internal MovieSearchResult[] favoritedMovies
         {
             get;
             set;
         }
-        public IdResultObject[] favoritedTvSeries
+        /// <summary>
+        /// Represents favorited tv series of the user.
+        /// </summary>
+        internal TvSearchResult[] favoritedTvSeries
         {
             get;
             set;
         }
 
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ViewAccount"/>.
+        /// </summary>
+        /// <param name="inUser">The user to use/view.</param>
         public ViewAccount(User inUser) 
         {
             // Written, 09.12.2019
@@ -32,26 +47,42 @@ namespace View_Account
             if (inUser == null) 
                 throw new NullReferenceException("User cannot be null. invaild argument.");
             this.user = inUser;
-            Task.Run(this.retrieveFavoritedMedia);
+            Task.Run(this.retrieveFavoritedMediaAsync);
         }
-        internal async Task retrieveFavoriteMovies()
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Retrieves favorited movies, puts media in <see cref="favoritedMovies"/>.
+        /// </summary>
+        internal async Task retrieveFavoriteMoviesAsync()
         {
             // Written, 17.12.2019
 
             this.favoritedMovies = await this.user.getFavoriteMovies();
         }
-        internal async Task retrieveFavoriteTvSeries()
+        /// <summary>
+        /// Retrieves favorited tv series, puts media in <see cref="favoritedTvSeries"/>.
+        /// </summary>
+        internal async Task retrieveFavoriteTvSeriesAsync()
         {
             // Written, 17.12.2019
 
             this.favoritedTvSeries = await this.user.getFavoriteTvSeries();
         }
-        internal async Task retrieveFavoritedMedia() 
+        /// <summary>
+        /// Retrieves favorited media, puts media in <see cref="favoritedMovies"/> and <see cref="favoritedTvSeries"/> respectively.
+        /// </summary>
+        internal async Task retrieveFavoritedMediaAsync()
         {
             // Written, 17.12.2019
 
-            await this.retrieveFavoriteMovies();
-            await this.retrieveFavoriteTvSeries();
+            await this.retrieveFavoriteMoviesAsync();
+            await this.retrieveFavoriteTvSeriesAsync();
         }
+
+        #endregion
     }
 }
