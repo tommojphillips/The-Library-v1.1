@@ -62,9 +62,10 @@ namespace TM_Db_Lib
                         break;
                 }
             }
-            Trending trending = new Trending();
-            trending.trendingResults = _results.ToArray();
-            return trending;
+            return new Trending
+            {
+                trendingResults = _results.ToArray()
+            };
         }
 
         #endregion

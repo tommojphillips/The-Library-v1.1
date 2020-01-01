@@ -100,7 +100,7 @@ namespace TM_Db_Lib.Media
             string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             MovieResult result = jObject.ToObject<MovieResult>();
-            result.retrieveMediaImages();
+            await result.retrieveMediaImages();
             return result;
         }
         /// <summary>

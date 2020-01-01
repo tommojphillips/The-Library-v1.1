@@ -96,11 +96,57 @@ namespace TM_Db_Lib.Account
             return user;
         }
         /// <summary>
+        /// Adds or removes a media item from the user's watchlist.
+        /// </summary>
+        /// <param name="inMediaType">The media item type to add or remove from watchlist. Either, <see cref="MediaTypeEnum.movie"/> or <see cref="MediaTypeEnum.tv"/>.</param>
+        /// <param name="inMediaId">The media's ID.</param>
+        /// <param name="inWatchlist">Add or remove media item from watchlist.</param>
+        public async Task watchlistMediaItem(MediaTypeEnum inMediaType, int inMediaId, bool inWatchlist)
+        {
+            // Written, 05.12.2019
+
+            if (inMediaType != MediaTypeEnum.movie && inMediaType != MediaTypeEnum.tv)
+                throw new ArgumentException("Expected MediaTypeEnum.movie or MediaTypeEnum.tv. invaild argument");
+
+            string address = String.Format("{0}/{1}/watchlist?session_id={2}&api_key={3}", ApplicationInfomation.ACCOUNT_ADDRESS, this.id, this.session.session_id, ApplicationInfomation.API_KEY);
+            JObject requestData = new JObject(
+                new JProperty("media_type", inMediaType.ToString()),
+                new JProperty("media_id", inMediaId),
+                new JProperty("watchlist", inWatchlist));
+            await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address), System.Text.Encoding.UTF8.GetBytes(requestData.ToString())));
+        }
+        /// <summary>
+        /// Retrieves watchlisted movies. max 20 items per page.
+        /// </summary>
+        /// <param name="inPage">The page of watched movies to retrieve. max 20 items per page.</param>
+        public async Task<MovieSearchResult[]> getWatchlistMovies(int inPage = 1)
+        {
+            // Written, 01.01.2020
+
+            string address = String.Format("{0}/{1}/watchlist/movies?session_id={2}&api_key={3}&page={4}",
+                ApplicationInfomation.ACCOUNT_ADDRESS, this.id, this.session.session_id, ApplicationInfomation.API_KEY, inPage);
+            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            return jObject["results"].ToObject<MovieSearchResult[]>();
+        }
+        /// <summary>
+        /// Retrieves watchlisted tv series. max 20 items per page. max 20 items per page.
+        /// </summary>
+        /// <param name="inPage">The page of watched tv series to retrieve. max 20 items per page.</param>
+        public async Task<TvSearchResult[]> getWatchlistTvSeries(int inPage = 1)
+        {
+            // Written, 01.01.2020
+
+            string address = String.Format("{0}/{1}/watchlist/tv?session_id={2}&api_key={3}&page={4}",
+                ApplicationInfomation.ACCOUNT_ADDRESS, this.id, this.session.session_id, ApplicationInfomation.API_KEY, inPage);
+            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            return jObject["results"].ToObject<TvSearchResult[]>();
+        }
+        /// <summary>
         /// Favorites or unfavorites a media item.
         /// </summary>
         /// <param name="inMediaType">The media item type to favorite. Either, <see cref="MediaTypeEnum.movie"/> or <see cref="MediaTypeEnum.tv"/>.</param>
         /// <param name="inMediaId">The media's ID.</param>
-        /// <param name="inFavorite">Favorite or unfavorite media item.</param>
+        /// <param name="inWatchlsit">Favorite or unfavorite media item.</param>
         public async Task favoriteMediaItem(MediaTypeEnum inMediaType, int inMediaId, bool inFavorite)
         {
             // Written, 05.12.2019
@@ -116,9 +162,9 @@ namespace TM_Db_Lib.Account
             await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address), System.Text.Encoding.UTF8.GetBytes(requestData.ToString())));
         }
         /// <summary>
-        /// Retrieves favorited movies.
+        /// Retrieves favorited movies. max 20 items per page.
         /// </summary>
-        /// <param name="inPage">The page of favorites to retrieve</param>
+        /// <param name="inPage">The page of favorites to retrieve. max 20 items per page.</param>
         public async Task<MovieSearchResult[]> getFavoriteMovies(int inPage = 1)
         {
             // Written, 06.12.2019
@@ -129,9 +175,9 @@ namespace TM_Db_Lib.Account
             return jObject["results"].ToObject<MovieSearchResult[]>();
         }
         /// <summary>
-        /// Retrieves favorited tv series.
+        /// Retrieves favorited tv series. max 20 items per page.
         /// </summary>
-        /// <param name="inPage">The page of favorites to retrieve</param>
+        /// <param name="inPage">The page of favorites to retrieve. max 20 items per page.</param>
         public async Task<TvSearchResult[]> getFavoriteTvSeries(int inPage = 1)
         {
             // Written, 06.12.2019

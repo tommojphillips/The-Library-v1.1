@@ -42,26 +42,7 @@ namespace TM_Db_Lib.Media
         {
             // Written, 26.11.2019
 
-            List<JToken> results = new List<JToken>();
-            int totalPages = 1;
-
-            for (int pageNum = 1; pageNum <= totalPages; pageNum++)
-            {
-                if (pageNum > inPagesToShow)
-                    break;
-                JObject jObject = await getJObjectAsync(inSearchPhrase, pageNum, inSearchAddressPrefix);
-                if (pageNum == 1)
-                    totalPages = jObject["total_pages"].ToObject<JValue>().ToObject<int>();
-                if (jObject != null)
-                {
-                    JArray jResults = jObject["results"].ToObject<JArray>();
-                    for (int i = 0; i < jResults.Count; i++)
-                    {
-                        results.Add(jResults[i]);
-                    }
-                }
-            }
-            return results.ToArray();
+            return (await getJObjectAsync(inSearchPhrase, inPagesToShow, inSearchAddressPrefix))["results"].ToObject<JToken[]>();
         }
 
         #endregion

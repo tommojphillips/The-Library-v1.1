@@ -42,11 +42,7 @@ namespace View_Account
         /// <param name="inUser">The user to use/view.</param>
         public ViewAccount(User inUser) 
         {
-            // Written, 09.12.2019
-
-            if (inUser == null) 
-                throw new NullReferenceException("User cannot be null. invaild argument.");
-            this.user = inUser;
+            this.user = inUser ?? throw new NullReferenceException("User cannot be null. invaild argument.");
             Task.Run(this.retrieveFavoritedMediaAsync);
         }
 

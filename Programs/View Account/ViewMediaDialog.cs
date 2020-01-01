@@ -42,7 +42,7 @@ namespace View_Account
 
         #endregion
 
-        private async void ViewMediaDialog_Load(object sender, EventArgs e)
+        private void ViewMediaDialog_Load(object sender, EventArgs e)
         {
             this.mediaName_label.Text = "Loading..";
             this.mediaReleaseDate_label.Text = String.Empty;

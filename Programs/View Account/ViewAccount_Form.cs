@@ -240,14 +240,18 @@ namespace View_Account
             this.favoriteTvSeries_listView.Clear();
             for (int i = 0; i < this.viewAccount.favoritedMovies.Length; i++)
             {
-                ListViewItem item = new ListViewItem(this.viewAccount.favoritedMovies[i].name);
-                item.Tag = this.viewAccount.favoritedMovies[i];
+                ListViewItem item = new ListViewItem(this.viewAccount.favoritedMovies[i].name)
+                {
+                    Tag = this.viewAccount.favoritedMovies[i]
+                };
                 this.favoriteMovies_listView.Items.Add(item);
             }
             for (int i = 0; i < this.viewAccount.favoritedTvSeries.Length; i++)
             {
-                ListViewItem item = new ListViewItem(this.viewAccount.favoritedTvSeries[i].name);
-                item.Tag = this.viewAccount.favoritedTvSeries[i];
+                ListViewItem item = new ListViewItem(this.viewAccount.favoritedTvSeries[i].name)
+                {
+                    Tag = this.viewAccount.favoritedTvSeries[i]
+                };
                 this.favoriteTvSeries_listView.Items.Add(item);
             }
         }
@@ -300,8 +304,10 @@ namespace View_Account
                     if (media != null)
                     {
                         string mediaTypeString = media is MovieSearchResult ? "MOVIE" : media is TvSearchResult ? "TV" : "NULL";
-                        item = new ListViewItem(String.Format("\t[{2}] {0} ({1})", media.name, media.release_date, mediaTypeString));
-                        item.Tag = media;
+                        item = new ListViewItem(String.Format("\t[{2}] {0} ({1})", media.name, media.release_date, mediaTypeString))
+                        {
+                            Tag = media
+                        };
                     }
                     if (item != null)
                     {
