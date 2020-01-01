@@ -15,6 +15,13 @@ namespace View_Account
 
         // Written, 31.12.2019
 
+        internal string loadingWhatText 
+        {
+            set 
+            {
+                this.loadingWhat_label.Text = value;
+            }
+        }
         internal string errorMessage 
         {
             set 
@@ -30,7 +37,7 @@ namespace View_Account
             InitializeComponent();
             this.programName_label.Text = inProgramName;
             this.loading_label.Text = inLoadingText;
-            this.loadingWhat_label.Text = inLoadingWhatText;
+            this.loadingWhatText = inLoadingWhatText;
             this.error_label.Text = string.Empty;
             this.Update();
         }

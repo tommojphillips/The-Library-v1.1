@@ -79,9 +79,10 @@ namespace View_Account
                 textDialog = new TextDialog("Enter Password for ACC: " + username, dialogTitle);
                 if (textDialog.ShowDialog() == DialogResult.OK)
                 {
-                    loadingDialog.Show();
+                    loadingDialog.Show(this);
                     string password = textDialog.textInput;
                     Token token = null;
+                    this.loadingDialog.loadingWhatText = "Retrieving Token";
                     try
                     {
                         token = await Token.retrieveTokenAsync();
@@ -93,6 +94,7 @@ namespace View_Account
                     if (token?.success ?? false)
                     {
                         Session session = null;
+                        this.loadingDialog.loadingWhatText = "Creating Session";
                         try
                         {
                             session = await Session.createSessionWithLoginAsync(username, password, token.request_token);
@@ -103,6 +105,7 @@ namespace View_Account
                         }
                         if (session?.success ?? false)
                         {
+                            this.loadingDialog.loadingWhatText = "Retrieving User";
                             User user = await User.retrieveUserDetailsAsync(session.session_id);
                             this.viewAccount = new ViewAccount(user);
                         }
