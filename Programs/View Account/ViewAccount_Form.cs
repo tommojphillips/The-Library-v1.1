@@ -34,7 +34,7 @@ namespace View_Account
         private LoadingDialog loadingDialog
         {
             get;
-        } =  new LoadingDialog("tmdb View Account", "Loading..", "Logging in");
+        } =  new LoadingDialog("tmdb View Account") { loadingText = "Loading..", };
         /// <summary>
         /// Represents the selected favorite media.
         /// </summary>
@@ -87,7 +87,7 @@ namespace View_Account
                     {
                         token = await Token.retrieveTokenAsync();
                     }
-                    catch (AggregateException ex)
+                    catch (Exception ex)
                     {
                         exception = ex;
                     }
@@ -99,24 +99,38 @@ namespace View_Account
                         {
                             session = await Session.createSessionWithLoginAsync(username, password, token.request_token);
                         }
-                        catch (Exception ex) 
+                        catch (Exception ex)
                         {
                             exception = ex;
                         }
                         if (session?.success ?? false)
                         {
                             this.loadingDialog.loadingWhatText = "Retrieving User";
-                            User user = await User.retrieveUserDetailsAsync(session.session_id);
-                            this.viewAccount = new ViewAccount(user);
+                            try
+                            {
+                                User user = await User.retrieveUserDetailsAsync(session.session_id);
+                                this.viewAccount = new ViewAccount(user);
+                            }
+                            catch (Exception ex)
+                            {
+                                exception = ex;
+                            }
                         }
                     }
                 }
             }
-
             if (!(exception is null))
-                this.loadingDialog.errorMessage = exception.Message;
-            else
+            {
+                LoadingDialog errorLoadingDialog = new LoadingDialog(this.loadingDialog.programNameText)
+                {
+                    errorMessage = exception.Message,
+                    loadingText = this.loadingDialog.Text,
+                    loadingWhatText = this.loadingDialog.loadingWhatText
+                };
                 this.loadingDialog.Close();
+                Application.Run(errorLoadingDialog);
+            }
+            this.loadingDialog.Close();
             return !(this.viewAccount is null);
         }
         /// <summary>
@@ -135,11 +149,18 @@ namespace View_Account
                 this.searchViewDetails_button.Visible = true;
                 this.searchFavoriteMediaItem_button.Enabled = true;
                 this.searchFavoriteMediaItem_button.Visible = true;
+                this.searchWatchlistMediaItem_button.Enabled = true;
+                this.searchWatchlistMediaItem_button.Visible = true;
                 List<IdResultObject> favoritedMedia = new List<IdResultObject>();
                 favoritedMedia.AddRange(this.viewAccount.favoritedMovies);
                 favoritedMedia.AddRange(this.viewAccount.favoritedTvSeries);
                 bool favorited = favoritedMedia.Any(_fm => _fm.id == media.id);
                 this.searchFavoriteMediaItem_button.Text = !favorited ? "favorite" : "unfavorite";
+                List<IdResultObject> watchlistMedia = new List<IdResultObject>();
+                watchlistMedia.AddRange(this.viewAccount.watchlistMovies);
+                watchlistMedia.AddRange(this.viewAccount.watchlistTvSeries);
+                bool watchlisted = watchlistMedia.Any(_wm => _wm.id == media.id);
+                this.searchWatchlistMediaItem_button.Text = !watchlisted ? "watch" : "unwatch";
                 this.searchViewDetails_button.Text = "View Details: " + media.name;
                 if (media.poster_path is null)
                     this.searchImageLoading_label.Text = "No poster present..";
@@ -161,8 +182,10 @@ namespace View_Account
                 this.searchViewDetails_button.Enabled = false;
                 this.searchViewDetails_button.Visible = false;
                 this.searchFavoriteMediaItem_button.Enabled = false;
-                this.searchViewDetails_button.Text = "View Details";
                 this.searchFavoriteMediaItem_button.Visible = false;
+                this.searchWatchlistMediaItem_button.Enabled = false;
+                this.searchWatchlistMediaItem_button.Visible = false;
+                this.searchViewDetails_button.Text = "View Details";
                 this.searchMediaPoster_pictureBox.Image = null;
                 this.searchImageLoading_label.Text = string.Empty;
             }
@@ -172,22 +195,13 @@ namespace View_Account
         /// </summary>
         /// <param name="inSender">Listview sender.</param>
         /// <param name="inMediaType">The media type that is to be updated.</param>
-        private async Task updateFavoriteMediaActionsAsync(ListView inSender, MediaTypeEnum inMediaType)
+        private async Task updateHomeMediaActionsAsync(ListView inSender)
         {
             // Written, 24.12.2019
 
             if (inSender?.SelectedItems.Count == 1)
             {
-                MediaSearchResult media = null;
-                switch (inMediaType)
-                {
-                    case MediaTypeEnum.movie:
-                        media = this.favoriteMovies_listView.SelectedItems[0].Tag as MediaSearchResult;
-                        break;
-                    case MediaTypeEnum.tv:
-                        media = this.favoriteTvSeries_listView.SelectedItems[0].Tag as MediaSearchResult;
-                        break;
-                }
+                MediaSearchResult media = inSender.SelectedItems[0].Tag as MediaSearchResult;
                 if (media != null)
                 {
                     this.selectedFavoriteMedia = media;
@@ -226,34 +240,15 @@ namespace View_Account
         /// <summary>
         /// Updates the favorites lists.
         /// </summary>
-        private async Task updateFavoritesListsAsync()
+        private async Task updateFavoritesAsync(ListView inSender)
         {
             // Written, 24.12.2019
 
-            this.favoriteMovies_listView.Clear();
-            this.favoriteTvSeries_listView.Clear();
-            string refreshText = "Refreshing..";
-            this.favoriteMovies_listView.Items.Add(refreshText);
-            this.favoriteTvSeries_listView.Items.Add(refreshText);
+            this.preUpdateLists(inSender);
             await this.refreshFavoritesAsync();
-            this.favoriteMovies_listView.Clear();
-            this.favoriteTvSeries_listView.Clear();
-            for (int i = 0; i < this.viewAccount.favoritedMovies.Length; i++)
-            {
-                ListViewItem item = new ListViewItem(this.viewAccount.favoritedMovies[i].name)
-                {
-                    Tag = this.viewAccount.favoritedMovies[i]
-                };
-                this.favoriteMovies_listView.Items.Add(item);
-            }
-            for (int i = 0; i < this.viewAccount.favoritedTvSeries.Length; i++)
-            {
-                ListViewItem item = new ListViewItem(this.viewAccount.favoritedTvSeries[i].name)
-                {
-                    Tag = this.viewAccount.favoritedTvSeries[i]
-                };
-                this.favoriteTvSeries_listView.Items.Add(item);
-            }
+            MediaSearchResult[] mediaResults = inSender == this.favoriteMovies_listView ? this.viewAccount.favoritedMovies : (MediaSearchResult[])this.viewAccount.favoritedTvSeries;
+            this.postUpdateLists(inSender, mediaResults);
+            
         }
         /// <summary>
         /// Refreshes the favorites. Retreieves favorites.
@@ -265,8 +260,66 @@ namespace View_Account
             this.favoritesRefresh_button.Text = "Refreshing...";
             this.favoritesRefresh_button.Enabled = false;
             await this.viewAccount.retrieveFavoritedMediaAsync();
-            this.favoritesRefresh_button.Text = "Refresh";
+            this.favoritesRefresh_button.Text = "Refresh Favorites";
             this.favoritesRefresh_button.Enabled = true;
+        }
+        /// <summary>
+        /// Updates the watchlist list.
+        /// </summary>
+        /// <returns></returns>
+        private async Task updateWatchlistAsync(ListView inSender) 
+        {
+            // Written, 01.01.2020
+
+            this.preUpdateLists(inSender);
+            await this.refreshWatchlistAsync();
+            MediaSearchResult[] mediaResults = inSender == this.watchlistMovies_listView ? this.viewAccount.watchlistMovies : (MediaSearchResult[])this.viewAccount.watchlistTvSeries;
+            this.postUpdateLists(inSender, mediaResults);
+        }
+        /// <summary>
+        /// Refreshes the watchlist list.
+        /// </summary>
+        private async Task refreshWatchlistAsync() 
+        {
+            // Written, 01.01.2020
+
+            this.refreshWatchlist_button.Text = "Refreshing...";
+            this.refreshWatchlist_button.Enabled = false;
+            await this.viewAccount.retrieveWatchlistMediaAsync();
+            this.refreshWatchlist_button.Text = "Refresh Watchlist";
+            this.refreshWatchlist_button.Enabled = true;
+        }
+        /// <summary>
+        /// Pre-Update list logic.
+        /// </summary>
+        /// <param name="inSender">the listview to update.</param>
+        private void preUpdateLists(ListView inSender)
+        {
+            // Written, 02.01.2020
+
+            inSender.Clear();
+            inSender.Items.Add("Refreshing..");
+        }
+        /// <summary>
+        /// Post-Update list logic.
+        /// </summary>
+        /// <param name="inSender">the listview to update.</param>
+        /// <param name="inMediaResults">the media results to update the list with.</param>
+        private void postUpdateLists(ListView inSender, MediaSearchResult[] inMediaResults)
+        {
+            // Written, 02.01.2020
+
+            inSender.Clear();
+            for (int i = 0; i < inMediaResults.Length; i++)
+            {
+                ListViewItem item = new ListViewItem(inMediaResults[i].name)
+                {
+                    Tag = inMediaResults[i]
+                };
+                inSender.Items.Add(item);
+            }
+            if (inSender.Items.Count == 0)
+                inSender.Items.Add("No Results");
         }
 
         #endregion
@@ -280,8 +333,11 @@ namespace View_Account
             this.Text = this.Text.Insert(0, this.viewAccount.user.username + " - ");
             this.accountName_label.Text = this.viewAccount.user.name;
             await this.updateSearchMediaActionsAsync();
-            await this.updateFavoriteMediaActionsAsync(null, MediaTypeEnum.none);
-            await this.updateFavoritesListsAsync();
+            await this.updateHomeMediaActionsAsync(null);
+            await this.updateFavoritesAsync(this.favoriteMovies_listView);
+            await this.updateFavoritesAsync(this.favoriteTvSeries_listView);
+            await this.updateWatchlistAsync(this.watchlistMovies_listView);
+            await this.updateWatchlistAsync(this.watchlistTvSeries_listView);
         }
         private async void search_button_Click(object sender, EventArgs e)
         {
@@ -343,7 +399,7 @@ namespace View_Account
             // Written, 17.12.2019
 
             this.searchFavoriteMediaItem_button.Enabled = false;
-            this.searchFavoriteMediaItem_button.Text = "processing";
+            this.searchFavoriteMediaItem_button.Text = "processing..";
             MediaSearchResult selectedResult = this.searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
             MediaTypeEnum mediaType = selectedResult is TvSearchResult ? MediaTypeEnum.tv : MediaTypeEnum.movie;            
             List<IdResultObject> favoritedMedia = new List<IdResultObject>();
@@ -361,7 +417,7 @@ namespace View_Account
                     break;
             }
             this.searchFavoriteMediaItem_button.Text = "updating..";
-            await this.updateFavoritesListsAsync();
+            await this.updateFavoritesAsync(mediaType == MediaTypeEnum.movie ? this.favoriteMovies_listView : this.favoriteTvSeries_listView);
             await this.updateSearchMediaActionsAsync();
             this.searchFavoriteMediaItem_button.Enabled = true;
         }
@@ -382,15 +438,49 @@ namespace View_Account
         private async void favorites_listView_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Written, 24.12.2019
-
-            MediaTypeEnum mediaType = sender == this.favoriteTvSeries_listView ? MediaTypeEnum.tv : MediaTypeEnum.movie;            
-            await this.updateFavoriteMediaActionsAsync(sender as ListView, mediaType);
+            
+            await this.updateHomeMediaActionsAsync(sender as ListView);
         }
         private  async void favoritesRefresh_button_Click(object sender, EventArgs e)
         {
             // Written, 24.12.2019
 
-            await this.updateFavoritesListsAsync();
+            await this.updateFavoritesAsync(this.favoriteMovies_listView);
+            await this.updateFavoritesAsync(this.favoriteTvSeries_listView);
+        }
+        private async void refreshWatchlist_button_Click(object sender, EventArgs e)
+        {
+            // Written, 01.01.2020
+            
+            await this.updateWatchlistAsync(this.watchlistMovies_listView);
+            await this.updateWatchlistAsync(this.watchlistTvSeries_listView);
+        }
+        private async void searchWatchlistMediaItem_button_Click(object sender, EventArgs e)
+        {
+            // Written, 01.01.2020
+
+            this.searchWatchlistMediaItem_button.Enabled = false;
+            this.searchWatchlistMediaItem_button.Text = "processing..";
+            MediaSearchResult selectedResult = this.searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
+            MediaTypeEnum mediaType = selectedResult is TvSearchResult ? MediaTypeEnum.tv : MediaTypeEnum.movie;
+            List<IdResultObject> watchlistedMedia = new List<IdResultObject>();
+            watchlistedMedia.AddRange(this.viewAccount.watchlistMovies);
+            watchlistedMedia.AddRange(this.viewAccount.watchlistTvSeries);
+            bool watchlisted = watchlistedMedia.Any(_fm => _fm.id == selectedResult.id);
+            await this.viewAccount.user.watchlistMediaItem(mediaType, selectedResult.id, !watchlisted);
+            switch (mediaType)
+            {
+                case MediaTypeEnum.movie:
+                    await this.viewAccount.retrieveWatchlistMoviesAsync();
+                    break;
+                case MediaTypeEnum.tv:
+                    await this.viewAccount.retrieveWatchlistTvSeriesAsync();
+                    break;
+            }
+            this.searchWatchlistMediaItem_button.Text = "updating..";
+            await this.updateWatchlistAsync(mediaType == MediaTypeEnum.movie ? this.watchlistMovies_listView : this.watchlistTvSeries_listView);
+            await this.updateSearchMediaActionsAsync();
+            this.searchWatchlistMediaItem_button.Enabled = true;
         }
 
         #endregion

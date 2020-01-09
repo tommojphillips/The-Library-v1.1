@@ -33,6 +33,22 @@ namespace View_Account
             get;
             set;
         }
+        /// <summary>
+        /// Represents favorited movies of the user.
+        /// </summary>
+        internal MovieSearchResult[] watchlistMovies
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Represents favorited tv series of the user.
+        /// </summary>
+        internal TvSearchResult[] watchlistTvSeries
+        {
+            get;
+            set;
+        }
 
         #region Constructors
 
@@ -77,6 +93,34 @@ namespace View_Account
 
             await this.retrieveFavoriteMoviesAsync();
             await this.retrieveFavoriteTvSeriesAsync();
+        }
+        /// <summary>
+        /// Retrieves watchlisted movies, puts media in <see cref="watchlistMovies"/>.
+        /// </summary>
+        internal async Task retrieveWatchlistMoviesAsync()
+        {
+            // Written, 17.12.2019
+
+            this.watchlistMovies = await this.user.getWatchlistMovies();
+        }
+        /// <summary>
+        /// Retrieves watchlisted tv series, puts media in <see cref="watchlistTvSeries"/>.
+        /// </summary>
+        internal async Task retrieveWatchlistTvSeriesAsync()
+        {
+            // Written, 17.12.2019
+
+            this.watchlistTvSeries = await this.user.getWatchlistTvSeries();
+        }
+        /// <summary>
+        /// Retrieves watchlisted media, puts media in <see cref="watchlistMovies"/> and <see cref="watchlistTvSeries"/> respectively.
+        /// </summary>
+        internal async Task retrieveWatchlistMediaAsync()
+        {
+            // Written, 17.12.2019
+
+            await this.retrieveWatchlistMoviesAsync();
+            await this.retrieveWatchlistTvSeriesAsync();
         }
 
         #endregion

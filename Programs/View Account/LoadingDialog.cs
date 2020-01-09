@@ -15,8 +15,34 @@ namespace View_Account
 
         // Written, 31.12.2019
 
+        internal string programNameText
+        {
+            get
+            {
+                return this.programName_label.Text;
+            }
+            set 
+            {
+                this.programName_label.Text = value;
+            }
+        }
+        internal string loadingText 
+        {
+            get 
+            {
+                return this.loading_label.Text;
+            }
+            set 
+            {
+                this.loading_label.Text = value;
+            }
+        }
         internal string loadingWhatText 
         {
+            get 
+            {
+                return this.loadingWhat_label.Text;
+            }
             set 
             {
                 this.loadingWhat_label.Text = value;
@@ -24,21 +50,25 @@ namespace View_Account
         }
         internal string errorMessage 
         {
+            get 
+            {
+                return this.error_label.Text;
+            }
             set 
             {
+                this.ShowInTaskbar = true;
                 this.errorDismiss_button.Visible = true;
                 this.error_label.Text = value;
             }
         }
-        public LoadingDialog(string inProgramName, string inLoadingText, string inLoadingWhatText)
+        public LoadingDialog(string inProgramName)
         {
             // Written, 31.12.2019
 
             InitializeComponent();
-            this.programName_label.Text = inProgramName;
-            this.loading_label.Text = inLoadingText;
-            this.loadingWhatText = inLoadingWhatText;
+            this.programNameText = inProgramName;
             this.error_label.Text = string.Empty;
+            this.errorDismiss_button.Text = "Dismiss error";
             this.Update();
         }
 
@@ -46,7 +76,7 @@ namespace View_Account
         {
             // Written, 31.12.2019
 
-            this.DialogResult = DialogResult.OK;
+            Environment.Exit(0);
         }
     }
 }

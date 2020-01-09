@@ -82,6 +82,8 @@
             // errorDismiss_button
             // 
             this.errorDismiss_button.AutoSize = true;
+            this.errorDismiss_button.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.errorDismiss_button.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.errorDismiss_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.errorDismiss_button.Location = new System.Drawing.Point(155, 186);
             this.errorDismiss_button.Name = "errorDismiss_button";
@@ -89,6 +91,7 @@
             this.errorDismiss_button.TabIndex = 4;
             this.errorDismiss_button.Text = "errorDismiss_button";
             this.errorDismiss_button.UseVisualStyleBackColor = true;
+            this.errorDismiss_button.UseWaitCursor = true;
             this.errorDismiss_button.Visible = false;
             this.errorDismiss_button.Click += new System.EventHandler(this.errorDismiss_button_Click);
             // 
@@ -103,7 +106,7 @@
             this.Controls.Add(this.loadingWhat_label);
             this.Controls.Add(this.programName_label);
             this.Controls.Add(this.loading_label);
-            this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "LoadingDialog";
@@ -112,7 +115,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LoadingDialog";
-            this.UseWaitCursor = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 
