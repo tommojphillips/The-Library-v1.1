@@ -33,6 +33,7 @@
             this.mediaReleaseDate_label = new System.Windows.Forms.Label();
             this.mediaDescription_richTextBox = new System.Windows.Forms.RichTextBox();
             this.mediaVotesAvg_label = new System.Windows.Forms.Label();
+            this.viewReviews_button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.poster_pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,11 +69,11 @@
             this.mediaDescription_richTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.mediaDescription_richTextBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.mediaDescription_richTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mediaDescription_richTextBox.Location = new System.Drawing.Point(213, 87);
+            this.mediaDescription_richTextBox.Location = new System.Drawing.Point(213, 73);
             this.mediaDescription_richTextBox.Name = "mediaDescription_richTextBox";
             this.mediaDescription_richTextBox.ReadOnly = true;
             this.mediaDescription_richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedHorizontal;
-            this.mediaDescription_richTextBox.Size = new System.Drawing.Size(503, 113);
+            this.mediaDescription_richTextBox.Size = new System.Drawing.Size(503, 118);
             this.mediaDescription_richTextBox.TabIndex = 3;
             this.mediaDescription_richTextBox.Text = "";
             // 
@@ -85,11 +86,24 @@
             this.mediaVotesAvg_label.TabIndex = 4;
             this.mediaVotesAvg_label.Text = "votesAvg_label";
             // 
+            // viewReviews_button
+            // 
+            this.viewReviews_button.AutoSize = true;
+            this.viewReviews_button.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.viewReviews_button.Location = new System.Drawing.Point(213, 263);
+            this.viewReviews_button.Name = "viewReviews_button";
+            this.viewReviews_button.Size = new System.Drawing.Size(116, 23);
+            this.viewReviews_button.TabIndex = 5;
+            this.viewReviews_button.Text = "viewReviews_button";
+            this.viewReviews_button.UseVisualStyleBackColor = true;
+            this.viewReviews_button.Click += new System.EventHandler(this.viewReviews_button_Click);
+            // 
             // ViewMediaDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 298);
+            this.Controls.Add(this.viewReviews_button);
             this.Controls.Add(this.mediaVotesAvg_label);
             this.Controls.Add(this.mediaDescription_richTextBox);
             this.Controls.Add(this.mediaReleaseDate_label);
@@ -115,5 +129,6 @@
         private System.Windows.Forms.Label mediaReleaseDate_label;
         private System.Windows.Forms.RichTextBox mediaDescription_richTextBox;
         private System.Windows.Forms.Label mediaVotesAvg_label;
+        private System.Windows.Forms.Button viewReviews_button;
     }
 }

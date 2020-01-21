@@ -8,6 +8,7 @@ using TM_Db_Lib.Account;
 using TM_Db_Lib.Auth;
 using TM_Db_Lib.Media;
 using TM_Db_Lib.Search;
+using TM_Db_Lib.Discover;
 
 namespace View_Account
 {
@@ -39,6 +40,11 @@ namespace View_Account
         /// Represents the selected favorite media.
         /// </summary>
         private MediaSearchResult selectedFavoriteMedia 
+        {
+            get;
+            set;
+        }
+        private DiscoverParameters discoverParameters 
         {
             get;
             set;
@@ -144,7 +150,7 @@ namespace View_Account
             {
                 MediaSearchResult media = this.searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
                 this.searchActions_groupBox.Text = "Actions: " + media.name;
-                this.searchMediaPoster_pictureBox.Image = media.poster_image;
+                this.mediaPoster_pictureBox.Image = media.poster_image;
                 this.searchViewDetails_button.Enabled = true;
                 this.searchViewDetails_button.Visible = true;
                 this.searchFavoriteMediaItem_button.Enabled = true;
@@ -163,18 +169,18 @@ namespace View_Account
                 this.searchWatchlistMediaItem_button.Text = !watchlisted ? "watch" : "unwatch";
                 this.searchViewDetails_button.Text = "View Details: " + media.name;
                 if (media.poster_path is null)
-                    this.searchImageLoading_label.Text = "No poster present..";
+                    this.imageLoading_label.Text = "No poster present..";
                 else
                 {
                     if (media.poster_image is null)
                     {
-                        this.searchImageLoading_label.Text = "Loading poster..";
+                        this.imageLoading_label.Text = "Loading poster..";
                         await media.retrieveMediaImages();
-                        this.searchImageLoading_label.Text = string.Empty;
+                        this.imageLoading_label.Text = string.Empty;
                     }
                 }
                 if (media == this.searchResults_listView.SelectedItems[0].Tag)
-                    this.searchMediaPoster_pictureBox.Image = media.poster_image?.resizeImage(this.searchMediaPoster_pictureBox.Width, this.searchMediaPoster_pictureBox.Height);
+                    this.mediaPoster_pictureBox.Image = media.poster_image?.resizeImage(this.mediaPoster_pictureBox.Width, this.mediaPoster_pictureBox.Height);
             }
             else
             {
@@ -186,8 +192,8 @@ namespace View_Account
                 this.searchWatchlistMediaItem_button.Enabled = false;
                 this.searchWatchlistMediaItem_button.Visible = false;
                 this.searchViewDetails_button.Text = "View Details";
-                this.searchMediaPoster_pictureBox.Image = null;
-                this.searchImageLoading_label.Text = string.Empty;
+                this.mediaPoster_pictureBox.Image = null;
+                this.imageLoading_label.Text = string.Empty;
             }
         }
         /// <summary>
@@ -205,36 +211,36 @@ namespace View_Account
                 if (media != null)
                 {
                     this.selectedFavoriteMedia = media;
-                    this.favoritesMediaActions_groupBox.Text = "Actions: " + media.name;
-                    this.favoriteMediaPoster_pictureBox.Image = media.poster_image;
-                    this.favoriteViewDetails_button.Enabled = true;
-                    this.favoriteViewDetails_button.Visible = true;
+                    this.home_mediaActions_groupBox.Text = "Actions: " + media.name;
+                    this.mediaPoster_pictureBox.Image = media.poster_image;
+                    this.home_viewDetails_button.Enabled = true;
+                    this.home_viewDetails_button.Visible = true;
                     this.favoritesRefresh_button.Enabled = true;
                     this.favoritesRefresh_button.Visible = true;
-                    this.favoriteViewDetails_button.Text = "View Details: " + media.name;
+                    this.home_viewDetails_button.Text = "View Details: " + media.name;
                     if (media.poster_path is null)
-                        this.favoriteImageLoading_label.Text = "No poster present..";
+                        this.imageLoading_label.Text = "No poster present..";
                     else
                     {
                         if (media.poster_image is null)
                         {
-                            this.favoriteImageLoading_label.Text = "Loading poster..";
+                            this.imageLoading_label.Text = "Loading poster..";
                             await media.retrieveMediaImages();
-                            this.favoriteImageLoading_label.Text = string.Empty;
+                            this.imageLoading_label.Text = string.Empty;
                         }
                     }
                     if (media == inSender.SelectedItems[0].Tag)
-                        this.favoriteMediaPoster_pictureBox.Image = media.poster_image?.resizeImage(this.favoriteMediaPoster_pictureBox.Width, this.favoriteMediaPoster_pictureBox.Height);
+                        this.mediaPoster_pictureBox.Image = media.poster_image?.resizeImage(this.mediaPoster_pictureBox.Width, this.mediaPoster_pictureBox.Height);
                 }
             }
             else 
             {
-                this.favoritesMediaActions_groupBox.Text = "Actions";
-                this.favoriteViewDetails_button.Enabled = false;
-                this.favoriteViewDetails_button.Visible = false;
-                this.favoriteViewDetails_button.Text = "View Details";
-                this.favoriteMediaPoster_pictureBox.Image = null;
-                this.favoriteImageLoading_label.Text = string.Empty;
+                this.home_mediaActions_groupBox.Text = "Actions";
+                this.home_viewDetails_button.Enabled = false;
+                this.home_viewDetails_button.Visible = false;
+                this.home_viewDetails_button.Text = "View Details";
+                this.mediaPoster_pictureBox.Image = null;
+                this.imageLoading_label.Text = string.Empty;
             }
         }
         /// <summary>
@@ -321,6 +327,17 @@ namespace View_Account
             if (inSender.Items.Count == 0)
                 inSender.Items.Add("No Results");
         }
+        private void initDiscover() 
+        {
+            // Written, 09.01.2020
+
+            this.discoverParameters = new DiscoverParameters();
+            this.discover_sortByMembers_comboBox.Items.AddRange(Enum.GetNames(typeof(MediaSortByMembersEnum)));
+            this.discover_sortByAscDesc_comboBox.Items.AddRange(Enum.GetNames(typeof(MediaSortByAscDescEnum)));
+            this.discover_sortByAscDesc_comboBox.SelectedItem = this.discoverParameters.sortByAscDesc.ToString();
+            this.discover_sortByMembers_comboBox.SelectedItem = this.discoverParameters.sortByMembers.ToString();
+        }
+
 
         #endregion
 
@@ -338,6 +355,7 @@ namespace View_Account
             await this.updateFavoritesAsync(this.favoriteTvSeries_listView);
             await this.updateWatchlistAsync(this.watchlistMovies_listView);
             await this.updateWatchlistAsync(this.watchlistTvSeries_listView);
+            this.initDiscover();
         }
         private async void search_button_Click(object sender, EventArgs e)
         {
@@ -430,7 +448,7 @@ namespace View_Account
             if (sender == this.searchViewDetails_button)
                 mediaToView = this.searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
             else
-                if (sender == this.favoriteViewDetails_button)
+                if (sender == this.home_viewDetails_button)
                     mediaToView = this.selectedFavoriteMedia;
             ViewMediaDialog viewMediaDialog = new ViewMediaDialog(mediaToView);
             viewMediaDialog.ShowDialog();
@@ -483,6 +501,12 @@ namespace View_Account
             this.searchWatchlistMediaItem_button.Enabled = true;
         }
 
+        private void main_splitContainer_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            // Written, 21.01.2020
+
+            //this.mediaPoster_pictureBox.Image = this.mediaPoster_pictureBox.Image.resizeImage(this.mediaPoster_pictureBox.Width, this.mediaPoster_pictureBox.Height);
+        }
         #endregion
     }
 }

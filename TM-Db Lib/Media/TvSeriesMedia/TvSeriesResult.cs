@@ -176,18 +176,6 @@ namespace TM_Db_Lib.Media
             await result.retrieveMediaImages();
             return result;
         }
-        /// <summary>
-        /// Gets a list of reviews for the tv series.
-        /// </summary>
-        /// <param name="inTvID">The tv series ID to get reviews for.</param>
-        public static async Task<Review[]> retrieveReviewsAsync(int inTvID)
-        {
-            // Written, 01.12.2019
-
-            string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.TV_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            return jObject["results"].ToObject<Review[]>();
-        }
 
         #endregion
     }

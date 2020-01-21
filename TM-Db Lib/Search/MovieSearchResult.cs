@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TM_Db_Lib.Net;
 
 namespace TM_Db_Lib.Search
 {
@@ -81,6 +84,18 @@ namespace TM_Db_Lib.Search
             (await retrieveJTokensAsync(inSearchPhrase, inPagesToShow, ApplicationInfomation.MOVIE_SEARCH_ADDRESS)).ToList()
                 .ForEach(jToken => results.Add(jToken.ToObject<MovieSearchResult>()));
             return results.ToArray();
+        }
+        /// <summary>
+        /// Gets a list of reviews for the movie.
+        /// </summary>
+        /// <param name="inMovieID">The movie ID to get reviews for.</param>
+        public async Task retrieveReviewsAsync()
+        {
+            // Written, 01.12.2019
+
+            string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, this.id, ApplicationInfomation.API_KEY);
+            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            this.reviews = jObject["results"].ToObject<Review[]>();
         }
 
         #endregion

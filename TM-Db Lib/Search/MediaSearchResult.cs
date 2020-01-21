@@ -16,6 +16,16 @@ namespace TM_Db_Lib.Search
         #region Properties
 
         /// <summary>
+        /// Represents reviews for the media result. NOTE: you must call function, 
+        /// <see cref="TvSearchResult.retrieveReviewsAsync"/>, or <see cref="MovieSearchResult.retrieveReviewsAsync"/>
+        /// to fill this member.
+        /// </summary>
+        public Review[] reviews 
+        {
+            get;
+            set;
+        }
+        /// <summary>
         /// Represents the name of the media item.
         /// </summary>
         public virtual string name
@@ -123,7 +133,6 @@ namespace TM_Db_Lib.Search
         #endregion
 
         #region Methods
-
         public async Task retrieveMediaImages() 
         {
             // Written, 24.12.2019

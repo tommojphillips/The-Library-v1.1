@@ -49,9 +49,15 @@
     <Compile Include="ApplicationInfomation.cs" />
     <Compile Include="Auth\Session.cs" />
     <Compile Include="Auth\Token.cs" />
+    <Compile Include="Certifications\Certification.cs" />
+    <Compile Include="Certifications\CertObject.cs" />
     <Compile Include="Configuration\ApiConfigObject.cs" />
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\ImageConfigObject.cs" />
+    <Compile Include="Discover\Discover.cs" />
+    <Compile Include="Discover\DiscoverParameters.cs" />
+    <Compile Include="Discover\MediaSortByAscDescEnum.cs" />
+    <Compile Include="Discover\MediaSortByMembersEnum.cs" />
     <Compile Include="FileReference.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Image\ImageExtentions.cs" />

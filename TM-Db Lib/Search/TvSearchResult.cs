@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TM_Db_Lib.Net;
 
 namespace TM_Db_Lib.Search
 {
@@ -41,7 +44,7 @@ namespace TM_Db_Lib.Search
 
         #endregion
 
-        #region Static Methods
+        #region Methods
 
         /// <summary>
         /// Returns a list of <see cref="TvSearchResult"/> objects with the list of searched tv series.
@@ -58,6 +61,18 @@ namespace TM_Db_Lib.Search
             return results.ToArray();
         }
 
+        /// <summary>
+        /// Gets a list of reviews for the tv series.
+        /// </summary>
+        /// <param name="inTvID">The tv series ID to get reviews for.</param>
+        public async Task retrieveReviewsAsync()
+        {
+            // Written, 01.12.2019
+
+            string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.TV_ADDRESS, this.id, ApplicationInfomation.API_KEY);
+            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            this.reviews = jObject["results"].ToObject<Review[]>();
+        }
         #endregion
     }
 }

@@ -71,6 +71,12 @@
     <Compile Include="ViewMediaDialog.Designer.cs">
       <DependentUpon>ViewMediaDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewReviewsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ViewReviewsDialog.Designer.cs">
+      <DependentUpon>ViewReviewsDialog.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -91,6 +97,9 @@
     </Compile>
     <EmbeddedResource Include="ViewMediaDialog.resx">
       <DependentUpon>ViewMediaDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ViewReviewsDialog.resx">
+      <DependentUpon>ViewReviewsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

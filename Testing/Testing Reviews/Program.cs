@@ -51,7 +51,6 @@ namespace Testing_Reviews
                         try
                         {
                             MediaSearchResult result = null;
-                            Review[] reviews = null;
 
                             if (searchNum <= movieSearchResults.GetLength(0))
                             {
@@ -70,29 +69,26 @@ namespace Testing_Reviews
                             if (result is MovieSearchResult)
                             {
                                 Console.WriteLine("[MOVIE] Selected, {0}\nRetrieving movie reviews for ID: {1}..", result.name, result.id);
-                                reviews = await MovieResult.retrieveReviewsAsync(result.id);
-                                for (int i = 0; i < reviews.GetLength(0); i++)
-                                {
-                                    Review review = reviews[i];
-                                    Console.WriteLine("\n{0}.) {1} by {2}\n{3}\n...See [{4}]", i + 1, review.reviewID, review.author, review.content, review.url);
-                                }
+                                await (result as MovieSearchResult).retrieveReviewsAsync();
                             }
                             else
                             {
                                 if (result is TvSearchResult)
                                 {
                                     Console.WriteLine("[TV] Selected, {0}\nRetrieving tv series reviews for ID: {1}..", result.name, result.id);
-                                    reviews = await TvSeriesResult.retrieveReviewsAsync(result.id);
-
-                                    for (int i = 0; i < reviews.GetLength(0); i++)
-                                    {
-                                        Review review = reviews[i];
-                                        Console.WriteLine("\n{0}.) {1} by {2}\n{3}\n...See [{4}]", i + 1, review.reviewID, review.author, review.content, review.url);
-                                    }
+                                    await (result as TvSeriesResult).retrieveReviewsAsync();                                    
                                 }
                             }
-                            if (reviews.GetLength(0) < 1)
+                            if (result.reviews.GetLength(0) < 1)
                                 Console.WriteLine("\nNo reviews recorded");
+                            else 
+                            {
+                                for (int i = 0; i < result.reviews.GetLength(0); i++)
+                                {
+                                    Review review = result.reviews[i];
+                                    Console.WriteLine("\n{0}.) {1} by {2}\n{3}\n...See [{4}]", i + 1, review.reviewID, review.author, review.content, review.url);
+                                }
+                            }
                         }
                         catch (NullReferenceException)
                         {

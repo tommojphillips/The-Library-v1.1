@@ -94,6 +94,7 @@ namespace TM_Db_Lib.Net
         /// Sends a request to the provided url, and returns a <see cref="HttpWebResponse"/>.
         /// </summary>
         /// <param name="inUri">The url to request from.</param>
+        /// <param name="inData">The data to pass.</param>
         public static async Task<HttpWebResponse> sendRequestAsync(Uri inUri, byte[] inData = null)
         {
             // Written, 05.06.2018

@@ -22,9 +22,13 @@ namespace TM_Db_Lib
         /// </summary>
         internal const string TMDB_V3_ADDRESS = "https://api.themoviedb.org/3";
         /// <summary>
-        /// Represents the tmdb image base-adress prefix.
+        /// Represents the tmdb image base-address prefix.
         /// </summary>
         internal const string TMDB_IMAGE_ADDRESS = "https://image.tmdb.org/t/p";
+        /// <summary>
+        /// Represents the tmdb discover address.
+        /// </summary>
+        internal static string DISCOVER_ADDRESS => String.Join("/", TMDB_V3_ADDRESS, "discover");
         /// <summary>
         /// Represents the base url for certifications.
         /// </summary>

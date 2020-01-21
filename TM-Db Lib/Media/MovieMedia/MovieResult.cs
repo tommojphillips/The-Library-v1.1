@@ -128,18 +128,6 @@ namespace TM_Db_Lib.Media
             JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject["results"].ToObject<MovieSearchResult[]>();
         }
-        /// <summary>
-        /// Gets a list of reviews for the movie.
-        /// </summary>
-        /// <param name="inMovieID">The movie ID to get reviews for.</param>
-        public static async Task<Review[]> retrieveReviewsAsync(int inMovieID)
-        {
-            // Written, 01.12.2019
-
-            string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
-            return jObject["results"].ToObject<Review[]>();
-        }
 
         #endregion
     }
