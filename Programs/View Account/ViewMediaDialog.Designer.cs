@@ -34,14 +34,19 @@
             this.mediaDescription_richTextBox = new System.Windows.Forms.RichTextBox();
             this.mediaVotesAvg_label = new System.Windows.Forms.Label();
             this.viewReviews_button = new System.Windows.Forms.Button();
+            this.watch_button = new System.Windows.Forms.Button();
+            this.favorite_button = new System.Windows.Forms.Button();
+            this.viewMediaActions_flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.poster_pictureBox)).BeginInit();
+            this.viewMediaActions_flowLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // poster_pictureBox
             // 
-            this.poster_pictureBox.Location = new System.Drawing.Point(12, 12);
+            this.poster_pictureBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.poster_pictureBox.Location = new System.Drawing.Point(0, 0);
             this.poster_pictureBox.Name = "poster_pictureBox";
-            this.poster_pictureBox.Size = new System.Drawing.Size(190, 274);
+            this.poster_pictureBox.Size = new System.Drawing.Size(203, 298);
             this.poster_pictureBox.TabIndex = 0;
             this.poster_pictureBox.TabStop = false;
             // 
@@ -73,7 +78,7 @@
             this.mediaDescription_richTextBox.Name = "mediaDescription_richTextBox";
             this.mediaDescription_richTextBox.ReadOnly = true;
             this.mediaDescription_richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedHorizontal;
-            this.mediaDescription_richTextBox.Size = new System.Drawing.Size(503, 118);
+            this.mediaDescription_richTextBox.Size = new System.Drawing.Size(503, 147);
             this.mediaDescription_richTextBox.TabIndex = 3;
             this.mediaDescription_richTextBox.Text = "";
             // 
@@ -90,20 +95,69 @@
             // 
             this.viewReviews_button.AutoSize = true;
             this.viewReviews_button.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.viewReviews_button.Location = new System.Drawing.Point(213, 263);
+            this.viewReviews_button.FlatAppearance.BorderColor = System.Drawing.Color.MediumSlateBlue;
+            this.viewReviews_button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.PaleTurquoise;
+            this.viewReviews_button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.MediumSpringGreen;
+            this.viewReviews_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.viewReviews_button.Location = new System.Drawing.Point(189, 3);
             this.viewReviews_button.Name = "viewReviews_button";
-            this.viewReviews_button.Size = new System.Drawing.Size(116, 23);
+            this.viewReviews_button.Size = new System.Drawing.Size(118, 25);
             this.viewReviews_button.TabIndex = 5;
             this.viewReviews_button.Text = "viewReviews_button";
             this.viewReviews_button.UseVisualStyleBackColor = true;
             this.viewReviews_button.Click += new System.EventHandler(this.viewReviews_button_Click);
+            // 
+            // watch_button
+            // 
+            this.watch_button.AutoSize = true;
+            this.watch_button.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.watch_button.FlatAppearance.BorderColor = System.Drawing.Color.MediumSlateBlue;
+            this.watch_button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.PaleTurquoise;
+            this.watch_button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.MediumSpringGreen;
+            this.watch_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.watch_button.Location = new System.Drawing.Point(99, 3);
+            this.watch_button.Name = "watch_button";
+            this.watch_button.Size = new System.Drawing.Size(84, 25);
+            this.watch_button.TabIndex = 6;
+            this.watch_button.Text = "watch_button";
+            this.watch_button.UseVisualStyleBackColor = true;
+            this.watch_button.Click += new System.EventHandler(this.watch_button_Click);
+            // 
+            // button1
+            // 
+            this.favorite_button.AutoSize = true;
+            this.favorite_button.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.favorite_button.FlatAppearance.BorderColor = System.Drawing.Color.MediumSlateBlue;
+            this.favorite_button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.PaleTurquoise;
+            this.favorite_button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.MediumSpringGreen;
+            this.favorite_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.favorite_button.Location = new System.Drawing.Point(3, 3);
+            this.favorite_button.Name = "button1";
+            this.favorite_button.Size = new System.Drawing.Size(90, 25);
+            this.favorite_button.TabIndex = 7;
+            this.favorite_button.Text = "favorite_button";
+            this.favorite_button.UseVisualStyleBackColor = true;
+            this.favorite_button.Click += new System.EventHandler(this.favorite_button_Click);
+            // 
+            // viewMediaActions_flowLayoutPanel
+            // 
+            this.viewMediaActions_flowLayoutPanel.AutoSize = true;
+            this.viewMediaActions_flowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.viewMediaActions_flowLayoutPanel.Controls.Add(this.favorite_button);
+            this.viewMediaActions_flowLayoutPanel.Controls.Add(this.watch_button);
+            this.viewMediaActions_flowLayoutPanel.Controls.Add(this.viewReviews_button);
+            this.viewMediaActions_flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.viewMediaActions_flowLayoutPanel.Location = new System.Drawing.Point(203, 267);
+            this.viewMediaActions_flowLayoutPanel.Name = "viewMediaActions_flowLayoutPanel";
+            this.viewMediaActions_flowLayoutPanel.Size = new System.Drawing.Size(525, 31);
+            this.viewMediaActions_flowLayoutPanel.TabIndex = 8;
             // 
             // ViewMediaDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 298);
-            this.Controls.Add(this.viewReviews_button);
+            this.Controls.Add(this.viewMediaActions_flowLayoutPanel);
             this.Controls.Add(this.mediaVotesAvg_label);
             this.Controls.Add(this.mediaDescription_richTextBox);
             this.Controls.Add(this.mediaReleaseDate_label);
@@ -117,6 +171,8 @@
             this.Text = "ViewMediaDialog";
             this.Shown += new System.EventHandler(this.ViewMediaDialog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.poster_pictureBox)).EndInit();
+            this.viewMediaActions_flowLayoutPanel.ResumeLayout(false);
+            this.viewMediaActions_flowLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -130,5 +186,8 @@
         private System.Windows.Forms.RichTextBox mediaDescription_richTextBox;
         private System.Windows.Forms.Label mediaVotesAvg_label;
         private System.Windows.Forms.Button viewReviews_button;
+        private System.Windows.Forms.Button watch_button;
+        private System.Windows.Forms.Button favorite_button;
+        private System.Windows.Forms.FlowLayoutPanel viewMediaActions_flowLayoutPanel;
     }
 }

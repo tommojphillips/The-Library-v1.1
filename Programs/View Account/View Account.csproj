@@ -50,6 +50,12 @@
     <Compile Include="LoadingDialog.Designer.cs">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="LoginDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginDialog.Designer.cs">
+      <DependentUpon>LoginDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="TextDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     <EmbeddedResource Include="LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LoginDialog.resx">
+      <DependentUpon>LoginDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TextDialog.resx">
       <DependentUpon>TextDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -94,6 +103,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ViewMediaDialog.resx">
       <DependentUpon>ViewMediaDialog.cs</DependentUpon>
@@ -113,6 +123,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PoweredByTMDb_RectangleGreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\StackedTMDb_Green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PoweredByTMDb_SquareGreen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -20,11 +20,11 @@ namespace View_Account
         // Written, 09.12.2019
 
         #region Properties
-       
+
         /// <summary>
         /// Represents the view account object instance.
         /// </summary>
-        private ViewAccount viewAccount 
+        private ViewAccount viewAccount
         {
             get;
             set;
@@ -35,16 +35,27 @@ namespace View_Account
         private LoadingDialog loadingDialog
         {
             get;
-        } =  new LoadingDialog("tmdb View Account") { loadingText = "Loading..", };
+        } = new LoadingDialog("tmdb View Account") { loadingText = "Loading..", };
         /// <summary>
-        /// Represents the selected favorite media.
+        /// Represents the home (favorite or watchlist) currently selected favorite media.
         /// </summary>
-        private MediaSearchResult selectedFavoriteMedia 
+        private MediaSearchResult home_selectedMedia
         {
             get;
             set;
         }
-        private DiscoverParameters discoverParameters 
+        /// <summary>
+        /// Represents the search currently selected media.
+        /// </summary>
+        private MediaSearchResult search_selectedMedia
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Represents the discover parameters.
+        /// </summary>
+        private DiscoverParameters discoverParameters
         {
             get;
             set;
@@ -72,55 +83,49 @@ namespace View_Account
         /// <summary>
         /// Login to tmdb account function and logic. Returns bool whether the login was successful or not.
         /// </summary>
-        internal async Task<bool> loginTMDbAsync() 
+        internal async Task<bool> loginTMDbAsync()
         {
             // Written, 10.12.2019
 
             string dialogTitle = String.Format("{0} - TMDb Login", this.Text);
-            TextDialog textDialog = new TextDialog("Enter Username", dialogTitle);
             Exception exception = null;
-            if (textDialog.ShowDialog() == DialogResult.OK)
+            LoginDialog loginDialog = new LoginDialog();
+            if (loginDialog.ShowDialog() == DialogResult.OK)
             {
-                string username = textDialog.textInput;
-                textDialog = new TextDialog("Enter Password for ACC: " + username, dialogTitle);
-                if (textDialog.ShowDialog() == DialogResult.OK)
+                loadingDialog.Show(this);
+                Token token = null;
+                this.loadingDialog.loadingWhatText = "Retrieving Token";
+                try
                 {
-                    loadingDialog.Show(this);
-                    string password = textDialog.textInput;
-                    Token token = null;
-                    this.loadingDialog.loadingWhatText = "Retrieving Token";
+                    token = await Token.retrieveTokenAsync();
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+                if (token?.success ?? false)
+                {
+                    Session session = null;
+                    this.loadingDialog.loadingWhatText = "Creating Session";
                     try
                     {
-                        token = await Token.retrieveTokenAsync();
+                        session = await Session.createSessionWithLoginAsync(loginDialog.username, loginDialog.password, token.request_token);
                     }
                     catch (Exception ex)
                     {
                         exception = ex;
                     }
-                    if (token?.success ?? false)
+                    if (session?.success ?? false)
                     {
-                        Session session = null;
-                        this.loadingDialog.loadingWhatText = "Creating Session";
+                        this.loadingDialog.loadingWhatText = "Retrieving User";
                         try
                         {
-                            session = await Session.createSessionWithLoginAsync(username, password, token.request_token);
+                            User user = await User.retrieveUserDetailsAsync(session.session_id);
+                            this.viewAccount = new ViewAccount(user);
                         }
                         catch (Exception ex)
                         {
                             exception = ex;
-                        }
-                        if (session?.success ?? false)
-                        {
-                            this.loadingDialog.loadingWhatText = "Retrieving User";
-                            try
-                            {
-                                User user = await User.retrieveUserDetailsAsync(session.session_id);
-                                this.viewAccount = new ViewAccount(user);
-                            }
-                            catch (Exception ex)
-                            {
-                                exception = ex;
-                            }
                         }
                     }
                 }
@@ -142,13 +147,14 @@ namespace View_Account
         /// <summary>
         /// Updates the search media actions.
         /// </summary>
-        private async Task updateSearchMediaActionsAsync() 
+        private async Task updateSearchMediaActionsAsync()
         {
             // Written, 17.12.2019
 
             if (this.searchResults_listView.SelectedItems.Count == 1)
             {
                 MediaSearchResult media = this.searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
+                this.search_selectedMedia = media;
                 this.searchActions_groupBox.Text = "Actions: " + media.name;
                 this.mediaPoster_pictureBox.Image = media.poster_image;
                 this.searchViewDetails_button.Enabled = true;
@@ -210,7 +216,7 @@ namespace View_Account
                 MediaSearchResult media = inSender.SelectedItems[0].Tag as MediaSearchResult;
                 if (media != null)
                 {
-                    this.selectedFavoriteMedia = media;
+                    this.home_selectedMedia = media;
                     this.home_mediaActions_groupBox.Text = "Actions: " + media.name;
                     this.mediaPoster_pictureBox.Image = media.poster_image;
                     this.home_viewDetails_button.Enabled = true;
@@ -233,7 +239,7 @@ namespace View_Account
                         this.mediaPoster_pictureBox.Image = media.poster_image?.resizeImage(this.mediaPoster_pictureBox.Width, this.mediaPoster_pictureBox.Height);
                 }
             }
-            else 
+            else
             {
                 this.home_mediaActions_groupBox.Text = "Actions";
                 this.home_viewDetails_button.Enabled = false;
@@ -254,7 +260,7 @@ namespace View_Account
             await this.refreshFavoritesAsync();
             MediaSearchResult[] mediaResults = inSender == this.favoriteMovies_listView ? this.viewAccount.favoritedMovies : (MediaSearchResult[])this.viewAccount.favoritedTvSeries;
             this.postUpdateLists(inSender, mediaResults);
-            
+
         }
         /// <summary>
         /// Refreshes the favorites. Retreieves favorites.
@@ -273,7 +279,7 @@ namespace View_Account
         /// Updates the watchlist list.
         /// </summary>
         /// <returns></returns>
-        private async Task updateWatchlistAsync(ListView inSender) 
+        private async Task updateWatchlistAsync(ListView inSender)
         {
             // Written, 01.01.2020
 
@@ -285,7 +291,7 @@ namespace View_Account
         /// <summary>
         /// Refreshes the watchlist list.
         /// </summary>
-        private async Task refreshWatchlistAsync() 
+        private async Task refreshWatchlistAsync()
         {
             // Written, 01.01.2020
 
@@ -327,7 +333,10 @@ namespace View_Account
             if (inSender.Items.Count == 0)
                 inSender.Items.Add("No Results");
         }
-        private void initDiscover() 
+        /// <summary>
+        /// Initialzies discover.
+        /// </summary>
+        private void initDiscover()
         {
             // Written, 09.01.2020
 
@@ -337,7 +346,28 @@ namespace View_Account
             this.discover_sortByAscDesc_comboBox.SelectedItem = this.discoverParameters.sortByAscDesc.ToString();
             this.discover_sortByMembers_comboBox.SelectedItem = this.discoverParameters.sortByMembers.ToString();
         }
+        /// <summary>
+        /// Updates poster based on what tabpage the user is currently on.
+        /// </summary>
+        private void updatePosterImageDisplay()
+        {
+            // Written, 31,01.2020
 
+            this.mediaPoster_pictureBox.Image = this.getMediaToView()?.poster_image?.resizeImage(this.mediaPoster_pictureBox.Width, this.mediaPoster_pictureBox.Height);            
+        }
+        /// <summary>
+        /// Gets the currently displayed media on either, <see cref="home_tabPage"/> or <see cref="search_tabPage"/> tabs.
+        /// </summary>
+        private MediaSearchResult getMediaToView() 
+        {
+            // Written, 31.01.2020
+
+            if (this.tabControl.SelectedTab == home_tabPage)
+                return this.home_selectedMedia;
+            else if (this.tabControl.SelectedTab == search_tabPage)
+                return this.search_selectedMedia;
+            return null;
+        }
 
         #endregion
 
@@ -347,7 +377,7 @@ namespace View_Account
         {
             // Written, 10.12.2019
 
-            this.Text = this.Text.Insert(0, this.viewAccount.user.username + " - ");
+            this.tabControl_Selected(this.tabControl.SelectedTab.Text, null);
             this.accountName_label.Text = this.viewAccount.user.name;
             await this.updateSearchMediaActionsAsync();
             await this.updateHomeMediaActionsAsync(null);
@@ -382,9 +412,6 @@ namespace View_Account
                         {
                             Tag = media
                         };
-                    }
-                    if (item != null)
-                    {
                         this.searchResults_listView.Items.Add(item);
                     }
                 }
@@ -397,14 +424,10 @@ namespace View_Account
         {
             // Written, 10.12.2019
 
-            if (e.TabPage == this.home_tabPage)
-            {
-                this.Text = this.Text.Replace(String.Format(" - {0}", this.search_tabPage.Text), String.Empty);
-            }
-            else
-            {                
-                this.Text = this.Text.Insert(this.viewAccount.user.username.Length, String.Format(" - {0}", e.TabPage.Text));
-            }
+            string textChange = e?.TabPage.Text ?? sender as string;
+            this.Text = String.Format("{1} - View Account | {0}", textChange, this.viewAccount.user.username);
+            this.main_groupBox.Text = textChange;
+            this.updatePosterImageDisplay();
         }
         private async void searchResults_listView_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -439,19 +462,30 @@ namespace View_Account
             await this.updateSearchMediaActionsAsync();
             this.searchFavoriteMediaItem_button.Enabled = true;
         }
-        private void viewDetails_button_Click(object sender, EventArgs e)
+        private async void viewDetails_button_Click(object sender, EventArgs e)
         {
             // Written, 31.12.2019
 
-            MediaSearchResult mediaToView = null;
-
-            if (sender == this.searchViewDetails_button)
-                mediaToView = this.searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
-            else
-                if (sender == this.home_viewDetails_button)
-                    mediaToView = this.selectedFavoriteMedia;
-            ViewMediaDialog viewMediaDialog = new ViewMediaDialog(mediaToView);
+            MediaSearchResult mediaToView = this.getMediaToView();
+            ViewMediaDialog viewMediaDialog = new ViewMediaDialog(mediaToView, this.viewAccount);
             viewMediaDialog.ShowDialog();
+
+            if (this.tabControl.SelectedTab == this.search_tabPage)
+                await this.updateSearchMediaActionsAsync();
+            if (mediaToView is TvSearchResult)
+            {
+                if (viewMediaDialog.watchListChanged)
+                    await this.updateWatchlistAsync(this.watchlistTvSeries_listView);
+                if (viewMediaDialog.favoriteChanged)
+                    await this.updateFavoritesAsync(this.favoriteTvSeries_listView);
+            }
+            else if (mediaToView is MovieSearchResult)
+            {
+                if (viewMediaDialog.watchListChanged)
+                    await this.updateWatchlistAsync(this.watchlistMovies_listView);
+                if (viewMediaDialog.favoriteChanged)
+                    await this.updateFavoritesAsync(this.favoriteMovies_listView);
+            }
         }
         private async void favorites_listView_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -500,13 +534,13 @@ namespace View_Account
             await this.updateSearchMediaActionsAsync();
             this.searchWatchlistMediaItem_button.Enabled = true;
         }
-
         private void main_splitContainer_SplitterMoved(object sender, SplitterEventArgs e)
         {
             // Written, 21.01.2020
 
-            //this.mediaPoster_pictureBox.Image = this.mediaPoster_pictureBox.Image.resizeImage(this.mediaPoster_pictureBox.Width, this.mediaPoster_pictureBox.Height);
+            this.mediaPoster_pictureBox.Image = this.getMediaToView().poster_image.resizeImage(this.mediaPoster_pictureBox.Width, this.mediaPoster_pictureBox.Height);
         }
+
         #endregion
     }
 }
