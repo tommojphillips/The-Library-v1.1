@@ -46,10 +46,11 @@
             this.nextReview_button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Snow;
             this.nextReview_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.nextReview_button.ForeColor = System.Drawing.Color.MediumSeaGreen;
-            this.nextReview_button.Location = new System.Drawing.Point(582, 0);
+            this.nextReview_button.Location = new System.Drawing.Point(783, 0);
+            this.nextReview_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.nextReview_button.Name = "nextReview_button";
-            this.nextReview_button.Padding = new System.Windows.Forms.Padding(3);
-            this.nextReview_button.Size = new System.Drawing.Size(47, 268);
+            this.nextReview_button.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.nextReview_button.Size = new System.Drawing.Size(56, 330);
             this.nextReview_button.TabIndex = 0;
             this.nextReview_button.Text = "Next";
             this.nextReview_button.UseVisualStyleBackColor = true;
@@ -65,9 +66,10 @@
             this.prevReview_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.prevReview_button.ForeColor = System.Drawing.Color.MediumSeaGreen;
             this.prevReview_button.Location = new System.Drawing.Point(0, 0);
+            this.prevReview_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.prevReview_button.Name = "prevReview_button";
-            this.prevReview_button.Padding = new System.Windows.Forms.Padding(3);
-            this.prevReview_button.Size = new System.Drawing.Size(47, 268);
+            this.prevReview_button.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.prevReview_button.Size = new System.Drawing.Size(57, 330);
             this.prevReview_button.TabIndex = 1;
             this.prevReview_button.Text = "Prev";
             this.prevReview_button.UseVisualStyleBackColor = true;
@@ -77,9 +79,10 @@
             // 
             this.reviewUrl_linkLabel.AutoSize = true;
             this.reviewUrl_linkLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.reviewUrl_linkLabel.Location = new System.Drawing.Point(47, 255);
+            this.reviewUrl_linkLabel.Location = new System.Drawing.Point(57, 313);
+            this.reviewUrl_linkLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.reviewUrl_linkLabel.Name = "reviewUrl_linkLabel";
-            this.reviewUrl_linkLabel.Size = new System.Drawing.Size(99, 13);
+            this.reviewUrl_linkLabel.Size = new System.Drawing.Size(130, 17);
             this.reviewUrl_linkLabel.TabIndex = 3;
             this.reviewUrl_linkLabel.TabStop = true;
             this.reviewUrl_linkLabel.Text = "reviewUrl_linkLabel";
@@ -91,10 +94,11 @@
             this.mediaDescription_richTextBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.mediaDescription_richTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mediaDescription_richTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.mediaDescription_richTextBox.Location = new System.Drawing.Point(3, 16);
+            this.mediaDescription_richTextBox.Location = new System.Drawing.Point(4, 20);
+            this.mediaDescription_richTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.mediaDescription_richTextBox.Name = "mediaDescription_richTextBox";
             this.mediaDescription_richTextBox.ReadOnly = true;
-            this.mediaDescription_richTextBox.Size = new System.Drawing.Size(529, 223);
+            this.mediaDescription_richTextBox.Size = new System.Drawing.Size(718, 273);
             this.mediaDescription_richTextBox.TabIndex = 4;
             this.mediaDescription_richTextBox.Text = "";
             // 
@@ -103,9 +107,10 @@
             this.numOfReviews_label.Dock = System.Windows.Forms.DockStyle.Top;
             this.numOfReviews_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numOfReviews_label.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.numOfReviews_label.Location = new System.Drawing.Point(47, 0);
+            this.numOfReviews_label.Location = new System.Drawing.Point(57, 0);
+            this.numOfReviews_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.numOfReviews_label.Name = "numOfReviews_label";
-            this.numOfReviews_label.Size = new System.Drawing.Size(535, 13);
+            this.numOfReviews_label.Size = new System.Drawing.Size(726, 16);
             this.numOfReviews_label.TabIndex = 5;
             this.numOfReviews_label.Text = "numOfReviews_label";
             this.numOfReviews_label.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -118,24 +123,27 @@
             this.reviewContent_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.reviewContent_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.reviewContent_groupBox.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.reviewContent_groupBox.Location = new System.Drawing.Point(47, 13);
+            this.reviewContent_groupBox.Location = new System.Drawing.Point(57, 16);
+            this.reviewContent_groupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.reviewContent_groupBox.Name = "reviewContent_groupBox";
-            this.reviewContent_groupBox.Size = new System.Drawing.Size(535, 242);
+            this.reviewContent_groupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.reviewContent_groupBox.Size = new System.Drawing.Size(726, 297);
             this.reviewContent_groupBox.TabIndex = 6;
             this.reviewContent_groupBox.TabStop = false;
             this.reviewContent_groupBox.Text = "reviewContent";
             // 
             // ViewReviewsDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(629, 268);
+            this.ClientSize = new System.Drawing.Size(839, 330);
             this.Controls.Add(this.reviewContent_groupBox);
             this.Controls.Add(this.numOfReviews_label);
             this.Controls.Add(this.reviewUrl_linkLabel);
             this.Controls.Add(this.prevReview_button);
             this.Controls.Add(this.nextReview_button);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ViewReviewsDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ViewReviewsDialog";

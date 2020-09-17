@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TM_Db_Lib.Account;
-using TM_Db_Lib.Search;
+using TommoJProductions.TMDB.Account;
+using TommoJProductions.TMDB.Search;
 
 namespace View_Account
 {

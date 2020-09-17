@@ -3,9 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TM_Db_Lib;
-using TM_Db_Lib.Media;
-using TM_Db_Lib.Search;
+using TommoJProductions;
+using TommoJProductions.TMDB.Media;
+using TommoJProductions.TMDB.Search;
 
 namespace View_Account
 {

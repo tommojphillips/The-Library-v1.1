@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace TM_Db_Lib
+namespace TommoJProductions
 {
     /// <summary>
     /// Represents an abstract class that holds infomation about a reference to a file.

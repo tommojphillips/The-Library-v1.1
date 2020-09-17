@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discover Logic Testing", "T
 		{BB52C94B-E6C1-4385-86BD-EE01B627D4EC} = {BB52C94B-E6C1-4385-86BD-EE01B627D4EC}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YTS Search Test", "YTS Search Test\YTS Search Test.csproj", "{6F3A10D2-0387-49D0-845F-350EDBFA1E9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{B3EB555D-3505-48E0-A8AE-75A74DE7851C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3EB555D-3505-48E0-A8AE-75A74DE7851C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3EB555D-3505-48E0-A8AE-75A74DE7851C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F3A10D2-0387-49D0-845F-350EDBFA1E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F3A10D2-0387-49D0-845F-350EDBFA1E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F3A10D2-0387-49D0-845F-350EDBFA1E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F3A10D2-0387-49D0-845F-350EDBFA1E9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

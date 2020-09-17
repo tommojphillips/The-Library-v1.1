@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TM_Db_Lib
+namespace TommoJProductions
 {
     /// <summary>
     /// Represents data used by all parts of the application.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using TM_Db_Lib;
-using TM_Db_Lib.Search;
+using TommoJProductions.TMDB;
+using TommoJProductions.TMDB.Search;
 
 namespace View_Account
 {

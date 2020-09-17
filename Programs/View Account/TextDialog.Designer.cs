@@ -36,9 +36,10 @@
             // textInput_textBox
             // 
             this.textInput_textBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textInput_textBox.Location = new System.Drawing.Point(0, 13);
+            this.textInput_textBox.Location = new System.Drawing.Point(0, 17);
+            this.textInput_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textInput_textBox.Name = "textInput_textBox";
-            this.textInput_textBox.Size = new System.Drawing.Size(218, 20);
+            this.textInput_textBox.Size = new System.Drawing.Size(291, 22);
             this.textInput_textBox.TabIndex = 0;
             // 
             // textInput_label
@@ -46,8 +47,9 @@
             this.textInput_label.AutoSize = true;
             this.textInput_label.Dock = System.Windows.Forms.DockStyle.Top;
             this.textInput_label.Location = new System.Drawing.Point(0, 0);
+            this.textInput_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.textInput_label.Name = "textInput_label";
-            this.textInput_label.Size = new System.Drawing.Size(76, 13);
+            this.textInput_label.Size = new System.Drawing.Size(99, 17);
             this.textInput_label.TabIndex = 1;
             this.textInput_label.Text = "textInput_label";
             // 
@@ -58,22 +60,24 @@
             this.ok_button.Dock = System.Windows.Forms.DockStyle.Top;
             this.ok_button.FlatAppearance.BorderSize = 0;
             this.ok_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ok_button.Location = new System.Drawing.Point(0, 33);
+            this.ok_button.Location = new System.Drawing.Point(0, 39);
+            this.ok_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ok_button.Name = "ok_button";
-            this.ok_button.Size = new System.Drawing.Size(218, 23);
+            this.ok_button.Size = new System.Drawing.Size(291, 28);
             this.ok_button.TabIndex = 2;
             this.ok_button.Text = "Ok";
             this.ok_button.UseVisualStyleBackColor = false;
             // 
             // TextDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(218, 59);
+            this.ClientSize = new System.Drawing.Size(291, 73);
             this.Controls.Add(this.ok_button);
             this.Controls.Add(this.textInput_textBox);
             this.Controls.Add(this.textInput_label);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "TextDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "TextDialog";

@@ -58,6 +58,7 @@ namespace View_Account
             {
                 this.ShowInTaskbar = true;
                 this.errorDismiss_button.Visible = true;
+                this.errorRestartApp_button.Visible = true;
                 this.error_label.Text = value;
             }
         }
@@ -69,6 +70,7 @@ namespace View_Account
             this.programNameText = inProgramName;
             this.error_label.Text = string.Empty;
             this.errorDismiss_button.Text = "Dismiss error";
+            this.errorRestartApp_button.Text = "Restart";
             this.Update();
         }
 
@@ -77,6 +79,13 @@ namespace View_Account
             // Written, 31.12.2019
 
             Environment.Exit(0);
+        }
+
+        private void errorRestartApp_button_Click(object sender, EventArgs e)
+        {
+            // Written, 14.09.2020
+
+            Application.Restart();
         }
     }
 }
