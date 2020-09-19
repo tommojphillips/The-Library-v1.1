@@ -23,7 +23,7 @@ namespace View_Account
         internal MovieSearchResult[] favoritedMovies
         {
             get;
-            set;
+            private set;
         }
         /// <summary>
         /// Represents favorited tv series of the user.
@@ -31,7 +31,7 @@ namespace View_Account
         internal TvSearchResult[] favoritedTvSeries
         {
             get;
-            set;
+            private set;
         }
         /// <summary>
         /// Represents favorited movies of the user.
@@ -39,7 +39,7 @@ namespace View_Account
         internal MovieSearchResult[] watchlistMovies
         {
             get;
-            set;
+            private set;
         }
         /// <summary>
         /// Represents favorited tv series of the user.
@@ -47,7 +47,7 @@ namespace View_Account
         internal TvSearchResult[] watchlistTvSeries
         {
             get;
-            set;
+            private set;
         }
 
         #region Constructors
@@ -59,7 +59,6 @@ namespace View_Account
         public ViewAccount(User inUser) 
         {
             this.user = inUser ?? throw new NullReferenceException("User cannot be null. invaild argument.");
-            Task.Run(this.retrieveFavoritedMediaAsync);
         }
 
         #endregion
@@ -85,16 +84,6 @@ namespace View_Account
             this.favoritedTvSeries = await this.user.getFavoriteTvSeries();
         }
         /// <summary>
-        /// Retrieves favorited media, puts media in <see cref="favoritedMovies"/> and <see cref="favoritedTvSeries"/> respectively.
-        /// </summary>
-        internal async Task retrieveFavoritedMediaAsync()
-        {
-            // Written, 17.12.2019
-
-            await this.retrieveFavoriteMoviesAsync();
-            await this.retrieveFavoriteTvSeriesAsync();
-        }
-        /// <summary>
         /// Retrieves watchlisted movies, puts media in <see cref="watchlistMovies"/>.
         /// </summary>
         internal async Task retrieveWatchlistMoviesAsync()
@@ -111,16 +100,6 @@ namespace View_Account
             // Written, 17.12.2019
 
             this.watchlistTvSeries = await this.user.getWatchlistTvSeries();
-        }
-        /// <summary>
-        /// Retrieves watchlisted media, puts media in <see cref="watchlistMovies"/> and <see cref="watchlistTvSeries"/> respectively.
-        /// </summary>
-        internal async Task retrieveWatchlistMediaAsync()
-        {
-            // Written, 17.12.2019
-
-            await this.retrieveWatchlistMoviesAsync();
-            await this.retrieveWatchlistTvSeriesAsync();
         }
 
         #endregion

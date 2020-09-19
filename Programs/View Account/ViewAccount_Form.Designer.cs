@@ -28,23 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Favorited", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Watchlisted", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Favorited", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Watchlisted", System.Windows.Forms.HorizontalAlignment.Left);
             this.accountName_label = new System.Windows.Forms.Label();
             this.main_splitContainer = new System.Windows.Forms.SplitContainer();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.home_tabPage = new System.Windows.Forms.TabPage();
             this.home_lists_splitContainer = new System.Windows.Forms.SplitContainer();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.favoriteMovies_groupBox = new System.Windows.Forms.GroupBox();
-            this.favoriteMovies_listView = new System.Windows.Forms.ListView();
-            this.favoriteTvSeries_groupBox = new System.Windows.Forms.GroupBox();
-            this.favoriteTvSeries_listView = new System.Windows.Forms.ListView();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.watchlistMovies_groupBox = new System.Windows.Forms.GroupBox();
-            this.watchlistMovies_listView = new System.Windows.Forms.ListView();
-            this.watchlistTvSeries_groupbox = new System.Windows.Forms.GroupBox();
-            this.watchlistTvSeries_listView = new System.Windows.Forms.ListView();
+            this.homeMovies_groupBox = new System.Windows.Forms.GroupBox();
+            this.homeMovies_listView = new System.Windows.Forms.ListView();
+            this.movietitle_columnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.homeTvSeries_groupBox = new System.Windows.Forms.GroupBox();
+            this.homeTvSeries_listView = new System.Windows.Forms.ListView();
+            this.tvtitle_columnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.search_tabPage = new System.Windows.Forms.TabPage();
             this.searchResults_listView = new System.Windows.Forms.ListView();
+            this.searchTitle_columnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.searchDescription_columnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.searchYear_columnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.searchRating_columnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.searchMediaType_columnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.search_button = new System.Windows.Forms.Button();
             this.searchInput_textBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -59,6 +64,7 @@
             this.actions_groupBox = new System.Windows.Forms.GroupBox();
             this.actionsFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.home_viewDetails_button = new System.Windows.Forms.Button();
+            this.search_viewDetails_button = new System.Windows.Forms.Button();
             this.favoriteMediaItem_button = new System.Windows.Forms.Button();
             this.watchMediaItem_button = new System.Windows.Forms.Button();
             this.watchlistRefresh_button = new System.Windows.Forms.Button();
@@ -68,7 +74,8 @@
             this.mediaPoster_pictureBox = new System.Windows.Forms.PictureBox();
             this.imageLoading_label = new System.Windows.Forms.Label();
             this.main_groupBox = new System.Windows.Forms.GroupBox();
-            this.search_viewDetails_button = new System.Windows.Forms.Button();
+            this.movieYear_columnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tvYear_columnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.main_splitContainer)).BeginInit();
             this.main_splitContainer.Panel1.SuspendLayout();
             this.main_splitContainer.Panel2.SuspendLayout();
@@ -79,18 +86,8 @@
             this.home_lists_splitContainer.Panel1.SuspendLayout();
             this.home_lists_splitContainer.Panel2.SuspendLayout();
             this.home_lists_splitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.favoriteMovies_groupBox.SuspendLayout();
-            this.favoriteTvSeries_groupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            this.watchlistMovies_groupBox.SuspendLayout();
-            this.watchlistTvSeries_groupbox.SuspendLayout();
+            this.homeMovies_groupBox.SuspendLayout();
+            this.homeTvSeries_groupBox.SuspendLayout();
             this.search_tabPage.SuspendLayout();
             this.discover_tabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.discover_main_splitContainer)).BeginInit();
@@ -172,147 +169,98 @@
             this.home_lists_splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.home_lists_splitContainer.Location = new System.Drawing.Point(3, 3);
             this.home_lists_splitContainer.Name = "home_lists_splitContainer";
+            this.home_lists_splitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // home_lists_splitContainer.Panel1
             // 
-            this.home_lists_splitContainer.Panel1.Controls.Add(this.splitContainer1);
+            this.home_lists_splitContainer.Panel1.Controls.Add(this.homeMovies_groupBox);
             // 
             // home_lists_splitContainer.Panel2
             // 
-            this.home_lists_splitContainer.Panel2.Controls.Add(this.splitContainer2);
+            this.home_lists_splitContainer.Panel2.Controls.Add(this.homeTvSeries_groupBox);
             this.home_lists_splitContainer.Size = new System.Drawing.Size(854, 403);
-            this.home_lists_splitContainer.SplitterDistance = 351;
+            this.home_lists_splitContainer.SplitterDistance = 162;
             this.home_lists_splitContainer.TabIndex = 11;
             // 
-            // splitContainer1
+            // homeMovies_groupBox
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.homeMovies_groupBox.Controls.Add(this.homeMovies_listView);
+            this.homeMovies_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.homeMovies_groupBox.Location = new System.Drawing.Point(0, 0);
+            this.homeMovies_groupBox.Name = "homeMovies_groupBox";
+            this.homeMovies_groupBox.Size = new System.Drawing.Size(854, 162);
+            this.homeMovies_groupBox.TabIndex = 4;
+            this.homeMovies_groupBox.TabStop = false;
+            this.homeMovies_groupBox.Text = "Favorited/Watchlisted Movies";
             // 
-            // splitContainer1.Panel1
+            // homeMovies_listView
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.favoriteMovies_groupBox);
+            this.homeMovies_listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.movietitle_columnHeader,
+            this.movieYear_columnHeader});
+            this.homeMovies_listView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.homeMovies_listView.FullRowSelect = true;
+            listViewGroup1.Header = "Favorited";
+            listViewGroup1.Name = "favorited_listViewGroup";
+            listViewGroup2.Header = "Watchlisted";
+            listViewGroup2.Name = "watchlist_listViewGroup";
+            this.homeMovies_listView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1,
+            listViewGroup2});
+            this.homeMovies_listView.HideSelection = false;
+            this.homeMovies_listView.Location = new System.Drawing.Point(3, 19);
+            this.homeMovies_listView.MultiSelect = false;
+            this.homeMovies_listView.Name = "homeMovies_listView";
+            this.homeMovies_listView.Size = new System.Drawing.Size(848, 140);
+            this.homeMovies_listView.TabIndex = 0;
+            this.homeMovies_listView.UseCompatibleStateImageBehavior = false;
+            this.homeMovies_listView.View = System.Windows.Forms.View.Details;
+            this.homeMovies_listView.SelectedIndexChanged += new System.EventHandler(this.home_listView_SelectedIndexChanged);
             // 
-            // splitContainer1.Panel2
+            // movietitle_columnHeader
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.favoriteTvSeries_groupBox);
-            this.splitContainer1.Size = new System.Drawing.Size(351, 403);
-            this.splitContainer1.SplitterDistance = 201;
-            this.splitContainer1.TabIndex = 0;
+            this.movietitle_columnHeader.Text = "Title";
+            this.movietitle_columnHeader.Width = 280;
             // 
-            // favoriteMovies_groupBox
+            // homeTvSeries_groupBox
             // 
-            this.favoriteMovies_groupBox.Controls.Add(this.favoriteMovies_listView);
-            this.favoriteMovies_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.favoriteMovies_groupBox.Location = new System.Drawing.Point(0, 0);
-            this.favoriteMovies_groupBox.Name = "favoriteMovies_groupBox";
-            this.favoriteMovies_groupBox.Size = new System.Drawing.Size(351, 201);
-            this.favoriteMovies_groupBox.TabIndex = 4;
-            this.favoriteMovies_groupBox.TabStop = false;
-            this.favoriteMovies_groupBox.Text = "Favorite Movies";
+            this.homeTvSeries_groupBox.Controls.Add(this.homeTvSeries_listView);
+            this.homeTvSeries_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.homeTvSeries_groupBox.Location = new System.Drawing.Point(0, 0);
+            this.homeTvSeries_groupBox.Name = "homeTvSeries_groupBox";
+            this.homeTvSeries_groupBox.Size = new System.Drawing.Size(854, 237);
+            this.homeTvSeries_groupBox.TabIndex = 5;
+            this.homeTvSeries_groupBox.TabStop = false;
+            this.homeTvSeries_groupBox.Text = "Favorited/Watchlisted Tv Series";
             // 
-            // favoriteMovies_listView
+            // homeTvSeries_listView
             // 
-            this.favoriteMovies_listView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.favoriteMovies_listView.HideSelection = false;
-            this.favoriteMovies_listView.Location = new System.Drawing.Point(3, 19);
-            this.favoriteMovies_listView.Name = "favoriteMovies_listView";
-            this.favoriteMovies_listView.Size = new System.Drawing.Size(345, 179);
-            this.favoriteMovies_listView.TabIndex = 0;
-            this.favoriteMovies_listView.UseCompatibleStateImageBehavior = false;
-            this.favoriteMovies_listView.View = System.Windows.Forms.View.List;
-            this.favoriteMovies_listView.SelectedIndexChanged += new System.EventHandler(this.favorites_listView_SelectedIndexChanged);
+            this.homeTvSeries_listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.tvtitle_columnHeader,
+            this.tvYear_columnHeader});
+            this.homeTvSeries_listView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.homeTvSeries_listView.FullRowSelect = true;
+            listViewGroup3.Header = "Favorited";
+            listViewGroup3.Name = "favorited_listViewGroup";
+            listViewGroup4.Header = "Watchlisted";
+            listViewGroup4.Name = "watchlisted_listViewGroup";
+            this.homeTvSeries_listView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup3,
+            listViewGroup4});
+            this.homeTvSeries_listView.HideSelection = false;
+            this.homeTvSeries_listView.Location = new System.Drawing.Point(3, 19);
+            this.homeTvSeries_listView.MultiSelect = false;
+            this.homeTvSeries_listView.Name = "homeTvSeries_listView";
+            this.homeTvSeries_listView.Size = new System.Drawing.Size(848, 215);
+            this.homeTvSeries_listView.TabIndex = 0;
+            this.homeTvSeries_listView.UseCompatibleStateImageBehavior = false;
+            this.homeTvSeries_listView.View = System.Windows.Forms.View.Details;
+            this.homeTvSeries_listView.SelectedIndexChanged += new System.EventHandler(this.home_listView_SelectedIndexChanged);
             // 
-            // favoriteTvSeries_groupBox
+            // tvtitle_columnHeader
             // 
-            this.favoriteTvSeries_groupBox.Controls.Add(this.favoriteTvSeries_listView);
-            this.favoriteTvSeries_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.favoriteTvSeries_groupBox.Location = new System.Drawing.Point(0, 0);
-            this.favoriteTvSeries_groupBox.Name = "favoriteTvSeries_groupBox";
-            this.favoriteTvSeries_groupBox.Size = new System.Drawing.Size(351, 198);
-            this.favoriteTvSeries_groupBox.TabIndex = 5;
-            this.favoriteTvSeries_groupBox.TabStop = false;
-            this.favoriteTvSeries_groupBox.Text = "Favorite Tv Series";
-            // 
-            // favoriteTvSeries_listView
-            // 
-            this.favoriteTvSeries_listView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.favoriteTvSeries_listView.HideSelection = false;
-            this.favoriteTvSeries_listView.Location = new System.Drawing.Point(3, 19);
-            this.favoriteTvSeries_listView.Name = "favoriteTvSeries_listView";
-            this.favoriteTvSeries_listView.Size = new System.Drawing.Size(345, 176);
-            this.favoriteTvSeries_listView.TabIndex = 0;
-            this.favoriteTvSeries_listView.UseCompatibleStateImageBehavior = false;
-            this.favoriteTvSeries_listView.View = System.Windows.Forms.View.List;
-            this.favoriteTvSeries_listView.SelectedIndexChanged += new System.EventHandler(this.favorites_listView_SelectedIndexChanged);
-            // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.IsSplitterFixed = true;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.watchlistMovies_groupBox);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.watchlistTvSeries_groupbox);
-            this.splitContainer2.Size = new System.Drawing.Size(499, 403);
-            this.splitContainer2.SplitterDistance = 201;
-            this.splitContainer2.TabIndex = 0;
-            // 
-            // watchlistMovies_groupBox
-            // 
-            this.watchlistMovies_groupBox.Controls.Add(this.watchlistMovies_listView);
-            this.watchlistMovies_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.watchlistMovies_groupBox.Location = new System.Drawing.Point(0, 0);
-            this.watchlistMovies_groupBox.Name = "watchlistMovies_groupBox";
-            this.watchlistMovies_groupBox.Size = new System.Drawing.Size(499, 201);
-            this.watchlistMovies_groupBox.TabIndex = 2;
-            this.watchlistMovies_groupBox.TabStop = false;
-            this.watchlistMovies_groupBox.Text = "Watchlist Movies";
-            // 
-            // watchlistMovies_listView
-            // 
-            this.watchlistMovies_listView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.watchlistMovies_listView.HideSelection = false;
-            this.watchlistMovies_listView.Location = new System.Drawing.Point(3, 19);
-            this.watchlistMovies_listView.Name = "watchlistMovies_listView";
-            this.watchlistMovies_listView.Size = new System.Drawing.Size(493, 179);
-            this.watchlistMovies_listView.TabIndex = 0;
-            this.watchlistMovies_listView.UseCompatibleStateImageBehavior = false;
-            this.watchlistMovies_listView.View = System.Windows.Forms.View.List;
-            this.watchlistMovies_listView.SelectedIndexChanged += new System.EventHandler(this.favorites_listView_SelectedIndexChanged);
-            // 
-            // watchlistTvSeries_groupbox
-            // 
-            this.watchlistTvSeries_groupbox.Controls.Add(this.watchlistTvSeries_listView);
-            this.watchlistTvSeries_groupbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.watchlistTvSeries_groupbox.Location = new System.Drawing.Point(0, 0);
-            this.watchlistTvSeries_groupbox.Name = "watchlistTvSeries_groupbox";
-            this.watchlistTvSeries_groupbox.Size = new System.Drawing.Size(499, 198);
-            this.watchlistTvSeries_groupbox.TabIndex = 3;
-            this.watchlistTvSeries_groupbox.TabStop = false;
-            this.watchlistTvSeries_groupbox.Text = "Watchlist Tv Series";
-            // 
-            // watchlistTvSeries_listView
-            // 
-            this.watchlistTvSeries_listView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.watchlistTvSeries_listView.HideSelection = false;
-            this.watchlistTvSeries_listView.Location = new System.Drawing.Point(3, 19);
-            this.watchlistTvSeries_listView.Name = "watchlistTvSeries_listView";
-            this.watchlistTvSeries_listView.Size = new System.Drawing.Size(493, 176);
-            this.watchlistTvSeries_listView.TabIndex = 0;
-            this.watchlistTvSeries_listView.UseCompatibleStateImageBehavior = false;
-            this.watchlistTvSeries_listView.View = System.Windows.Forms.View.List;
-            this.watchlistTvSeries_listView.SelectedIndexChanged += new System.EventHandler(this.favorites_listView_SelectedIndexChanged);
+            this.tvtitle_columnHeader.Text = "Title";
+            this.tvtitle_columnHeader.Width = 280;
             // 
             // search_tabPage
             // 
@@ -330,7 +278,14 @@
             // 
             // searchResults_listView
             // 
+            this.searchResults_listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.searchTitle_columnHeader,
+            this.searchDescription_columnHeader,
+            this.searchYear_columnHeader,
+            this.searchRating_columnHeader,
+            this.searchMediaType_columnHeader});
             this.searchResults_listView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.searchResults_listView.FullRowSelect = true;
             this.searchResults_listView.HideSelection = false;
             this.searchResults_listView.Location = new System.Drawing.Point(3, 72);
             this.searchResults_listView.MultiSelect = false;
@@ -338,8 +293,30 @@
             this.searchResults_listView.Size = new System.Drawing.Size(854, 334);
             this.searchResults_listView.TabIndex = 11;
             this.searchResults_listView.UseCompatibleStateImageBehavior = false;
-            this.searchResults_listView.View = System.Windows.Forms.View.List;
+            this.searchResults_listView.View = System.Windows.Forms.View.Details;
             this.searchResults_listView.SelectedIndexChanged += new System.EventHandler(this.searchResults_listView_SelectedIndexChanged);
+            // 
+            // searchTitle_columnHeader
+            // 
+            this.searchTitle_columnHeader.Text = "Title";
+            this.searchTitle_columnHeader.Width = 100;
+            // 
+            // searchDescription_columnHeader
+            // 
+            this.searchDescription_columnHeader.Text = "Description";
+            this.searchDescription_columnHeader.Width = 345;
+            // 
+            // searchYear_columnHeader
+            // 
+            this.searchYear_columnHeader.Text = "Year";
+            // 
+            // searchRating_columnHeader
+            // 
+            this.searchRating_columnHeader.Text = "Rating";
+            // 
+            // searchMediaType_columnHeader
+            // 
+            this.searchMediaType_columnHeader.Text = "Media Type";
             // 
             // search_button
             // 
@@ -380,7 +357,7 @@
             this.discover_tabPage.Controls.Add(this.discover_main_splitContainer);
             this.discover_tabPage.Location = new System.Drawing.Point(4, 25);
             this.discover_tabPage.Name = "discover_tabPage";
-            this.discover_tabPage.Size = new System.Drawing.Size(860, 463);
+            this.discover_tabPage.Size = new System.Drawing.Size(860, 410);
             this.discover_tabPage.TabIndex = 2;
             this.discover_tabPage.Text = "Discover";
             this.discover_tabPage.UseVisualStyleBackColor = true;
@@ -398,8 +375,8 @@
             // discover_main_splitContainer.Panel2
             // 
             this.discover_main_splitContainer.Panel2.Controls.Add(this.discoverTvSeries_groupBox);
-            this.discover_main_splitContainer.Size = new System.Drawing.Size(860, 463);
-            this.discover_main_splitContainer.SplitterDistance = 418;
+            this.discover_main_splitContainer.Size = new System.Drawing.Size(860, 410);
+            this.discover_main_splitContainer.SplitterDistance = 417;
             this.discover_main_splitContainer.TabIndex = 0;
             // 
             // discoverMovies_groupBox
@@ -410,7 +387,7 @@
             this.discoverMovies_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.discoverMovies_groupBox.Location = new System.Drawing.Point(0, 0);
             this.discoverMovies_groupBox.Name = "discoverMovies_groupBox";
-            this.discoverMovies_groupBox.Size = new System.Drawing.Size(418, 463);
+            this.discoverMovies_groupBox.Size = new System.Drawing.Size(417, 410);
             this.discoverMovies_groupBox.TabIndex = 1;
             this.discoverMovies_groupBox.TabStop = false;
             this.discoverMovies_groupBox.Text = "Discover Movies";
@@ -447,7 +424,7 @@
             this.discoverTvSeries_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.discoverTvSeries_groupBox.Location = new System.Drawing.Point(0, 0);
             this.discoverTvSeries_groupBox.Name = "discoverTvSeries_groupBox";
-            this.discoverTvSeries_groupBox.Size = new System.Drawing.Size(438, 463);
+            this.discoverTvSeries_groupBox.Size = new System.Drawing.Size(439, 410);
             this.discoverTvSeries_groupBox.TabIndex = 0;
             this.discoverTvSeries_groupBox.TabStop = false;
             this.discoverTvSeries_groupBox.Text = "Discover Tv Series";
@@ -467,7 +444,7 @@
             // 
             this.action_splitContainer.Panel2.Controls.Add(this.pictureBox1);
             this.action_splitContainer.Size = new System.Drawing.Size(868, 160);
-            this.action_splitContainer.SplitterDistance = 685;
+            this.action_splitContainer.SplitterDistance = 732;
             this.action_splitContainer.TabIndex = 12;
             // 
             // actions_groupBox
@@ -476,13 +453,15 @@
             this.actions_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.actions_groupBox.Location = new System.Drawing.Point(0, 0);
             this.actions_groupBox.Name = "actions_groupBox";
-            this.actions_groupBox.Size = new System.Drawing.Size(685, 160);
+            this.actions_groupBox.Size = new System.Drawing.Size(732, 160);
             this.actions_groupBox.TabIndex = 5;
             this.actions_groupBox.TabStop = false;
             this.actions_groupBox.Text = "Actions";
             // 
             // actionsFlowLayoutPanel
             // 
+            this.actionsFlowLayoutPanel.AutoSize = true;
+            this.actionsFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.actionsFlowLayoutPanel.Controls.Add(this.home_viewDetails_button);
             this.actionsFlowLayoutPanel.Controls.Add(this.search_viewDetails_button);
             this.actionsFlowLayoutPanel.Controls.Add(this.favoriteMediaItem_button);
@@ -494,7 +473,7 @@
             this.actionsFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.actionsFlowLayoutPanel.Location = new System.Drawing.Point(3, 19);
             this.actionsFlowLayoutPanel.Name = "actionsFlowLayoutPanel";
-            this.actionsFlowLayoutPanel.Size = new System.Drawing.Size(679, 138);
+            this.actionsFlowLayoutPanel.Size = new System.Drawing.Size(726, 138);
             this.actionsFlowLayoutPanel.TabIndex = 1;
             // 
             // home_viewDetails_button
@@ -512,6 +491,22 @@
             this.home_viewDetails_button.Text = "home_viewDetails_button";
             this.home_viewDetails_button.UseVisualStyleBackColor = true;
             this.home_viewDetails_button.Click += new System.EventHandler(this.viewDetails_button_Click);
+            // 
+            // search_viewDetails_button
+            // 
+            this.search_viewDetails_button.AutoSize = true;
+            this.search_viewDetails_button.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.search_viewDetails_button.FlatAppearance.BorderColor = System.Drawing.Color.MediumSlateBlue;
+            this.search_viewDetails_button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.PaleTurquoise;
+            this.search_viewDetails_button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.MediumSpringGreen;
+            this.search_viewDetails_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.search_viewDetails_button.Location = new System.Drawing.Point(3, 38);
+            this.search_viewDetails_button.Name = "search_viewDetails_button";
+            this.search_viewDetails_button.Size = new System.Drawing.Size(189, 29);
+            this.search_viewDetails_button.TabIndex = 7;
+            this.search_viewDetails_button.Text = "search_viewDetails_button";
+            this.search_viewDetails_button.UseVisualStyleBackColor = true;
+            this.search_viewDetails_button.Click += new System.EventHandler(this.viewDetails_button_Click);
             // 
             // favoriteMediaItem_button
             // 
@@ -575,7 +570,7 @@
             this.favoritesRefresh_button.TabIndex = 6;
             this.favoritesRefresh_button.Text = "favoritesRefresh_button";
             this.favoritesRefresh_button.UseVisualStyleBackColor = true;
-            this.favoritesRefresh_button.Click += new System.EventHandler(this.favoritesRefresh_button_Click);
+            this.favoritesRefresh_button.Click += new System.EventHandler(this.moviesRefresh_button_Click);
             // 
             // yts_button
             // 
@@ -599,7 +594,7 @@
             this.pictureBox1.Image = global::View_Account.Properties.Resources.PoweredByTMDb_SquareGreen;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(179, 160);
+            this.pictureBox1.Size = new System.Drawing.Size(132, 160);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
@@ -639,21 +634,15 @@
             this.main_groupBox.TabStop = false;
             this.main_groupBox.Text = "main_groupBox";
             // 
-            // search_viewDetails_button
+            // movieYear_columnHeader
             // 
-            this.search_viewDetails_button.AutoSize = true;
-            this.search_viewDetails_button.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.search_viewDetails_button.FlatAppearance.BorderColor = System.Drawing.Color.MediumSlateBlue;
-            this.search_viewDetails_button.FlatAppearance.MouseDownBackColor = System.Drawing.Color.PaleTurquoise;
-            this.search_viewDetails_button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.MediumSpringGreen;
-            this.search_viewDetails_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.search_viewDetails_button.Location = new System.Drawing.Point(3, 38);
-            this.search_viewDetails_button.Name = "search_viewDetails_button";
-            this.search_viewDetails_button.Size = new System.Drawing.Size(189, 29);
-            this.search_viewDetails_button.TabIndex = 7;
-            this.search_viewDetails_button.Text = "search_viewDetails_button";
-            this.search_viewDetails_button.UseVisualStyleBackColor = true;
-            this.search_viewDetails_button.Click += new System.EventHandler(this.viewDetails_button_Click);
+            this.movieYear_columnHeader.Text = "Year";
+            this.movieYear_columnHeader.Width = 100;
+            // 
+            // tvYear_columnHeader
+            // 
+            this.tvYear_columnHeader.Text = "Year";
+            this.tvYear_columnHeader.Width = 100;
             // 
             // viewAccount_Form
             // 
@@ -663,9 +652,7 @@
             this.Controls.Add(this.main_groupBox);
             this.Controls.Add(this.accountName_label);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MaximizeBox = false;
             this.Name = "viewAccount_Form";
-            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "View Account";
             this.Load += new System.EventHandler(this.viewAccount_Form_Load);
@@ -679,18 +666,8 @@
             this.home_lists_splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.home_lists_splitContainer)).EndInit();
             this.home_lists_splitContainer.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.favoriteMovies_groupBox.ResumeLayout(false);
-            this.favoriteTvSeries_groupBox.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.watchlistMovies_groupBox.ResumeLayout(false);
-            this.watchlistTvSeries_groupbox.ResumeLayout(false);
+            this.homeMovies_groupBox.ResumeLayout(false);
+            this.homeTvSeries_groupBox.ResumeLayout(false);
             this.search_tabPage.ResumeLayout(false);
             this.search_tabPage.PerformLayout();
             this.discover_tabPage.ResumeLayout(false);
@@ -705,6 +682,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.action_splitContainer)).EndInit();
             this.action_splitContainer.ResumeLayout(false);
             this.actions_groupBox.ResumeLayout(false);
+            this.actions_groupBox.PerformLayout();
             this.actionsFlowLayoutPanel.ResumeLayout(false);
             this.actionsFlowLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -745,18 +723,21 @@
         private System.Windows.Forms.TextBox searchInput_textBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.SplitContainer home_lists_splitContainer;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.GroupBox favoriteMovies_groupBox;
-        private System.Windows.Forms.ListView favoriteMovies_listView;
-        private System.Windows.Forms.GroupBox favoriteTvSeries_groupBox;
-        private System.Windows.Forms.ListView favoriteTvSeries_listView;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.GroupBox watchlistMovies_groupBox;
-        private System.Windows.Forms.ListView watchlistMovies_listView;
-        private System.Windows.Forms.GroupBox watchlistTvSeries_groupbox;
-        private System.Windows.Forms.ListView watchlistTvSeries_listView;
+        private System.Windows.Forms.GroupBox homeMovies_groupBox;
+        private System.Windows.Forms.ListView homeMovies_listView;
+        private System.Windows.Forms.GroupBox homeTvSeries_groupBox;
+        private System.Windows.Forms.ListView homeTvSeries_listView;
         private System.Windows.Forms.Button favoritesRefresh_button;
         private System.Windows.Forms.Button search_viewDetails_button;
+        private System.Windows.Forms.ColumnHeader searchTitle_columnHeader;
+        private System.Windows.Forms.ColumnHeader searchDescription_columnHeader;
+        private System.Windows.Forms.ColumnHeader searchYear_columnHeader;
+        private System.Windows.Forms.ColumnHeader searchRating_columnHeader;
+        private System.Windows.Forms.ColumnHeader searchMediaType_columnHeader;
+        private System.Windows.Forms.ColumnHeader movietitle_columnHeader;
+        private System.Windows.Forms.ColumnHeader tvtitle_columnHeader;
+        private System.Windows.Forms.ColumnHeader movieYear_columnHeader;
+        private System.Windows.Forms.ColumnHeader tvYear_columnHeader;
     }
 }
 

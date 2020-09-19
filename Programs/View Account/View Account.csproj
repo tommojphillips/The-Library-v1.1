@@ -41,10 +41,6 @@
     <Reference Include="TM-Db Lib">
       <HintPath>..\..\TM-Db Lib\bin\Debug\TM-Db Lib.dll</HintPath>
     </Reference>
-    <Reference Include="YTS, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TM-Db Lib\bin\Debug\YTS.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoadingDialog.cs">
@@ -86,11 +82,11 @@
     <Compile Include="ViewReviewsDialog.Designer.cs">
       <DependentUpon>ViewReviewsDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="YTSMediaDialog.cs">
+    <Compile Include="YTSMovieListResponseDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="YTSMediaDialog.Designer.cs">
-      <DependentUpon>YTSMediaDialog.cs</DependentUpon>
+    <Compile Include="YTSMovieListResponseDialog.Designer.cs">
+      <DependentUpon>YTSMovieListResponseDialog.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
@@ -120,8 +116,8 @@
     <EmbeddedResource Include="ViewReviewsDialog.resx">
       <DependentUpon>ViewReviewsDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="YTSMediaDialog.resx">
-      <DependentUpon>YTSMediaDialog.cs</DependentUpon>
+    <EmbeddedResource Include="YTSMovieListResponseDialog.resx">
+      <DependentUpon>YTSMovieListResponseDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

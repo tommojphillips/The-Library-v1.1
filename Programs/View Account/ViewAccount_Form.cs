@@ -10,7 +10,7 @@ using TommoJProductions.TMDB.Media;
 using TommoJProductions.TMDB.Search;
 using TommoJProductions.TMDB.Discover;
 using TommoJProductions.YTS;
-using YTS.Models;
+using TommoJProductions.YTS.Structure;
 
 namespace View_Account
 {
@@ -77,9 +77,6 @@ namespace View_Account
             CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
 
-            // Written, 14.09.2020
-            this.splitContainer1.SplitterDistance = 176;
-            this.splitContainer2.SplitterDistance = 176;
         }
 
         #endregion
@@ -93,7 +90,6 @@ namespace View_Account
         {
             // Written, 10.12.2019
 
-            string dialogTitle = String.Format("{0} - TMDb Login", this.Text);
             Exception exception = null;
             LoginDialog loginDialog = new LoginDialog();
             if (loginDialog.ShowDialog() == DialogResult.OK)
@@ -227,13 +223,13 @@ namespace View_Account
         /// </summary>
         /// <param name="inSender">Listview sender.</param>
         /// <param name="inMediaType">The media type that is to be updated.</param>
-        private async Task updateFavoriteMediaActionsAsync(ListView inSender)
+        private async Task updateHomeMediaActionsAsync(ListView inSender, MediaSearchResult inMedia = null)
         {
             // Written, 24.12.2019
 
-            if (inSender?.SelectedItems.Count == 1)
+            if (inSender?.SelectedItems.Count == 1 || inMedia != null)
             {
-                MediaSearchResult media = inSender.SelectedItems[0].Tag as MediaSearchResult;
+                MediaSearchResult media = (inSender?.SelectedItems[0].Tag as MediaSearchResult) ?? inMedia;
                 if (media != null)
                 {
                     this.home_selectedMedia = media;
@@ -249,7 +245,7 @@ namespace View_Account
                     {
                         this.yts_button.Enabled = true;
                         this.yts_button.Visible = true;
-                        this.yts_button.Text = "Search YTS: " + media.name;
+                        this.yts_button.Text = "Search YTS";
                     }
                     else
                     {
@@ -269,7 +265,7 @@ namespace View_Account
                             this.imageLoading_label.Text = string.Empty;
                         }
                     }
-                    if (media == inSender.SelectedItems[0].Tag)
+                    if (media == (inSender?.SelectedItems[0].Tag ?? inMedia))
                         this.mediaPoster_pictureBox.Image = media.poster_image?.resizeImage(this.mediaPoster_pictureBox.Width, this.mediaPoster_pictureBox.Height);
                 }
             }
@@ -290,58 +286,6 @@ namespace View_Account
             }
         }
         /// <summary>
-        /// Updates the favorites lists.
-        /// </summary>
-        private async Task updateFavoritesAsync(ListView inSender)
-        {
-            // Written, 24.12.2019
-
-            this.preUpdateLists(inSender);
-            await this.refreshFavoritesAsync();
-            MediaSearchResult[] mediaResults = inSender == this.favoriteMovies_listView ? this.viewAccount.favoritedMovies : (MediaSearchResult[])this.viewAccount.favoritedTvSeries;
-            this.postUpdateLists(inSender, mediaResults);
-
-        }
-        /// <summary>
-        /// Refreshes the favorites. Retreieves favorites.
-        /// </summary>
-        private async Task refreshFavoritesAsync()
-        {
-            // Written, 28.12.2019
-
-            this.favoritesRefresh_button.Text = "Refreshing...";
-            this.favoritesRefresh_button.Enabled = false;
-            await this.viewAccount.retrieveFavoritedMediaAsync();
-            this.favoritesRefresh_button.Text = "Refresh Favorites";
-            this.favoritesRefresh_button.Enabled = true;
-        }
-        /// <summary>
-        /// Updates the watchlist list.
-        /// </summary>
-        /// <returns></returns>
-        private async Task updateWatchlistAsync(ListView inSender)
-        {
-            // Written, 01.01.2020
-
-            this.preUpdateLists(inSender);
-            await this.refreshWatchlistAsync();
-            MediaSearchResult[] mediaResults = inSender == this.watchlistMovies_listView ? this.viewAccount.watchlistMovies : (MediaSearchResult[])this.viewAccount.watchlistTvSeries;
-            this.postUpdateLists(inSender, mediaResults);
-        }
-        /// <summary>
-        /// Refreshes the watchlist list.
-        /// </summary>
-        private async Task refreshWatchlistAsync()
-        {
-            // Written, 01.01.2020
-
-            this.watchlistRefresh_button.Text = "Refreshing...";
-            this.watchlistRefresh_button.Enabled = false;
-            await this.viewAccount.retrieveWatchlistMediaAsync();
-            this.watchlistRefresh_button.Text = "Refresh Watchlist";
-            this.watchlistRefresh_button.Enabled = true;
-        }
-        /// <summary>
         /// Pre-Update list logic.
         /// </summary>
         /// <param name="inSender">the listview to update.</param>
@@ -349,7 +293,8 @@ namespace View_Account
         {
             // Written, 02.01.2020
 
-            inSender.Clear();
+            inSender.Items.Clear();
+            inSender.View = View.List;
             inSender.Items.Add("Refreshing..");
         }
         /// <summary>
@@ -357,21 +302,16 @@ namespace View_Account
         /// </summary>
         /// <param name="inSender">the listview to update.</param>
         /// <param name="inMediaResults">the media results to update the list with.</param>
-        private void postUpdateLists(ListView inSender, MediaSearchResult[] inMediaResults)
+        private void postUpdateLists(ListView inSender, ListViewItem[] inItems)
         {
             // Written, 02.01.2020
 
-            inSender.Clear();
-            for (int i = 0; i < inMediaResults.Length; i++)
-            {
-                ListViewItem item = new ListViewItem(inMediaResults[i].name)
-                {
-                    Tag = inMediaResults[i]
-                };
-                inSender.Items.Add(item);
-            }
+            inSender.Items.Clear();
+            inSender.Items.AddRange(inItems);
             if (inSender.Items.Count == 0)
                 inSender.Items.Add("No Results");
+            else
+                inSender.View = View.Details;
         }
         /// <summary>
         /// Initialzies discover.
@@ -411,8 +351,10 @@ namespace View_Account
         /// <summary>
         /// updates the actions buttons.
         /// </summary>
-        private async Task updateActionButtons()
+        private async Task updateActionButtonsAsync()
         {
+            // Written, 18.09.2020
+
             if (this.tabControl.SelectedTab == this.home_tabPage)
             {
                 //view details
@@ -423,7 +365,7 @@ namespace View_Account
                 this.watchMediaItem_button.Visible = false;
                 this.favoriteMediaItem_button.Visible = false;
                 //update all actions related to favourite.
-                await this.updateFavoriteMediaActionsAsync(null);
+                await this.updateHomeMediaActionsAsync(null, this.home_selectedMedia);
             }
             else if (this.tabControl.SelectedTab == this.search_tabPage)
             {
@@ -451,6 +393,97 @@ namespace View_Account
             }
 
         }
+        /// <summary>
+        /// Retrieves and updates home movie listview section.
+        /// </summary>
+        private async Task updateHomeMoviesAsync() 
+        {
+            // Written, 18.09.2020
+
+            this.preUpdateLists(this.homeMovies_listView);
+            await this.refreshHomeMoviesAsync();
+            ListViewItem[] Items = new ListViewItem[this.viewAccount.favoritedMovies.Length + this.viewAccount.watchlistMovies.Length];
+            string[] subItems; 
+            MovieSearchResult msr;
+            for (int i = 0; i < this.viewAccount.favoritedMovies.Length; i++)
+            {
+                msr = this.viewAccount.favoritedMovies[i];
+                subItems = new string[]
+                {
+                    msr.name,
+                    msr.release_date,
+                };
+                Items[i] = new ListViewItem(subItems, this.homeMovies_listView.Groups[0]) { Tag = msr };
+            }
+            for (int i = 0; i < this.viewAccount.watchlistMovies.Length; i++)
+            {
+                msr = this.viewAccount.watchlistMovies[i];
+                subItems = new string[]
+                {
+                    msr.name,
+                    msr.release_date,
+                };
+                Items[this.viewAccount.favoritedMovies.Length + i] = new ListViewItem(subItems, this.homeMovies_listView.Groups[1]) { Tag = msr };
+            }
+            this.postUpdateLists(this.homeMovies_listView, Items);
+        }
+        /// <summary>
+        /// Retrieves movies from view account. updates refresh button.
+        /// </summary>
+        private async Task refreshHomeMoviesAsync() 
+        {
+            // Written, 18.09.2020
+
+            this.favoritesRefresh_button.Text = "Refreshing...";
+            this.favoritesRefresh_button.Enabled = false;
+            await this.viewAccount.retrieveFavoriteMoviesAsync();
+            await this.viewAccount.retrieveWatchlistMoviesAsync();
+            this.favoritesRefresh_button.Text = "Refresh movies";
+            this.favoritesRefresh_button.Enabled = true;
+        }
+        private async Task updateHomeTvSeriesAsync() 
+        {
+            // Written, 18.09.2020
+
+            this.preUpdateLists(this.homeTvSeries_listView);
+            await this.refreshHomeTvAsync();
+            ListViewItem[] Items = new ListViewItem[this.viewAccount.favoritedTvSeries.Length + this.viewAccount.watchlistTvSeries.Length];
+            string[] subItems;
+            TvSearchResult tsr;
+            for (int i = 0; i < this.viewAccount.favoritedTvSeries.Length; i++)
+            {
+                tsr = this.viewAccount.favoritedTvSeries[i];
+                subItems = new string[] 
+                {
+                    tsr.name,
+                    tsr.release_date,
+                };
+                Items[i] = new ListViewItem(subItems, this.homeTvSeries_listView.Groups[0]) { Tag = tsr };
+            }
+            for (int i = 0; i < this.viewAccount.watchlistTvSeries.Length; i++)
+            {
+                tsr = this.viewAccount.watchlistTvSeries[i];
+                subItems = new string[]
+                {
+                    tsr.name,
+                    tsr.release_date,
+                };
+                Items[this.viewAccount.favoritedTvSeries.Length + i] = new ListViewItem(subItems, this.homeTvSeries_listView.Groups[1]) { Tag = tsr };
+            }
+            this.postUpdateLists(this.homeTvSeries_listView, Items);
+        }
+        private async Task refreshHomeTvAsync() 
+        {
+            // Written, 18.09.2020
+
+            this.watchlistRefresh_button.Text = "Refreshing...";
+            this.watchlistRefresh_button.Enabled = false;
+            await this.viewAccount.retrieveFavoriteTvSeriesAsync();
+            await this.viewAccount.retrieveWatchlistTvSeriesAsync();
+            this.watchlistRefresh_button.Text = "Refresh tv series";
+            this.watchlistRefresh_button.Enabled = true;
+        }
+
 
         #endregion
 
@@ -463,12 +496,9 @@ namespace View_Account
             this.tabControl_Selected(this.tabControl.SelectedTab.Text, null);
             this.accountName_label.Text = this.viewAccount.user.name;
             await this.updateSearchMediaActionsAsync();
-            await this.updateFavoriteMediaActionsAsync(null);
-            await this.updateFavoritesAsync(this.favoriteMovies_listView);
-            await this.updateFavoritesAsync(this.favoriteTvSeries_listView);
-            await this.updateWatchlistAsync(this.watchlistMovies_listView);
-            await this.updateWatchlistAsync(this.watchlistTvSeries_listView);
-            this.initDiscover();
+            await this.updateHomeMoviesAsync();
+            await this.updateHomeTvSeriesAsync();
+            //this.initDiscover();
         }
         private async void search_button_Click(object sender, EventArgs e)
         {
@@ -477,25 +507,28 @@ namespace View_Account
             this.searchInput_textBox.Enabled = false;
             this.search_button.Enabled = false;
             this.search_button.Text = "Searching..";
-            this.searchResults_listView.Clear();
+            this.searchResults_listView.Items.Clear();
             await this.updateSearchMediaActionsAsync();
             if (!String.IsNullOrEmpty(this.searchInput_textBox.Text)) 
             {
                 MultiSearchResult multiSearch = await MultiSearchResult.searchAsync(this.searchInput_textBox.Text, 1);
                 for (int i = 0; i < ApplicationInfomation.NUMBER_OF_ITEMS_PER_PAGE; i++)
                 {
-                    ListViewItem item = null;
                     MediaSearchResult media = multiSearch.movie_results[i];
                     if (media == null)
                         media = multiSearch.tv_results[i];
                     if (media != null)
                     {
-                        string mediaTypeString = media is MovieSearchResult ? "MOVIE" : media is TvSearchResult ? "TV" : "NULL";
-                        item = new ListViewItem(String.Format("\t[{2}] {0} ({1})", media.name, media.release_date, mediaTypeString))
+                        string mediaTypeString = media is MovieSearchResult ? "Movie" : media is TvSearchResult ? "Tv" : "Null";
+                        string[] subItems = new string[] 
                         {
-                            Tag = media
-                        };
-                        this.searchResults_listView.Items.Add(item);
+                            media.name,
+                            media.overview,
+                            media.release_date,
+                            media.vote_average.ToString(),
+                            mediaTypeString
+                        };                        
+                        this.searchResults_listView.Items.Add(new ListViewItem(subItems) { Tag = media });
                     }
                 }
             }
@@ -511,7 +544,7 @@ namespace View_Account
             this.Text = String.Format("{1} - View Account | {0}", textChange, this.viewAccount.user.username);
             this.main_groupBox.Text = textChange;
             this.updatePosterImageDisplay();
-            await this.updateActionButtons();
+            await this.updateActionButtonsAsync();
         }
         private async void searchResults_listView_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -542,7 +575,10 @@ namespace View_Account
                     break;
             }
             this.favoriteMediaItem_button.Text = "updating..";
-            await this.updateFavoritesAsync(mediaType == MediaTypeEnum.movie ? this.favoriteMovies_listView : this.favoriteTvSeries_listView);
+            if (mediaType == MediaTypeEnum.movie)
+                await this.updateHomeMoviesAsync();
+            else
+                await this.updateHomeTvSeriesAsync();
             await this.updateSearchMediaActionsAsync();
             this.favoriteMediaItem_button.Enabled = true;
         }
@@ -558,38 +594,30 @@ namespace View_Account
                 await this.updateSearchMediaActionsAsync();
             if (mediaToView is TvSearchResult)
             {
-                if (viewMediaDialog.watchListChanged)
-                    await this.updateWatchlistAsync(this.watchlistTvSeries_listView);
-                if (viewMediaDialog.favoriteChanged)
-                    await this.updateFavoritesAsync(this.favoriteTvSeries_listView);
+                await this.updateHomeTvSeriesAsync();
             }
             else if (mediaToView is MovieSearchResult)
             {
-                if (viewMediaDialog.watchListChanged)
-                    await this.updateWatchlistAsync(this.watchlistMovies_listView);
-                if (viewMediaDialog.favoriteChanged)
-                    await this.updateFavoritesAsync(this.favoriteMovies_listView);
+                await this.updateHomeMoviesAsync();
             }
         }
-        private async void favorites_listView_SelectedIndexChanged(object sender, EventArgs e)
+        private async void home_listView_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Written, 24.12.2019
             
-            await this.updateFavoriteMediaActionsAsync(sender as ListView);
+            await this.updateHomeMediaActionsAsync(sender as ListView);
         }
-        private  async void favoritesRefresh_button_Click(object sender, EventArgs e)
+        private  async void moviesRefresh_button_Click(object sender, EventArgs e)
         {
-            // Written, 24.12.2019
+            // Written, 18.09.2020
 
-            await this.updateFavoritesAsync(this.favoriteMovies_listView);
-            await this.updateFavoritesAsync(this.favoriteTvSeries_listView);
+            await this.updateHomeMoviesAsync();
         }
         private async void refreshWatchlist_button_Click(object sender, EventArgs e)
         {
-            // Written, 01.01.2020
-            
-            await this.updateWatchlistAsync(this.watchlistMovies_listView);
-            await this.updateWatchlistAsync(this.watchlistTvSeries_listView);
+            // Written, 18.09.2020
+
+            await this.updateHomeTvSeriesAsync();
         }
         private async void watchMediaItem_button_Click(object sender, EventArgs e)
         {
@@ -614,7 +642,10 @@ namespace View_Account
                     break;
             }
             this.watchMediaItem_button.Text = "updating..";
-            await this.updateWatchlistAsync(mediaType == MediaTypeEnum.movie ? this.watchlistMovies_listView : this.watchlistTvSeries_listView);
+            if (mediaType == MediaTypeEnum.movie)
+                await this.updateHomeMoviesAsync();
+            else
+                await this.updateHomeTvSeriesAsync();
             await this.updateSearchMediaActionsAsync();
             this.watchMediaItem_button.Enabled = true;
         }
@@ -629,11 +660,15 @@ namespace View_Account
 
         private async void yts_button_Click(object sender, EventArgs e)
         {
-            // Written, 14.09.2020
+            // Written, 17.09.2020
 
-            YTSManager manager = new YTSManager();
-            MovieInfo info = await manager.getMovieDetailsAsync(this.getMediaToView().id);
-            MessageBox.Show(String.Format("Title:{0}\nYear{1}", info.Title, info.Year), "YTS Movie response");
+            this.yts_button.Enabled = false;
+            this.yts_button.Text = "Searching YTS...";
+            Response list = await YTSManager.searchMovieListAsync(this.getMediaToView().name);
+            this.yts_button.Text = "Search YTS";
+            using (YTSMovieListResponseDialog dialog = new YTSMovieListResponseDialog(list))
+                dialog.ShowDialog();
+            this.yts_button.Enabled = true;
         }
     }
 }

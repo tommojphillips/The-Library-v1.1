@@ -59,9 +59,9 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.ForeColor = System.Drawing.Color.MediumSpringGreen;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(699, 254);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
@@ -71,7 +71,7 @@
             // 
             this.pictureBox1.Image = global::View_Account.Properties.Resources.PoweredByTMDb_RectangleGreen;
             this.pictureBox1.Location = new System.Drawing.Point(8, 181);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(172, 69);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -90,7 +90,7 @@
             this.rememberLogonDetaisl_checkBox.FlatAppearance.MouseOverBackColor = System.Drawing.Color.MediumSpringGreen;
             this.rememberLogonDetaisl_checkBox.ForeColor = System.Drawing.Color.DarkSlateBlue;
             this.rememberLogonDetaisl_checkBox.Location = new System.Drawing.Point(153, 144);
-            this.rememberLogonDetaisl_checkBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rememberLogonDetaisl_checkBox.Margin = new System.Windows.Forms.Padding(4);
             this.rememberLogonDetaisl_checkBox.Name = "rememberLogonDetaisl_checkBox";
             this.rememberLogonDetaisl_checkBox.Size = new System.Drawing.Size(152, 21);
             this.rememberLogonDetaisl_checkBox.TabIndex = 12;
@@ -106,7 +106,7 @@
             this.login_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.login_button.ForeColor = System.Drawing.Color.DimGray;
             this.login_button.Location = new System.Drawing.Point(449, 139);
-            this.login_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.login_button.Margin = new System.Windows.Forms.Padding(4);
             this.login_button.Name = "login_button";
             this.login_button.Size = new System.Drawing.Size(100, 28);
             this.login_button.TabIndex = 11;
@@ -137,6 +137,7 @@
             this.register_linkLabel.TabStop = true;
             this.register_linkLabel.Text = "Register a TMDb account";
             this.register_linkLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.register_linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.register_linkLabel_LinkClicked);
             // 
             // username_flowLayoutPanel
             // 
@@ -145,7 +146,7 @@
             this.username_flowLayoutPanel.Controls.Add(this.label1);
             this.username_flowLayoutPanel.Controls.Add(this.username_textBox);
             this.username_flowLayoutPanel.Location = new System.Drawing.Point(119, 65);
-            this.username_flowLayoutPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.username_flowLayoutPanel.Margin = new System.Windows.Forms.Padding(4);
             this.username_flowLayoutPanel.Name = "username_flowLayoutPanel";
             this.username_flowLayoutPanel.Size = new System.Drawing.Size(429, 30);
             this.username_flowLayoutPanel.TabIndex = 7;
@@ -164,7 +165,7 @@
             // username_textBox
             // 
             this.username_textBox.Location = new System.Drawing.Point(137, 4);
-            this.username_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.username_textBox.Margin = new System.Windows.Forms.Padding(4);
             this.username_textBox.Name = "username_textBox";
             this.username_textBox.Size = new System.Drawing.Size(288, 22);
             this.username_textBox.TabIndex = 1;
@@ -177,7 +178,7 @@
             this.flowLayoutPanel1.Controls.Add(this.label2);
             this.flowLayoutPanel1.Controls.Add(this.password_textBox);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(119, 105);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(429, 30);
             this.flowLayoutPanel1.TabIndex = 8;
@@ -196,11 +197,12 @@
             // password_textBox
             // 
             this.password_textBox.Location = new System.Drawing.Point(137, 4);
-            this.password_textBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.password_textBox.Margin = new System.Windows.Forms.Padding(4);
             this.password_textBox.Name = "password_textBox";
             this.password_textBox.Size = new System.Drawing.Size(288, 22);
             this.password_textBox.TabIndex = 1;
             this.password_textBox.Text = "TomDaBird@Vans28";
+            this.password_textBox.UseSystemPasswordChar = true;
             // 
             // LoginDialog
             // 
@@ -210,7 +212,7 @@
             this.Controls.Add(this.groupBox1);
             this.ForeColor = System.Drawing.Color.DimGray;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LoginDialog";

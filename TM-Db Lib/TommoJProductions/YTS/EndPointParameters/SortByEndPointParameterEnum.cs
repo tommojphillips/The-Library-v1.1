@@ -1,4 +1,4 @@
-﻿namespace TommoJProductions.YTS
+﻿namespace TommoJProductions.YTS.EndPointParameters
 {
     /// <summary>
     /// Represents vaild sort by end point parameters.
