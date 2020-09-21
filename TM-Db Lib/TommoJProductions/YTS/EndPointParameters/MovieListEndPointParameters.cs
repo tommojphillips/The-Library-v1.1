@@ -7,7 +7,7 @@
         #region Properties
 
         /// <summary>
-        /// The limit of results per page. 1 to 50.
+        /// The limit of results per page. 1 to 50. default = 20
         /// </summary>
         public int limit
         {
@@ -15,7 +15,7 @@
             set;
         } = 20;
         /// <summary>
-        /// The page to view. Used to see the next page of results. eg. limit=15, page=2 will show you movies 15-30.
+        /// The page to view. Used to see the next page of results. default = 1. eg. limit=15, page=2 will show you movies 15-30.
         /// </summary>
         public int page
         {
@@ -23,7 +23,7 @@
             set;
         } = 1;
         /// <summary>
-        /// Used to filter by a certian quality.
+        /// Used to filter by a certian quality. default = All.
         /// </summary>
         public QualityEndPointParameterEnum quality
         {
@@ -31,7 +31,7 @@
             set;
         } = QualityEndPointParameterEnum.All;
         /// <summary>
-        /// Used to filter by a give min rating. 0 to 9
+        /// Used to filter by a give min rating. 0 to 9. default = 0
         /// </summary>
         public int minRating
         {
@@ -39,7 +39,7 @@
             set;
         } = 0;
         /// <summary>
-        /// Used for movie search, matching on: Movie Title/IMDb Code, Actor Name/IMDb Code, Director Name/IMDb Code.
+        /// Used for movie search, matching on: Movie Title/IMDb Code, Actor Name/IMDb Code, Director Name/IMDb Code. default = 0.
         /// </summary>
         public string query
         {
@@ -47,7 +47,7 @@
             set;
         } = "0";
         /// <summary>
-        /// Used to filter by a given genre (See http://www.imdb.com/genre/ for full list).
+        /// Used to filter by a given genre (See http://www.imdb.com/genre/ for full list). default = "All".
         /// </summary>
         public string genre
         {
@@ -55,7 +55,7 @@
             set;
         } = "All";
         /// <summary>
-        /// Sorts the results by choosen value.
+        /// Sorts the results by choosen value. default = <see cref="SortByEndPointParameterEnum.date_added"/>.
         /// </summary>
         public SortByEndPointParameterEnum sortBy
         {
@@ -63,7 +63,7 @@
             set;
         } = SortByEndPointParameterEnum.date_added;
         /// <summary>
-        /// Orders the results by either Ascending or Descending order.
+        /// Orders the results by either Ascending or Descending order. default = <see cref="OrderByEndPointParameterEnum.desc"/>.
         /// </summary>
         public OrderByEndPointParameterEnum orderBy
         {

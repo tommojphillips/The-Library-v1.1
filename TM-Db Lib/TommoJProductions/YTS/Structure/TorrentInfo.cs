@@ -38,7 +38,7 @@ namespace TommoJProductions.YTS.Structure
         /// </summary>
         public long size_bytes;
         /// <summary>
-        /// Represents the type of file. eg. (bluray)
+        /// Represents the type of file. eg. bluray, web
         /// </summary>
         public string type;
     }

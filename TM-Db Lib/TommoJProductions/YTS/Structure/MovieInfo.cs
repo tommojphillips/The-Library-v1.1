@@ -1,7 +1,9 @@
-﻿namespace TommoJProductions.YTS.Structure
+﻿using Newtonsoft.Json;
+
+namespace TommoJProductions.YTS.Structure
 {
     /// <summary>
-    /// Represents the movie response objects from a request to yts.
+    /// Represents the movie response object from a request to yts.
     /// </summary>
     public class MovieInfo
     {
@@ -10,7 +12,8 @@
         /// <summary>
         /// Represents the background image url.
         /// </summary>
-        public string background_image;
+        [JsonProperty("large_cover_image")]
+        public string poster_path;
         /// <summary>
         /// Represents the movies upload date.
         /// </summary>

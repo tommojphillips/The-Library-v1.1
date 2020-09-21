@@ -12,9 +12,9 @@ namespace View_Account
         /// <summary>
         /// Represents the movie list response to view.
         /// </summary>
-        private Response response = null;
+        private Response<MovieListInfo> response = null;
 
-        public YTSMovieListResponseDialog(Response inResponse)
+        public YTSMovieListResponseDialog(Response<MovieListInfo> inResponse)
         {
             InitializeComponent();
 
@@ -39,19 +39,22 @@ namespace View_Account
             {
                 MovieInfo selectedInfo = this.movies_listView.SelectedItems[0].Tag as MovieInfo;
 
-                for (int i = 0; i < selectedInfo.torrents.Length; i++)
+                if (selectedInfo != null)
                 {
-                    TorrentInfo torrentInfo = selectedInfo.torrents[i];
-                    string[] subItems = new string[]
+                    for (int i = 0; i < selectedInfo.torrents.Length; i++)
                     {
+                        TorrentInfo torrentInfo = selectedInfo.torrents[i];
+                        string[] subItems = new string[]
+                        {
                         String.Format("{0} ({1})", torrentInfo.type, torrentInfo.quality),
                         torrentInfo.size,
                         torrentInfo.date_uploaded.ToString(),
                         torrentInfo.seeds.ToString(),
                         torrentInfo.peers.ToString(),
                         torrentInfo.hash
-                    };
-                    this.torrents_listView.Items.Add(new ListViewItem(subItems) { Tag = torrentInfo });
+                        };
+                        this.torrents_listView.Items.Add(new ListViewItem(subItems) { Tag = torrentInfo });
+                    }
                 }
             }
             else

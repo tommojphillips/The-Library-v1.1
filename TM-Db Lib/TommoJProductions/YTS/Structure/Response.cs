@@ -3,12 +3,13 @@
     /// <summary>
     /// Represents a yts response object.
     /// </summary>
-    public class Response
+    /// <typeparam name="T">Represents the response data.</typeparam>
+    public class Response<T>
     {
         // Written, 19.09.2020
 
         public Meta meta;
-        public Data data;
+        public T data;
         public string status;
         public string status_message;
     }

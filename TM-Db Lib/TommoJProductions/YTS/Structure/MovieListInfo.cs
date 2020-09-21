@@ -1,11 +1,11 @@
 ﻿namespace TommoJProductions.YTS.Structure
 {
     /// <summary>
-    /// Represents yts (yify) data of the response.
+    /// Represents a yts movie list response.
     /// </summary>
-    public class Data
+    public class MovieListInfo
     {
-        // Written, 19.09.2020
+        // Written, 21.09.2020
 
         /// <summary>
         /// Represents the movie count.

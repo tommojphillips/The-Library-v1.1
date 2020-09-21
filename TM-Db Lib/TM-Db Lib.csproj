@@ -45,6 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="TommoJProductions\TMDB\Account\User.cs" />
     <Compile Include="TommoJProductions\ApplicationInfomation.cs" />
     <Compile Include="TommoJProductions\TMDB\Auth\Session.cs" />
@@ -66,12 +71,12 @@
     <Compile Include="TommoJProductions\TMDB\Media\MovieMedia\MovieStatusEnum.cs" />
     <Compile Include="TommoJProductions\TMDB\Review.cs" />
     <Compile Include="TommoJProductions\TMDB\Network.cs" />
-    <Compile Include="TommoJProductions\TMDB\Net\DelayingEventArgs.cs" />
-    <Compile Include="TommoJProductions\TMDB\Net\RequestFailedEventArgs.cs" />
-    <Compile Include="TommoJProductions\TMDB\Net\RequestSendingEventArgs.cs" />
-    <Compile Include="TommoJProductions\TMDB\Net\RequestSentEventArgs.cs" />
-    <Compile Include="TommoJProductions\TMDB\Net\TMDbStatusResponse.cs" />
-    <Compile Include="TommoJProductions\TMDB\Net\WebResponse.cs" />
+    <Compile Include="TommoJProductions\Net\DelayingEventArgs.cs" />
+    <Compile Include="TommoJProductions\Net\RequestFailedEventArgs.cs" />
+    <Compile Include="TommoJProductions\Net\RequestSendingEventArgs.cs" />
+    <Compile Include="TommoJProductions\Net\RequestSentEventArgs.cs" />
+    <Compile Include="TommoJProductions\Net\TMDbStatusResponse.cs" />
+    <Compile Include="TommoJProductions\Net\WebResponse.cs" />
     <Compile Include="TommoJProductions\TMDB\Media\PeopleMedia\PersonResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TommoJProductions\TMDB\Media\IdResultObject.cs" />
@@ -94,7 +99,7 @@
     <Compile Include="TommoJProductions\YTS\EndPointParameters\OrderByEndPointParameterEnum.cs" />
     <Compile Include="TommoJProductions\YTS\EndPointParameters\QualityEndPointParameterEnum.cs" />
     <Compile Include="TommoJProductions\YTS\EndPointParameters\SortByEndPointParameterEnum.cs" />
-    <Compile Include="TommoJProductions\YTS\Structure\Data.cs" />
+    <Compile Include="TommoJProductions\YTS\Structure\MovieListInfo.cs" />
     <Compile Include="TommoJProductions\YTS\Structure\Meta.cs" />
     <Compile Include="TommoJProductions\YTS\Structure\MovieInfo.cs" />
     <Compile Include="TommoJProductions\YTS\Structure\Response.cs" />
@@ -103,6 +108,22 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PoweredByTMDb_RectangleGreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PoweredByTMDb_SquareGreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\StackedTMDb_Green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
