@@ -49,9 +49,9 @@ namespace View_Account
 
             // Written, 21.01.2020
 
-            this.media = inMedia;
-            this.selectedReview = this.media.reviews[0];
-            this.init();
+            media = inMedia;
+            selectedReview = media.reviews[0];
+            init();
         }
 
         #endregion
@@ -65,18 +65,18 @@ namespace View_Account
         {
             // Written, 16.01.2020
 
-            this.reviewContent_groupBox.Text = this.selectedReview.author;
-            this.reviewUrl_linkLabel.Text = this.selectedReview.url;
-            this.mediaDescription_richTextBox.Text = this.selectedReview.content;
-            this.numOfReviews_label.Text = String.Format("{0}/{1} Reviews", this.selectedReviewIndex + 1, this.media.reviews.Length);
-            if (this.selectedReviewIndex < this.media.reviews.Length-1)
-                this.nextReview_button.Enabled = true;
+            reviewContent_groupBox.Text = selectedReview.author;
+            reviewUrl_linkLabel.Text = selectedReview.url;
+            mediaDescription_richTextBox.Text = selectedReview.content;
+            numOfReviews_label.Text = String.Format("{0}/{1} Reviews", selectedReviewIndex + 1, media.reviews.Length);
+            if (selectedReviewIndex < media.reviews.Length-1)
+                nextReview_button.Enabled = true;
             else
-                this.nextReview_button.Enabled = false;
-            if (this.selectedReviewIndex > 0)
-                this.prevReview_button.Enabled = true;
+                nextReview_button.Enabled = false;
+            if (selectedReviewIndex > 0)
+                prevReview_button.Enabled = true;
             else
-                this.prevReview_button.Enabled = false;
+                prevReview_button.Enabled = false;
         }
         /// <summary>
         /// Executes selected review shared logic.
@@ -85,8 +85,8 @@ namespace View_Account
         {
             // Written, 21.01.2020
 
-            this.selectedReview = this.media.reviews[this.selectedReviewIndex];
-            this.init();
+            selectedReview = media.reviews[selectedReviewIndex];
+            init();
         }
 
         #endregion
@@ -97,21 +97,21 @@ namespace View_Account
         {
             // Written, 16.01.2020
 
-            this.selectedReviewIndex--;
-            this.selectedReviewChanged();
+            selectedReviewIndex--;
+            selectedReviewChanged();
         }
         private void nextReview_button_Click(object sender, EventArgs e)
         {
             // Written, 16.01.2020
 
-            this.selectedReviewIndex++;
-            this.selectedReviewChanged();
+            selectedReviewIndex++;
+            selectedReviewChanged();
         }        
         private void reviewUrl_linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // Written, 21.01.2020
 
-            System.Diagnostics.Process.Start(this.selectedReview.url);
+            System.Diagnostics.Process.Start(selectedReview.url);
         }
         
         #endregion

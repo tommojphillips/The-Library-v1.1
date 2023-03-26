@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TM_Db_Lib;
-using TM_Db_Lib.Search;
-using TM_Db_Lib.Media;
+
+using TommoJProductions.TMDB;
+using TommoJProductions.TMDB.Media;
+using TommoJProductions.TMDB.Search;
 
 namespace Testing_Reviews
 {

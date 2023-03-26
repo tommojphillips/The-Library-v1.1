@@ -99,7 +99,7 @@ namespace TommoJProductions.TMDB.Certifications
             // Written, 09.01.2020
 
             string address = String.Format("{0}/movie/list?api_key={1}", ApplicationInfomation.CERTIFICATIONS_ADDRESS, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return  jObject["certifications"].ToObject<Certification>();
         }
         /// <summary>
@@ -110,7 +110,7 @@ namespace TommoJProductions.TMDB.Certifications
             // Written, 09.01.2020
 
             string address = String.Format("{0}/tv/list?api_key={1}", ApplicationInfomation.CERTIFICATIONS_ADDRESS, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject["certifications"].ToObject<Certification>();
         }
 

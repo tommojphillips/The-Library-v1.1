@@ -98,9 +98,9 @@ namespace TommoJProductions.TMDB.Media
             // Written, 07.04.2018
 
             string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, inMovieID, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             MovieResult result = jObject.ToObject<MovieResult>();
-            await result.retrieveMediaImages();
+            await result.retrieveMediaImagesAsync();
             return result;
         }
 
@@ -118,7 +118,7 @@ namespace TommoJProductions.TMDB.Media
             // Written, 07.04.2018
 
             string address = String.Format("{0}/{1}/similar?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, this.id, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject["results"].ToObject<MovieSearchResult[]>();
         }
         /// <summary>
@@ -131,7 +131,7 @@ namespace TommoJProductions.TMDB.Media
             // Written, 07.04.2018
 
             string address = String.Format("{0}/{1}/recommendations?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, this.id, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject["results"].ToObject<MovieSearchResult[]>();
         }
 

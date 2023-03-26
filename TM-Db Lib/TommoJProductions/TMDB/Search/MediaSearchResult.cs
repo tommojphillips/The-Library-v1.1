@@ -133,14 +133,24 @@ namespace TommoJProductions.TMDB.Search
         #endregion
 
         #region Methods
-        public async Task retrieveMediaImages(string inOverrideImageAddressPrefix = null) 
+
+        public void retrieveMediaImages(string inOverrideImageAddressPrefix = null)
+        {
+            // Written, 24.12.2019
+
+            if (!string.IsNullOrWhiteSpace(this.poster_path))
+                this.poster_image = WebResponse.downloadImage(new Uri((inOverrideImageAddressPrefix ?? ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS) + this.poster_path));
+            //if (!string.IsNullOrWhiteSpace(this.backdrop_path))
+            //    this.backdrop_image = await WebResponse.downloadImageAsync(new Uri((inOverrideImageAddressPrefix ?? ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS) + this.backdrop_path));
+        }
+        public async Task retrieveMediaImagesAsync(string inOverrideImageAddressPrefix = null) 
         {
             // Written, 24.12.2019
 
             if (!string.IsNullOrWhiteSpace(this.poster_path))
                 this.poster_image = await WebResponse.downloadImageAsync(new Uri((inOverrideImageAddressPrefix ?? ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS) + this.poster_path));
-            if (!string.IsNullOrWhiteSpace(this.backdrop_path))
-                this.backdrop_image = await WebResponse.downloadImageAsync(new Uri((inOverrideImageAddressPrefix ?? ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS) + this.backdrop_path));
+            //if (!string.IsNullOrWhiteSpace(this.backdrop_path))
+            //    this.backdrop_image = await WebResponse.downloadImageAsync(new Uri((inOverrideImageAddressPrefix ?? ApplicationInfomation.IMAGE_ORIGINAL_ADDRESS) + this.backdrop_path));
         }
 
         #endregion

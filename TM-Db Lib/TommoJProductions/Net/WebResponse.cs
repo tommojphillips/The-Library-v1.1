@@ -95,6 +95,47 @@ namespace TommoJProductions.Net
         /// </summary>
         /// <param name="inUri">The url to request from.</param>
         /// <param name="inData">The data to pass.</param>
+        public static HttpWebResponse sendRequest(Uri inUri, byte[] inData = null)
+        {
+            // Written, 05.06.2018
+
+            HttpWebRequest request = WebRequest.Create(inUri) as HttpWebRequest;
+            HttpWebResponse response = null;
+            TMDbStatusResponse statusResponse = null;
+            onRequestSending(inUri);
+            try
+            {
+                if (inData != null)
+                {
+                    request.AllowWriteStreamBuffering = true;
+                    request.Method = "POST";
+                    request.ContentType = "application/json";
+                    request.ContentLength = inData.Length;
+                    using (Stream post = request.GetRequestStream())
+                    {
+                        post.Write(inData, 0, inData.Length);
+                        post.Close();
+                    }
+                }
+
+                response = request.GetResponse() as HttpWebResponse;
+                onRequestSent(inUri, response);
+                return response;
+            }
+            catch (WebException)
+            {                
+                onRequestFailed(inUri, response, statusResponse);
+                if (statusResponse is null)
+                    throw;
+                else
+                    throw new Exception(String.Format("{0}: Code {1}", statusResponse.status_message, statusResponse.status_code));
+            }
+        }
+        /// <summary>
+        /// Sends a request to the provided url, and returns a <see cref="HttpWebResponse"/>.
+        /// </summary>
+        /// <param name="inUri">The url to request from.</param>
+        /// <param name="inData">The data to pass.</param>
         public static async Task<HttpWebResponse> sendRequestAsync(Uri inUri, byte[] inData = null)
         {
             // Written, 05.06.2018
@@ -140,10 +181,10 @@ namespace TommoJProductions.Net
                         status_code = 401
                     };
                 }
-                if (successfulPing)
+                if (successfulPing && ex.Status == WebExceptionStatus.Success)
                 {
                     response = ex.Response as HttpWebResponse;
-                    statusResponse = (await toJObject(response)).ToObject<TMDbStatusResponse>();
+                    statusResponse = (await toJObjectAsync(response)).ToObject<TMDbStatusResponse>();
                     HttpStatusCode statusCode = response.StatusCode;
                     bool isInt = Int32.TryParse(statusCode.ToString(), out int code);
 
@@ -166,13 +207,26 @@ namespace TommoJProductions.Net
         /// Returns a http web request in the json format wrapped within the <see cref="JObject"/> object.
         /// </summary>
         /// <param name="inResponse">The response of the request.</param>
-        public static async Task<JObject> toJObject(HttpWebResponse inResponse)
+        public static async Task<JObject> toJObjectAsync(HttpWebResponse inResponse)
         {
             // Written, 10.03.2018
 
             using (StreamReader reader = new StreamReader(inResponse.GetResponseStream()))
             {
                 return JObject.Parse(await reader.ReadToEndAsync());
+            }
+        }
+        /// <summary>
+        /// Returns a http web request in the json format wrapped within the <see cref="JObject"/> object.
+        /// </summary>
+        /// <param name="inResponse">The response of the request.</param>
+        public static JObject toJObject(HttpWebResponse inResponse)
+        {
+            // Written, 10.03.2018
+
+            using (StreamReader reader = new StreamReader(inResponse.GetResponseStream()))
+            {
+                return JObject.Parse(reader.ReadToEnd());
             }
         }
         /// <summary>
@@ -214,6 +268,44 @@ namespace TommoJProductions.Net
             return downloadedData;
         }
         /// <summary>
+        /// Connects to a URL and attempts to download the file. Returns an array of bytes.
+        /// </summary>
+        /// <param name="inUri">The URL to connect to.</param>
+        /// <exception cref="NotSupportedException"/>
+        /// <exception cref="ArgumentException"/>
+        /// <exception cref="ArgumentNullException"/>
+        /// <exception cref="System.Security.SecurityException"/>
+        /// <exception cref="UriFormatException"/>
+        /// <exception cref="ArgumentOutOfRangeException"/>
+        /// <exception cref="IOException"/>
+        /// <exception cref="ObjectDisposedException"/>
+        public static byte[] downloadData(Uri inUri)
+        {
+            // Written, 22.05.2018
+
+            System.Net.WebResponse response = sendRequest(inUri);
+            Stream stream = response.GetResponseStream();
+            byte[] downloadedData;
+            byte[] buffer = new byte[1024];
+            MemoryStream memStream = new MemoryStream();
+            while (true)
+            {
+                //Try to read the data
+                int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
+                if (bytesRead == 0)
+                    break;
+                else
+                    memStream.Write(buffer, 0, bytesRead);
+            }
+            downloadedData = memStream.ToArray();
+
+            stream.Close();
+            memStream.Close();
+
+            return downloadedData;
+        }
+        /// <summary>
         /// Attempts to download the image data and then attempts to load the data into an <see cref="Image"/> object. returns the image.
         /// </summary>
         /// <param name="inUri">The URL to connect to.</param>
@@ -224,6 +316,23 @@ namespace TommoJProductions.Net
             // Written, 22.05.2018
 
             byte[] imageData = await downloadDataAsync(inUri);
+            MemoryStream stream = new MemoryStream(imageData);
+            Image img = Image.FromStream(stream);
+            stream.Close();
+
+            return img;
+        }
+        /// <summary>
+        /// Attempts to download the image data and then attempts to load the data into an <see cref="Image"/> object. returns the image.
+        /// </summary>
+        /// <param name="inUri">The URL to connect to.</param>
+        /// <exception cref="ArgumentException"/>
+        /// <exception cref="ArgumentNullException"/>
+        public static Image downloadImage(Uri inUri)
+        {
+            // Written, 22.05.2018
+
+            byte[] imageData = downloadData(inUri);
             MemoryStream stream = new MemoryStream(imageData);
             Image img = Image.FromStream(stream);
             stream.Close();
@@ -267,7 +376,7 @@ namespace TommoJProductions.Net
         {
             // Written, 24.11.2019
 
-            Console.WriteLine("Request failed: {0} Code {1}.", inStatusResponse.status_message, inStatusResponse.status_code);
+            Console.WriteLine("Request failed: {0} Code {1} ({2})", inStatusResponse?.status_message, inStatusResponse?.status_code, inUri.OriginalString);
             RequestFailed?.Invoke(null, new RequestFailedEventArgs(inUri, inResponse, inStatusResponse));
         }
         /// <summary>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TommoJProductions.Net;
+using TM_Db_Lib.TommoJProductions.TMDB.Media;
 
 namespace TommoJProductions.TMDB.Search
 {
@@ -66,10 +67,12 @@ namespace TommoJProductions.TMDB.Search
             set;
         }
 
+        public ExternalIdsResultObject externalIds { get; set; }
 
         #endregion
 
-        #region Static Methods
+
+        #region Methods
 
         /// <summary>
         /// Returns a list of <see cref="MovieSearchResult"/> objects with the list of searched movies.
@@ -94,8 +97,16 @@ namespace TommoJProductions.TMDB.Search
             // Written, 01.12.2019
 
             string address = String.Format("{0}/{1}/reviews?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, this.id, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             this.reviews = jObject["results"].ToObject<Review[]>();
+        }
+        public async Task<ExternalIdsResultObject> retrieveExternalIds() 
+        {
+            string address = String.Format("{0}/{1}/external_ids?api_key={2}", ApplicationInfomation.MOVIE_ADDRESS, this.id, ApplicationInfomation.API_KEY);
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
+            externalIds = jObject.ToObject<ExternalIdsResultObject>();
+
+            return externalIds;
         }
 
         #endregion

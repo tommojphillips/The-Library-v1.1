@@ -43,6 +43,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EzTvResponseDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EzTvResponseDialog.Designer.cs">
+      <DependentUpon>EzTvResponseDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoadingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,12 +93,21 @@
     <Compile Include="ViewReviewsDialog.Designer.cs">
       <DependentUpon>ViewReviewsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="EzTvResponseDialog1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EzTvResponseDialog1.Designer.cs">
+      <DependentUpon>EzTvResponseDialog1.cs</DependentUpon>
+    </Compile>
     <Compile Include="YTSMovieListResponseDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="YTSMovieListResponseDialog.Designer.cs">
       <DependentUpon>YTSMovieListResponseDialog.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="EzTvResponseDialog.resx">
+      <DependentUpon>EzTvResponseDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LoadingDialog.resx">
       <DependentUpon>LoadingDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -115,6 +130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ViewReviewsDialog.resx">
       <DependentUpon>ViewReviewsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EzTvResponseDialog1.resx">
+      <DependentUpon>EzTvResponseDialog1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="YTSMovieListResponseDialog.resx">
       <DependentUpon>YTSMovieListResponseDialog.cs</DependentUpon>

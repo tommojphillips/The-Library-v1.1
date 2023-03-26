@@ -58,7 +58,7 @@ namespace View_Account
         /// <param name="inUser">The user to use/view.</param>
         public ViewAccount(User inUser) 
         {
-            this.user = inUser ?? throw new NullReferenceException("User cannot be null. invaild argument.");
+            user = inUser ?? throw new NullReferenceException("User cannot be null. invaild argument.");
         }
 
         #endregion
@@ -72,7 +72,7 @@ namespace View_Account
         {
             // Written, 17.12.2019
 
-            this.favoritedMovies = await this.user.getFavoriteMovies();
+            favoritedMovies = await user.getFavoriteMovies();
         }
         /// <summary>
         /// Retrieves favorited tv series, puts media in <see cref="favoritedTvSeries"/>.
@@ -81,7 +81,7 @@ namespace View_Account
         {
             // Written, 17.12.2019
 
-            this.favoritedTvSeries = await this.user.getFavoriteTvSeries();
+            favoritedTvSeries = await user.getFavoriteTvSeries();
         }
         /// <summary>
         /// Retrieves watchlisted movies, puts media in <see cref="watchlistMovies"/>.
@@ -90,7 +90,7 @@ namespace View_Account
         {
             // Written, 17.12.2019
 
-            this.watchlistMovies = await this.user.getWatchlistMovies();
+            watchlistMovies = await user.getWatchlistMovies();
         }
         /// <summary>
         /// Retrieves watchlisted tv series, puts media in <see cref="watchlistTvSeries"/>.
@@ -99,7 +99,7 @@ namespace View_Account
         {
             // Written, 17.12.2019
 
-            this.watchlistTvSeries = await this.user.getWatchlistTvSeries();
+            watchlistTvSeries = await user.getWatchlistTvSeries();
         }
 
         #endregion

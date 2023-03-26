@@ -86,7 +86,7 @@ namespace TommoJProductions.TMDB.Account
             // Written, 04.12.2019
 
             string address = String.Format("{0}?session_id={1}&api_key={2}", ApplicationInfomation.ACCOUNT_ADDRESS, inSessionId, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             User user = jObject.ToObject<User>();
             user.session = new Auth.Session()
             {
@@ -113,7 +113,7 @@ namespace TommoJProductions.TMDB.Account
                 new JProperty("media_type", inMediaType.ToString()),
                 new JProperty("media_id", inMediaId),
                 new JProperty("watchlist", inWatchlist));
-            await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address), System.Text.Encoding.UTF8.GetBytes(requestData.ToString())));
+            await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address), System.Text.Encoding.UTF8.GetBytes(requestData.ToString())));
         }
         /// <summary>
         /// Retrieves watchlisted movies. max 20 items per page.
@@ -125,7 +125,7 @@ namespace TommoJProductions.TMDB.Account
 
             string address = String.Format("{0}/{1}/watchlist/movies?session_id={2}&api_key={3}&page={4}",
                 ApplicationInfomation.ACCOUNT_ADDRESS, this.id, this.session.session_id, ApplicationInfomation.API_KEY, inPage);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject["results"].ToObject<MovieSearchResult[]>();
         }
         /// <summary>
@@ -138,7 +138,7 @@ namespace TommoJProductions.TMDB.Account
 
             string address = String.Format("{0}/{1}/watchlist/tv?session_id={2}&api_key={3}&page={4}",
                 ApplicationInfomation.ACCOUNT_ADDRESS, this.id, this.session.session_id, ApplicationInfomation.API_KEY, inPage);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject["results"].ToObject<TvSearchResult[]>();
         }
         /// <summary>
@@ -159,7 +159,7 @@ namespace TommoJProductions.TMDB.Account
                 new JProperty("media_type", inMediaType.ToString()),
                 new JProperty("media_id", inMediaId),
                 new JProperty("favorite", inFavorite));
-            await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address), System.Text.Encoding.UTF8.GetBytes(requestData.ToString())));
+            await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address), System.Text.Encoding.UTF8.GetBytes(requestData.ToString())));
         }
         /// <summary>
         /// Retrieves favorited movies. max 20 items per page.
@@ -171,7 +171,7 @@ namespace TommoJProductions.TMDB.Account
 
             string address = String.Format("{0}/{1}/favorite/movies?session_id={2}&api_key={3}&page={4}",
                 ApplicationInfomation.ACCOUNT_ADDRESS, this.id, this.session.session_id, ApplicationInfomation.API_KEY, inPage);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject["results"].ToObject<MovieSearchResult[]>();
         }
         /// <summary>
@@ -184,7 +184,7 @@ namespace TommoJProductions.TMDB.Account
 
             string address = String.Format("{0}/{1}/favorite/tv?session_id={2}&api_key={3}&page={4}",
                 ApplicationInfomation.ACCOUNT_ADDRESS, this.id, this.session.session_id, ApplicationInfomation.API_KEY, inPage);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject["results"].ToObject<TvSearchResult[]>();
         }
 

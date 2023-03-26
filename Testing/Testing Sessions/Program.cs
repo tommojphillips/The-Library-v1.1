@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using TM_Db_Lib;
-using TM_Db_Lib.Auth;
-using TM_Db_Lib.Account;
+
+using TommoJProductions;
+using TommoJProductions.TMDB.Account;
+using TommoJProductions.TMDB.Auth;
 
 namespace Testing_Sessions
 {

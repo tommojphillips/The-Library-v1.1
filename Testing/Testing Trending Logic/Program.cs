@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TM_Db_Lib;
-using TM_Db_Lib.Media;
-using TM_Db_Lib.Search;
+
+using TommoJProductions.TMDB.Media;
+using TommoJProductions.TMDB.Search;
+using TommoJProductions.TMDB.Trending;
 
 namespace Testing_Trending_Logic
 {

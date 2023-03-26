@@ -36,7 +36,7 @@ namespace TommoJProductions.TMDB.Configuration
             // Written, 09.12.2019
 
             string address = String.Format("{0}?api_key={1}", ApplicationInfomation.CONFIGURATION_ADDRESS, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             this.apiConfig = jObject.ToObject<ApiConfigObject>();
         }
 

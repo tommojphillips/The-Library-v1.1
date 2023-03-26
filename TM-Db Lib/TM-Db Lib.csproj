@@ -50,6 +50,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TommoJProductions\EzTV\EndPointParameters\GetTorrrentsEndPointParameters.cs" />
+    <Compile Include="TommoJProductions\EzTV\EztvManager.cs" />
+    <Compile Include="TommoJProductions\EzTV\Structure\GetTorrentsInfo.cs" />
+    <Compile Include="TommoJProductions\EzTV\Structure\Response.cs" />
     <Compile Include="TommoJProductions\TMDB\Account\User.cs" />
     <Compile Include="TommoJProductions\ApplicationInfomation.cs" />
     <Compile Include="TommoJProductions\TMDB\Auth\Session.cs" />
@@ -67,6 +71,7 @@
     <Compile Include="TommoJProductions\TMDB\Find\Find.cs" />
     <Compile Include="TommoJProductions\TMDB\Genre.cs" />
     <Compile Include="TommoJProductions\Image\ImageExtentions.cs" />
+    <Compile Include="TommoJProductions\TMDB\Media\ExternalIdsResultObject.cs" />
     <Compile Include="TommoJProductions\TMDB\Media\MovieMedia\MovieResult.cs" />
     <Compile Include="TommoJProductions\TMDB\Media\MovieMedia\MovieStatusEnum.cs" />
     <Compile Include="TommoJProductions\TMDB\Review.cs" />
@@ -125,5 +130,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

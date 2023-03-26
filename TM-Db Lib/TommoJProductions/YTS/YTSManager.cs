@@ -30,7 +30,7 @@ namespace TommoJProductions.YTS
         /// <summary>
         /// Represents yts main domain.
         /// </summary>
-        public const string YTS_ADDRESS = "https://www.yst.am";
+        public const string YTS_ADDRESS = "https://yts.homes/";
         /// <summary>
         /// Represents the yts address v2 api
         /// </summary>
@@ -83,7 +83,7 @@ namespace TommoJProductions.YTS
                 Enum.GetName(typeof(QualityEndPointParameterEnum), inEndPointParameters.quality).Replace("_", ""), inEndPointParameters.minRating, inEndPointParameters.query, inEndPointParameters.genre,
                 Enum.GetName(typeof(SortByEndPointParameterEnum), inEndPointParameters.sortBy), Enum.GetName(typeof(OrderByEndPointParameterEnum), inEndPointParameters.orderBy));
             string address = String.Format("{0}{1}/{2}?{3}", YTS_ADDRESS, YTS_ADDRESS_API_V2, YTS_MOVIE_LISTS_ADDRESS, parameters);            
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject.ToObject<Response<MovieListInfo>>();
         }
         /// <summary>
@@ -96,7 +96,7 @@ namespace TommoJProductions.YTS
 
             string parameters = String.Format("query_term={0}", inQuery);
             string address = String.Format("{0}{1}/{2}?{3}", YTS_ADDRESS, YTS_ADDRESS_API_V2, YTS_MOVIE_LISTS_ADDRESS, parameters);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject.ToObject<Response<MovieListInfo>>();
         }
         /// <summary>

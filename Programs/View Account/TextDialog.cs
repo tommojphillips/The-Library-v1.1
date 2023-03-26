@@ -16,7 +16,7 @@ namespace View_Account
         {
             get 
             {
-                return this.textInput_textBox.Text;
+                return textInput_textBox.Text;
             }
         }
 
@@ -26,8 +26,8 @@ namespace View_Account
 
             InitializeComponent();
 
-            this.Text = inTitle;
-            this.textInput_label.Text = inProperty;
+            Text = inTitle;
+            textInput_label.Text = inProperty;
         }
     }
 }

@@ -69,7 +69,7 @@ namespace TommoJProductions.TMDB
             // Written, 30.05.2018
 
             string address = String.Format(@"{0}/{1}?api_key={2}", ApplicationInfomation.NETWORK_ADDRESS, network_id, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             Network searchedNetwork = jObject.ToObject<Network>();
 
             this.id = searchedNetwork.id;

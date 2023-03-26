@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TM_Db_Lib.Search;
-using TM_Db_Lib;
+
+using TommoJProductions;
+using TommoJProductions.TMDB.Search;
 
 namespace Testing_Multi_Search_Logic
 {
@@ -30,7 +31,7 @@ namespace Testing_Multi_Search_Logic
             int totalResults = 0;
             for (int i = 0; i < ApplicationInfomation.NUMBER_OF_ITEMS_PER_PAGE; i++)
             {
-                MovieSearchResult movie = multiSearch.movies[i];
+                MovieSearchResult movie = multiSearch.movie_results[i];
                 if (movie != null)
                 {
                     Console.WriteLine("\t[MOVIE] {0} ({1})", movie.name, movie.release_date);
@@ -38,7 +39,7 @@ namespace Testing_Multi_Search_Logic
                 }
                 else
                 {
-                    TvSearchResult tvSeries = multiSearch.tvSeries[i];
+                    TvSearchResult tvSeries = multiSearch.tv_results[i];
                     if (tvSeries != null)
                     {
                         Console.WriteLine("\t[TV] {0} ({1})", tvSeries.name, tvSeries.release_date);
@@ -46,7 +47,7 @@ namespace Testing_Multi_Search_Logic
                     }
                     else
                     {
-                        PeopleSearchResult person = multiSearch.people[i];
+                        PeopleSearchResult person = multiSearch.person_results[i];
                         if (person != null)
                         {
                             Console.WriteLine("\t[PERSON] {0} ({1})", person.id, person.profile_path);

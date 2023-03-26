@@ -45,7 +45,7 @@ namespace TommoJProductions.TMDB.Auth
             // Written, 04.12.2019
 
             string address = String.Format("{0}?api_key={1}", ApplicationInfomation.AUTH_TOKEN_NEW_ADDRESS, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject.ToObject<Token>();
         }
 

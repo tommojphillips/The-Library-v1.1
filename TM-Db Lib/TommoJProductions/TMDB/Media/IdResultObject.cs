@@ -29,7 +29,7 @@ namespace TommoJProductions.TMDB.Media
             // Written, 26.11.2019
 
             string address = String.Format("{0}?api_key={1}&query={2}&page={3}", inSearchAddressPrefix, ApplicationInfomation.API_KEY, inSearchPhrase.Replace(" ", "+"), inPage);
-            return await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            return await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
         }
         /// <summary>
         /// Retrieves jtokens

@@ -12,6 +12,13 @@ using TommoJProductions.TMDB.Discover;
 using TommoJProductions.YTS;
 using TommoJProductions.YTS.Structure;
 using TommoJProductions.YTS.EndPointParameters;
+using TommoJProductions.EzTV;
+using TommoJProductions.EzTV.EndPointParameters;
+using TommoJProductions.EzTV.Structure;
+using TM_Db_Lib.TommoJProductions.TMDB.Media;
+using System.Threading;
+using System.Drawing;
+using TommoJProductions.TMDB.Trending;
 
 namespace View_Account
 {
@@ -71,6 +78,11 @@ namespace View_Account
             get;
             set;
         }
+
+        private ExternalIdsResultObject selectedMediaExternalIds;
+        private Trending trending;
+        private MediaSearchResult trending_selectedMedia;
+
         /// <summary>
         /// Represents the discover parameters.
         /// </summary>
@@ -101,6 +113,53 @@ namespace View_Account
         #region Methods
 
         /// <summary>
+        /// Initialzies discover.
+        /// </summary>
+        private void initDiscover()
+        {
+            // Written, 09.01.2020
+
+            discoverParameters = new DiscoverParameters();
+            discover_sortByMembers_comboBox.Items.AddRange(Enum.GetNames(typeof(MediaSortByMembersEnum)));
+            discover_sortByAscDesc_comboBox.Items.AddRange(Enum.GetNames(typeof(MediaSortByAscDescEnum)));
+
+            discover_sortByAscDesc_comboBox.SelectedIndex = 0;
+            discover_sortByMembers_comboBox.SelectedIndex = 0;
+        }
+        /// <summary>
+        /// Initialzies trending.
+        /// </summary>
+        private async Task initTrending()
+        {
+            // Written, 15.10.2022
+
+            trending_time_comboBox.Items.AddRange(Enum.GetNames(typeof(TrendingTimeWindowEnum)));
+            trending_allowedMedia_comboBox.Items.AddRange(Enum.GetNames(typeof(TrendingAllowedMediaTypesEnum)));
+
+            trending_time_comboBox.SelectedIndex = 0;
+            trending_allowedMedia_comboBox.SelectedIndex = 0;
+
+            trending_time_comboBox.SelectedIndexChanged += trendingSelectedIndexChanged;
+            trending_allowedMedia_comboBox.SelectedIndexChanged += trendingSelectedIndexChanged;
+
+            await refreshTrendingAsync();
+        }
+        /// <summary>
+        /// Initializes yts tab.
+        /// </summary>
+        private void initYts()
+        {
+            // Written, 21.09.2020
+
+            ytsQuality_comboBox.Items.AddRange(Enum.GetNames(typeof(QualityEndPointParameterEnum)));
+            ytsQuality_comboBox.SelectedIndex = 0;
+            ytsSortBy_comboBox.Items.AddRange(Enum.GetNames(typeof(SortByEndPointParameterEnum)));
+            ytsSortBy_comboBox.SelectedIndex = 0;
+            ytsOrderBy_comboBox.Items.AddRange(Enum.GetNames(typeof(OrderByEndPointParameterEnum)));
+            ytsOrderBy_comboBox.SelectedIndex = 0;
+        }
+
+        /// <summary>
         /// Login to tmdb account function and logic. Returns bool whether the login was successful or not.
         /// </summary>
         internal async Task<bool> loginTMDbAsync()
@@ -113,7 +172,7 @@ namespace View_Account
             {
                 loadingDialog.Show(this);
                 Token token = null;
-                this.loadingDialog.loadingWhatText = "Retrieving Token";
+                loadingDialog.loadingWhatText = "Retrieving Token";
                 try
                 {
                     token = await Token.retrieveTokenAsync();
@@ -125,7 +184,7 @@ namespace View_Account
                 if (token?.success ?? false)
                 {
                     Session session = null;
-                    this.loadingDialog.loadingWhatText = "Creating Session";
+                    loadingDialog.loadingWhatText = "Creating Session";
                     try
                     {
                         session = await Session.createSessionWithLoginAsync(loginDialog.username, loginDialog.password, token.request_token);
@@ -136,11 +195,11 @@ namespace View_Account
                     }
                     if (session?.success ?? false)
                     {
-                        this.loadingDialog.loadingWhatText = "Retrieving User";
+                        loadingDialog.loadingWhatText = "Retrieving User";
                         try
                         {
                             User user = await User.retrieveUserDetailsAsync(session.session_id);
-                            this.viewAccount = new ViewAccount(user);
+                            viewAccount = new ViewAccount(user);
                         }
                         catch (Exception ex)
                         {
@@ -151,18 +210,19 @@ namespace View_Account
             }
             if (!(exception is null))
             {
-                LoadingDialog errorLoadingDialog = new LoadingDialog(this.loadingDialog.programNameText)
+                LoadingDialog errorLoadingDialog = new LoadingDialog(loadingDialog.programNameText)
                 {
                     errorMessage = exception.Message,
-                    loadingText = this.loadingDialog.Text,
-                    loadingWhatText = this.loadingDialog.loadingWhatText
+                    loadingText = loadingDialog.Text,
+                    loadingWhatText = loadingDialog.loadingWhatText
                 };
-                this.loadingDialog.Close();
+                loadingDialog.Close();
                 Application.Run(errorLoadingDialog);
             }
-            this.loadingDialog.Close();
-            return !(this.viewAccount is null);
+            loadingDialog.Close();
+            return !(viewAccount is null);
         }
+
         /// <summary>
         /// Updates the search media actions.
         /// </summary>
@@ -170,57 +230,67 @@ namespace View_Account
         {
             // Written, 17.12.2019
 
-            if (this.searchResults_listView.SelectedItems.Count == 1)
+            if (searchResults_listView.SelectedItems.Count == 1)
             {
-                MediaSearchResult media = this.searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
-                this.search_selectedMedia = media;
-                this.actions_groupBox.Text = "Actions: " + media.name;
-                this.mediaPoster_pictureBox.Image = media.poster_image;
-                this.search_viewDetails_button.Enabled = true;
-                this.search_viewDetails_button.Visible = true;
-                this.favoriteMediaItem_button.Enabled = true;
-                this.favoriteMediaItem_button.Visible = true;
-                this.watchMediaItem_button.Enabled = true;
-                this.watchMediaItem_button.Visible = true;
+                MediaSearchResult media = searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
+                search_selectedMedia = media;
+                actions_groupBox.Text = "Actions: " + media.name;
+                mediaPoster_pictureBox.Image = media.poster_image;
+                search_viewDetails_button.Enabled = true;
+                search_viewDetails_button.Visible = true;
+                favoriteMediaItem_button.Enabled = true;
+                favoriteMediaItem_button.Visible = true;
+                watchMediaItem_button.Enabled = true;
+                watchMediaItem_button.Visible = true;
                 if (media is MovieSearchResult)
                 {
-                    this.yts_button.Enabled = true;
-                    this.yts_button.Visible = true;
-                    this.yts_button.Text = "Search YTS";
+                    yts_button.Enabled = true;
+                    yts_button.Visible = true;
+                    yts_button.Text = "Search YTS";
+
+                    eztv_button.Enabled = false;
+                    eztv_button.Visible = false;
                 }
                 else
                 {
-                    this.yts_button.Enabled = false;
-                    this.yts_button.Visible = false;
-                    this.yts_button.Text = "yts_button";
+                    selectedMediaExternalIds = await (media as TvSearchResult).retrieveExternalIds();
+                    eztv_button.Enabled = true;
+                    eztv_button.Visible = true;
+                    eztv_button.Text = "Search EzTv";
+
+                    yts_button.Enabled = false;
+                    yts_button.Visible = false;
+                    yts_button.Text = "yts_button";
                 }
                 List<IdResultObject> favoritedMedia = new List<IdResultObject>();
-                favoritedMedia.AddRange(this.viewAccount.favoritedMovies);
-                favoritedMedia.AddRange(this.viewAccount.favoritedTvSeries);
+                favoritedMedia.AddRange(viewAccount.favoritedMovies);
+                favoritedMedia.AddRange(viewAccount.favoritedTvSeries);
                 bool favorited = favoritedMedia.Any(_fm => _fm.id == media.id);
-                this.favoriteMediaItem_button.Text = !favorited ? "favorite" : "unfavorite";
+                favoriteMediaItem_button.Text = !favorited ? "favorite" : "unfavorite";
                 List<IdResultObject> watchlistMedia = new List<IdResultObject>();
-                watchlistMedia.AddRange(this.viewAccount.watchlistMovies);
-                watchlistMedia.AddRange(this.viewAccount.watchlistTvSeries);
+                watchlistMedia.AddRange(viewAccount.watchlistMovies);
+                watchlistMedia.AddRange(viewAccount.watchlistTvSeries);
                 bool watchlisted = watchlistMedia.Any(_wm => _wm.id == media.id);
-                this.watchMediaItem_button.Text = !watchlisted ? "watch" : "unwatch";
-                this.search_viewDetails_button.Text = "View Details: " + media.name;
-                await this.updateMediaPosterAsync(this.searchResults_listView, media);
+                watchMediaItem_button.Text = !watchlisted ? "watch" : "unwatch";
+                search_viewDetails_button.Text = "View Details: " + media.name;
+                updateMediaPoster(searchResults_listView, media);
             }
             else
             {
-                this.actions_groupBox.Text = "Actions";
-                this.search_viewDetails_button.Enabled = false;
-                this.search_viewDetails_button.Visible = false;
-                this.favoriteMediaItem_button.Enabled = false;
-                this.favoriteMediaItem_button.Visible = false;
-                this.watchMediaItem_button.Enabled = false;
-                this.watchMediaItem_button.Visible = false;
-                this.yts_button.Enabled = false;
-                this.yts_button.Visible = false;
-                this.search_viewDetails_button.Text = "View Details";
-                this.mediaPoster_pictureBox.Image = null;
-                this.imageLoading_label.Text = string.Empty;
+                actions_groupBox.Text = "Actions";
+                search_viewDetails_button.Enabled = false;
+                search_viewDetails_button.Visible = false;
+                favoriteMediaItem_button.Enabled = false;
+                favoriteMediaItem_button.Visible = false;
+                watchMediaItem_button.Enabled = false;
+                watchMediaItem_button.Visible = false;
+                yts_button.Enabled = false;
+                yts_button.Visible = false;
+                search_viewDetails_button.Text = "View Details";
+                mediaPoster_pictureBox.Image = null;
+                imageLoading_label.Text = string.Empty;
+                eztv_button.Enabled = false;
+                eztv_button.Visible = false;
             }
         }
         /// <summary>
@@ -237,47 +307,171 @@ namespace View_Account
                 MediaSearchResult media = (inSender?.SelectedItems[0].Tag as MediaSearchResult) ?? inMedia;
                 if (media != null)
                 {
-                    this.home_selectedMedia = media;
-                    this.actions_groupBox.Text = "Actions: " + media.name;
-                    this.mediaPoster_pictureBox.Image = media.poster_image;
-                    this.home_viewDetails_button.Enabled = true;
-                    this.home_viewDetails_button.Visible = true;
-                    this.movieRefresh_button.Enabled = true;
-                    this.movieRefresh_button.Visible = true;
-                    this.tvRefresh_button.Enabled = true;
-                    this.tvRefresh_button.Visible = true;
+                    home_selectedMedia = media;
+                    actions_groupBox.Text = "Actions: " + media.name;
+                    mediaPoster_pictureBox.Image = media.poster_image;
+                    home_viewDetails_button.Enabled = true;
+                    home_viewDetails_button.Visible = true;
+                    movieRefresh_button.Enabled = true;
+                    movieRefresh_button.Visible = true;
+                    tvRefresh_button.Enabled = true;
+                    tvRefresh_button.Visible = true;
                     if (media is MovieSearchResult)
                     {
-                        this.yts_button.Enabled = true;
-                        this.yts_button.Visible = true;
-                        this.yts_button.Text = "Search YTS";
+                        selectedMediaExternalIds = await (media as MovieSearchResult).retrieveExternalIds();
+
+                        yts_button.Enabled = true;
+                        yts_button.Visible = true;
+                        yts_button.Text = "Search YTS";
+
+                        eztv_button.Enabled = false;
+                        eztv_button.Visible = false;
                     }
                     else
                     {
-                        this.yts_button.Enabled = false;
-                        this.yts_button.Visible = false;
-                        this.yts_button.Text = "yts_button";
+                        selectedMediaExternalIds = await (media as TvSearchResult).retrieveExternalIds();
+                        eztv_button.Enabled = true;
+                        eztv_button.Visible = true;
+                        eztv_button.Text = "Search EzTv";
+
+                        yts_button.Enabled = false;
+                        yts_button.Visible = false;
+                        yts_button.Text = "yts_button";
                     }
-                    this.home_viewDetails_button.Text = "View Details: " + media.name;
-                    await this.updateMediaPosterAsync(inSender, media);
+                    home_viewDetails_button.Text = "View Details: " + media.name;
+                    updateMediaPoster(inSender, media);
                 }
             }
             else
             {
-                this.actions_groupBox.Text = "Actions";
-                this.home_viewDetails_button.Enabled = false;
-                this.home_viewDetails_button.Visible = false;
-                this.movieRefresh_button.Enabled = false;
-                this.movieRefresh_button.Visible = false;
-                this.tvRefresh_button.Enabled = false;
-                this.tvRefresh_button.Visible = false;
-                this.yts_button.Enabled = false;
-                this.yts_button.Visible = false;
-                this.home_viewDetails_button.Text = "View Details";
-                this.mediaPoster_pictureBox.Image = null;
-                this.imageLoading_label.Text = string.Empty;
+                actions_groupBox.Text = "Actions";
+                home_viewDetails_button.Enabled = false;
+                home_viewDetails_button.Visible = false;
+                movieRefresh_button.Enabled = false;
+                movieRefresh_button.Visible = false;
+                tvRefresh_button.Enabled = false;
+                tvRefresh_button.Visible = false;
+                yts_button.Enabled = false;
+                yts_button.Visible = false;
+                home_viewDetails_button.Text = "View Details";
+                mediaPoster_pictureBox.Image = null;
+                imageLoading_label.Text = string.Empty;
+                eztv_button.Enabled = false;
+                eztv_button.Visible = false;
             }
         }
+        private void updateYtsMediaActions()
+        {
+            // Written, 21.09.2020
+
+            if (ytsMovieResults_listView.SelectedItems.Count == 1)
+            {
+                MovieSearchResult media = ytsMovieResults_listView.SelectedItems[0].Tag as MovieSearchResult;
+                if (media != null)
+                {
+                    yts_selectedMedia = media;
+                    actions_groupBox.Text = "Actions: " + media.name;
+                    mediaPoster_pictureBox.Image = media.poster_image;
+                    yts_button.Enabled = true;
+                    yts_button.Visible = true;
+                    yts_button.Text = "Search YTS";
+                    //updateMediaPoster(ytsMovieResults_listView, media, YTSManager.YTS_ADDRESS);
+                }
+            }
+            else
+            {
+                actions_groupBox.Text = "Actions";
+                yts_button.Enabled = false;
+                yts_button.Visible = true;
+                mediaPoster_pictureBox.Image = null;
+            }
+            eztv_button.Enabled = false;
+            eztv_button.Visible = false;
+        }
+
+        private async Task updateTrendingMediaActions()
+        {
+            if (trending_listView.SelectedItems.Count == 1)
+            {
+                MediaSearchResult media = trending_listView.SelectedItems[0].Tag as MediaSearchResult;
+                trending_selectedMedia = media;
+                if (media != null)
+                {
+                    if (media is MovieSearchResult)
+                    {
+                        yts_button.Enabled = true;
+                        yts_button.Visible = true;
+                        yts_button.Text = "Search YTS";
+
+                        eztv_button.Enabled = false;
+                        eztv_button.Visible = false;
+                    }
+                    else
+                    {
+                        selectedMediaExternalIds = await (media as TvSearchResult).retrieveExternalIds();
+                        eztv_button.Enabled = true;
+                        eztv_button.Visible = true;
+                        eztv_button.Text = "Search EzTv";
+
+                        yts_button.Enabled = false;
+                        yts_button.Visible = false;
+                        yts_button.Text = "yts_button";
+                    }
+
+                    actions_groupBox.Text = "Actions: " + media.name;
+                    updateMediaPoster(trending_listView, media);
+                }
+            }
+            else
+            {
+                actions_groupBox.Text = "Actions";
+                mediaPoster_pictureBox.Image = null;
+                yts_button.Enabled = false;
+                yts_button.Visible = false;
+                eztv_button.Enabled = false;
+                eztv_button.Visible = false;
+            }
+        }
+
+        private async Task refreshTrendingAsync()
+        {
+            trending = await Trending.retrieveTrendingAsync((TrendingAllowedMediaTypesEnum)Enum.Parse(typeof(TrendingAllowedMediaTypesEnum), trending_allowedMedia_comboBox.SelectedItem.ToString()), (TrendingTimeWindowEnum)Enum.Parse(typeof(TrendingTimeWindowEnum), trending_time_comboBox.SelectedItem.ToString()));
+            trending_listView.Items.Clear();
+            IdResultObject result;
+            MovieSearchResult movie;
+            TvSearchResult tv;
+            for (int i = 0; i < trending.trendingResults.Length; i++)
+            {
+                result = trending.trendingResults[i];
+                if (result is MovieSearchResult)
+                {
+                    movie = (result as MovieSearchResult);
+                    string[] subItems = new string[]
+                    {
+                            movie.name,
+                            movie.overview,
+                            movie.release_date,
+                            movie.vote_average.ToString(),
+                            "Movie"
+                    };
+                    trending_listView.Items.Add(new ListViewItem(subItems) { Tag = movie });
+                }
+                if (result is TvSearchResult)
+                {
+                    tv = (result as TvSearchResult);
+                    string[] subItems = new string[]
+                    {
+                            tv.name,
+                            tv.overview,
+                            tv.release_date,
+                            tv.vote_average.ToString(),
+                            "Tv"
+                    };
+                    trending_listView.Items.Add(new ListViewItem(subItems) { Tag = tv });
+                }
+            }
+        }
+
         /// <summary>
         /// Pre-Update list logic.
         /// </summary>
@@ -307,19 +501,6 @@ namespace View_Account
                 inSender.View = View.Details;
         }
         /// <summary>
-        /// Initialzies discover.
-        /// </summary>
-        private void initDiscover()
-        {
-            // Written, 09.01.2020
-
-            this.discoverParameters = new DiscoverParameters();
-            this.discover_sortByMembers_comboBox.Items.AddRange(Enum.GetNames(typeof(MediaSortByMembersEnum)));
-            this.discover_sortByAscDesc_comboBox.Items.AddRange(Enum.GetNames(typeof(MediaSortByAscDescEnum)));
-            this.discover_sortByAscDesc_comboBox.SelectedItem = this.discoverParameters.sortByAscDesc.ToString();
-            this.discover_sortByMembers_comboBox.SelectedItem = this.discoverParameters.sortByMembers.ToString();
-        }
-        /// <summary>
         /// Updates poster based on what tabpage the user is currently on.
         /// </summary>
         /// <param name="inIsResizeLoop">acts like a force update. true if called from inside the resize loop.</param>
@@ -327,8 +508,14 @@ namespace View_Account
         {
             // Written, 31,01.2020
 
-            if (!this.formResizing || inIsResizeLoop)
-                this.mediaPoster_pictureBox.Image = this.getMediaToView()?.poster_image?.resizeImage(this.mediaPoster_pictureBox.Width, this.mediaPoster_pictureBox.Height);
+            if (!formResizing || inIsResizeLoop)
+            {
+                Image displayImage = getMediaToView()?.poster_image;
+                if (displayImage != null)
+                {
+                    mediaPoster_pictureBox.Image = displayImage.resizeImage(mediaPoster_pictureBox.Width, mediaPoster_pictureBox.Height);                    
+                }
+            }
         }
         /// <summary>
         /// Gets the currently displayed media on either, <see cref="home_tabPage"/> or <see cref="search_tabPage"/> tabs.
@@ -337,12 +524,14 @@ namespace View_Account
         {
             // Written, 31.01.2020
 
-            if (this.tabControl.SelectedTab == this.home_tabPage)
-                return this.home_selectedMedia;
-            else if (this.tabControl.SelectedTab == this.search_tabPage)
-                return this.search_selectedMedia;
-            else if (this.tabControl.SelectedTab == this.yts_tabPage)
-                return this.yts_selectedMedia;
+            if (tabControl.SelectedTab == home_tabPage)
+                return home_selectedMedia;
+            else if (tabControl.SelectedTab == search_tabPage)
+                return search_selectedMedia;
+            else if (tabControl.SelectedTab == trending_tabPage)
+                return trending_selectedMedia;
+            //else if (tabControl.SelectedTab == yts_tabPage)
+            //    return yts_selectedMedia;
             return null;
         }
         /// <summary>
@@ -352,56 +541,69 @@ namespace View_Account
         {
             // Written, 18.09.2020
 
-            if (this.tabControl.SelectedTab == this.home_tabPage)
+            if (tabControl.SelectedTab == home_tabPage)
             {
                 //view details
-                this.search_viewDetails_button.Visible = false;
-                this.search_viewDetails_button.Enabled = false;
+                search_viewDetails_button.Visible = false;
+                search_viewDetails_button.Enabled = false;
                 //other
-                this.yts_button.Visible = true;
-                this.watchMediaItem_button.Visible = false;
-                this.favoriteMediaItem_button.Visible = false;
+                yts_button.Visible = true;
+                watchMediaItem_button.Visible = false;
+                favoriteMediaItem_button.Visible = false;
                 //update all actions related to favourite.
-                await this.updateHomeMediaActionsAsync(null, this.home_selectedMedia);
+                await updateHomeMediaActionsAsync(null, home_selectedMedia);
             }
-            else if (this.tabControl.SelectedTab == this.search_tabPage)
+            else if (tabControl.SelectedTab == search_tabPage)
             {
                 //view details
-                this.home_viewDetails_button.Visible = false;
-                this.home_viewDetails_button.Enabled = false;
+                home_viewDetails_button.Visible = false;
+                home_viewDetails_button.Enabled = false;
                 //other
-                this.tvRefresh_button.Visible = false;
-                this.movieRefresh_button.Visible = false;
+                tvRefresh_button.Visible = false;
+                movieRefresh_button.Visible = false;
                 //update all actions related to search.
-                await this.updateSearchMediaActionsAsync();
+                await updateSearchMediaActionsAsync();
             }
-            else if (this.tabControl.SelectedTab == this.yts_tabPage) 
+            else if (tabControl.SelectedTab == yts_tabPage)
             {
-                //view details
-                this.home_viewDetails_button.Visible = false;
-                this.home_viewDetails_button.Enabled = false;
-                this.search_viewDetails_button.Visible = false;
-                this.search_viewDetails_button.Enabled = false;
-                //other
-                this.yts_button.Visible = true;
-                this.tvRefresh_button.Visible = false;
-                this.watchMediaItem_button.Visible = false;
-                this.movieRefresh_button.Visible = false;
-                this.favoriteMediaItem_button.Visible = false;
-                await this.updateYtsMediaActionsAsync();
+                home_viewDetails_button.Visible = false;
+                home_viewDetails_button.Enabled = false;
+                search_viewDetails_button.Visible = false;
+                search_viewDetails_button.Enabled = false;
+                yts_button.Visible = false;
+                tvRefresh_button.Visible = false;
+                watchMediaItem_button.Visible = false;
+                movieRefresh_button.Visible = false;
+                favoriteMediaItem_button.Visible = false;
+                updateYtsMediaActions();
+            }
+            else if (tabControl.SelectedTab == trending_tabPage)
+            {
+                home_viewDetails_button.Visible = false;
+                search_viewDetails_button.Visible = false;
+                home_viewDetails_button.Enabled = false;
+                search_viewDetails_button.Enabled = false;
+                yts_button.Visible = false;
+                tvRefresh_button.Visible = false;
+                watchMediaItem_button.Visible = false;
+                movieRefresh_button.Visible = false;
+                favoriteMediaItem_button.Visible = false;
+                eztv_button.Visible = false;
+                eztv_button.Enabled = false;
+
+                await updateTrendingMediaActions();
             }
             else
             {
-                this.home_viewDetails_button.Visible = false;
-                this.search_viewDetails_button.Visible = false;
-                this.home_viewDetails_button.Enabled = false;
-                this.search_viewDetails_button.Enabled = false;
-                //other
-                this.yts_button.Visible = false;
-                this.tvRefresh_button.Visible = false;
-                this.watchMediaItem_button.Visible = false;
-                this.movieRefresh_button.Visible = false;
-                this.favoriteMediaItem_button.Visible = false;
+                home_viewDetails_button.Visible = false;
+                search_viewDetails_button.Visible = false;
+                home_viewDetails_button.Enabled = false;
+                search_viewDetails_button.Enabled = false;
+                yts_button.Visible = false;
+                tvRefresh_button.Visible = false;
+                watchMediaItem_button.Visible = false;
+                movieRefresh_button.Visible = false;
+                favoriteMediaItem_button.Visible = false;
             }
 
         }
@@ -412,32 +614,32 @@ namespace View_Account
         {
             // Written, 18.09.2020
 
-            this.preUpdateLists(this.homeMovies_listView);
-            await this.refreshHomeMoviesAsync();
-            ListViewItem[] Items = new ListViewItem[this.viewAccount.favoritedMovies.Length + this.viewAccount.watchlistMovies.Length];
+            preUpdateLists(homeMovies_listView);
+            await refreshHomeMoviesAsync();
+            ListViewItem[] Items = new ListViewItem[viewAccount.favoritedMovies.Length + viewAccount.watchlistMovies.Length];
             string[] subItems;
             MovieSearchResult msr;
-            for (int i = 0; i < this.viewAccount.favoritedMovies.Length; i++)
+            for (int i = 0; i < viewAccount.favoritedMovies.Length; i++)
             {
-                msr = this.viewAccount.favoritedMovies[i];
+                msr = viewAccount.favoritedMovies[i];
                 subItems = new string[]
                 {
                     msr.name,
                     msr.release_date,
                 };
-                Items[i] = new ListViewItem(subItems, this.homeMovies_listView.Groups[0]) { Tag = msr };
+                Items[i] = new ListViewItem(subItems, homeMovies_listView.Groups[0]) { Tag = msr };
             }
-            for (int i = 0; i < this.viewAccount.watchlistMovies.Length; i++)
+            for (int i = 0; i < viewAccount.watchlistMovies.Length; i++)
             {
-                msr = this.viewAccount.watchlistMovies[i];
+                msr = viewAccount.watchlistMovies[i];
                 subItems = new string[]
                 {
                     msr.name,
                     msr.release_date,
                 };
-                Items[this.viewAccount.favoritedMovies.Length + i] = new ListViewItem(subItems, this.homeMovies_listView.Groups[1]) { Tag = msr };
+                Items[viewAccount.favoritedMovies.Length + i] = new ListViewItem(subItems, homeMovies_listView.Groups[1]) { Tag = msr };
             }
-            this.postUpdateLists(this.homeMovies_listView, Items);
+            postUpdateLists(homeMovies_listView, Items);
         }
         /// <summary>
         /// Retrieves both movie watchlist and favorited lists from tmdb, thus updating. in addition updates movie refresh button text, and enablity.
@@ -446,12 +648,12 @@ namespace View_Account
         {
             // Written, 18.09.2020
 
-            this.movieRefresh_button.Text = "Refreshing...";
-            this.movieRefresh_button.Enabled = false;
-            await this.viewAccount.retrieveFavoriteMoviesAsync();
-            await this.viewAccount.retrieveWatchlistMoviesAsync();
-            this.movieRefresh_button.Text = "Refresh movies";
-            this.movieRefresh_button.Enabled = true;
+            movieRefresh_button.Text = "Refreshing...";
+            movieRefresh_button.Enabled = false;
+            await viewAccount.retrieveFavoriteMoviesAsync();
+            await viewAccount.retrieveWatchlistMoviesAsync();
+            movieRefresh_button.Text = "Refresh movies";
+            movieRefresh_button.Enabled = true;
         }
         /// <summary>
         /// Updates/retrieves both tv watchlist and favorited lists and displays the new results in the home tv listview.
@@ -460,32 +662,32 @@ namespace View_Account
         {
             // Written, 18.09.2020
 
-            this.preUpdateLists(this.homeTvSeries_listView);
-            await this.refreshHomeTvAsync();
-            ListViewItem[] Items = new ListViewItem[this.viewAccount.favoritedTvSeries.Length + this.viewAccount.watchlistTvSeries.Length];
+            preUpdateLists(homeTvSeries_listView);
+            await refreshHomeTvAsync();
+            ListViewItem[] Items = new ListViewItem[viewAccount.favoritedTvSeries.Length + viewAccount.watchlistTvSeries.Length];
             string[] subItems;
             TvSearchResult tsr;
-            for (int i = 0; i < this.viewAccount.favoritedTvSeries.Length; i++)
+            for (int i = 0; i < viewAccount.favoritedTvSeries.Length; i++)
             {
-                tsr = this.viewAccount.favoritedTvSeries[i];
+                tsr = viewAccount.favoritedTvSeries[i];
                 subItems = new string[]
                 {
                     tsr.name,
                     tsr.release_date,
                 };
-                Items[i] = new ListViewItem(subItems, this.homeTvSeries_listView.Groups[0]) { Tag = tsr };
+                Items[i] = new ListViewItem(subItems, homeTvSeries_listView.Groups[0]) { Tag = tsr };
             }
-            for (int i = 0; i < this.viewAccount.watchlistTvSeries.Length; i++)
+            for (int i = 0; i < viewAccount.watchlistTvSeries.Length; i++)
             {
-                tsr = this.viewAccount.watchlistTvSeries[i];
+                tsr = viewAccount.watchlistTvSeries[i];
                 subItems = new string[]
                 {
                     tsr.name,
                     tsr.release_date,
                 };
-                Items[this.viewAccount.favoritedTvSeries.Length + i] = new ListViewItem(subItems, this.homeTvSeries_listView.Groups[1]) { Tag = tsr };
+                Items[viewAccount.favoritedTvSeries.Length + i] = new ListViewItem(subItems, homeTvSeries_listView.Groups[1]) { Tag = tsr };
             }
-            this.postUpdateLists(this.homeTvSeries_listView, Items);
+            postUpdateLists(homeTvSeries_listView, Items);
         }
         /// <summary>
         /// Retrieves both tv watchlist and favorited lists from tmdb, thus updating. in addition updates tv refresh button text, and enablity.
@@ -494,12 +696,12 @@ namespace View_Account
         {
             // Written, 18.09.2020
 
-            this.tvRefresh_button.Text = "Refreshing...";
-            this.tvRefresh_button.Enabled = false;
-            await this.viewAccount.retrieveFavoriteTvSeriesAsync();
-            await this.viewAccount.retrieveWatchlistTvSeriesAsync();
-            this.tvRefresh_button.Text = "Refresh tv series";
-            this.tvRefresh_button.Enabled = true;
+            tvRefresh_button.Text = "Refreshing...";
+            tvRefresh_button.Enabled = false;
+            await viewAccount.retrieveFavoriteTvSeriesAsync();
+            await viewAccount.retrieveWatchlistTvSeriesAsync();
+            tvRefresh_button.Text = "Refresh tv series";
+            tvRefresh_button.Enabled = true;
         }
         /// <summary>
         /// Converts control input to object <see cref="MovieListEndPointParameters"/>.
@@ -510,15 +712,14 @@ namespace View_Account
 
             return new MovieListEndPointParameters()
             {
-                genre = this.ytsGenre_textBox.Text.ToLower(),
-                limit = Decimal.ToInt32(this.ytsLimit_numericUpDown.Value),
-                minRating = Decimal.ToInt32(this.ytsMinRating_numericUpDown.Value),
-                orderBy = (OrderByEndPointParameterEnum)Enum.Parse(typeof(OrderByEndPointParameterEnum), this.ytsOrderBy_comboBox.SelectedItem.ToString()),
-                sortBy = (SortByEndPointParameterEnum)Enum.Parse(typeof(SortByEndPointParameterEnum), this.ytsSortBy_comboBox.SelectedItem.ToString()),
-                page = Decimal.ToInt32(this.ytsPage_numericUpDown.Value),
-                quality = (QualityEndPointParameterEnum)Enum.Parse(typeof(QualityEndPointParameterEnum), this.ytsQuality_comboBox.SelectedItem.ToString()),
-                query = this.ytsQuery_textBox.Text
-
+                genre = ytsGenre_textBox.Text.ToLower(),
+                limit = Decimal.ToInt32(ytsLimit_numericUpDown.Value),
+                minRating = Decimal.ToInt32(ytsMinRating_numericUpDown.Value),
+                orderBy = (OrderByEndPointParameterEnum)Enum.Parse(typeof(OrderByEndPointParameterEnum), ytsOrderBy_comboBox.SelectedItem.ToString()),
+                sortBy = (SortByEndPointParameterEnum)Enum.Parse(typeof(SortByEndPointParameterEnum), ytsSortBy_comboBox.SelectedItem.ToString()),
+                page = Decimal.ToInt32(ytsPage_numericUpDown.Value),
+                quality = (QualityEndPointParameterEnum)Enum.Parse(typeof(QualityEndPointParameterEnum), ytsQuality_comboBox.SelectedItem.ToString()),
+                query = ytsQuery_textBox.Text
             };
         }
         /// <summary>
@@ -528,14 +729,14 @@ namespace View_Account
         {
             // Written, 21.09.2020
 
-            this.ytsSearchParameters_groupBox.Enabled = false;
-            this.preUpdateLists(this.ytsMovieResults_listView);
-            this.ytsSearchResults_groupBox.Text = "Search results";
-            Response<MovieListInfo> response = await YTSManager.retrieveMovieListAsync(this.ytsControlsToParameters());
+            ytsSearchParameters_groupBox.Enabled = false;
+            preUpdateLists(ytsMovieResults_listView);
+            ytsSearchResults_groupBox.Text = "Search results";
+            Response<MovieListInfo> response = await YTSManager.retrieveMovieListAsync(ytsControlsToParameters());
             ListViewItem[] items = new ListViewItem[response.data.movies?.Length ?? 0];
             if (response.data.movies != null)
             {
-                this.ytsSearchResults_groupBox.Text = String.Format("Search results {0}/{1} | ({2} pages)", response.data.movies.Length * response.data.page_number, response.data.movie_count, response.data.movie_count / response.data.limit);
+                ytsSearchResults_groupBox.Text = String.Format("Search results {0}/{1} | ({2} pages)", response.data.movies.Length * response.data.page_number, response.data.movie_count, response.data.movie_count / response.data.limit);
                 for (int i = 0; i < response.data.movies.Length; i++)
                 {
                     MovieInfo info = response.data.movies[i];
@@ -549,74 +750,42 @@ namespace View_Account
                     items[i] = new ListViewItem(subItems) { Tag = info.toTmdbMovie() };
                 }
             }
-            this.postUpdateLists(this.ytsMovieResults_listView, items);
-            this.ytsSearchParameters_groupBox.Enabled = true;
+            postUpdateLists(ytsMovieResults_listView, items);
+            ytsSearchParameters_groupBox.Enabled = true;
         }
-        /// <summary>
-        /// Initializes yts tab.
-        /// </summary>
-        private void initYts()
+        private void updateMediaPoster(ListView inSender, MediaSearchResult inMedia, string inOverrideImageAddressPrefix = null)
         {
             // Written, 21.09.2020
 
-            this.ytsQuality_comboBox.Items.AddRange(Enum.GetNames(typeof(QualityEndPointParameterEnum)));
-            this.ytsQuality_comboBox.SelectedIndex = 0;
-            this.ytsSortBy_comboBox.Items.AddRange(Enum.GetNames(typeof(SortByEndPointParameterEnum)));
-            this.ytsSortBy_comboBox.SelectedIndex = 0;
-            this.ytsOrderBy_comboBox.Items.AddRange(Enum.GetNames(typeof(OrderByEndPointParameterEnum)));
-            this.ytsOrderBy_comboBox.SelectedIndex = 0;
-        }
-        private async Task updateYtsMediaActionsAsync()
-        {
-            // Written, 21.09.2020
-
-            if (this.ytsMovieResults_listView.SelectedItems.Count == 1)
+            void retrievePoster()
             {
-                MovieSearchResult media = this.ytsMovieResults_listView.SelectedItems[0].Tag as MovieSearchResult;
-                if (media != null)
+                if (inMedia?.poster_path is null)
+                    imageLoading_label.Text = "No poster present..";
+                else
                 {
-                    this.yts_selectedMedia = media;
-                    this.actions_groupBox.Text = "Actions: " + media.name;
-                    this.mediaPoster_pictureBox.Image = media.poster_image;
-                    this.yts_button.Enabled = true;
-                    this.yts_button.Text = "Search YTS";
-                    await this.updateMediaPosterAsync(this.ytsMovieResults_listView, media, YTSManager.YTS_ADDRESS);                    
-                }
-            }                
-            else
-            {
-                this.actions_groupBox.Text = "Actions";
-                this.yts_button.Enabled = false; 
-                this.mediaPoster_pictureBox.Image = null;
-            }
-        }
-        private async Task updateMediaPosterAsync(ListView inSender, MediaSearchResult inMedia, string inOverrideImageAddressPrefix = null) 
-        {
-            // Written, 21.09.2020
-
-            if (inMedia?.poster_path is null)
-                this.imageLoading_label.Text = "No poster present..";
-            else
-            {
-                if (inMedia.poster_image is null)
-                {
-                    this.imageLoading_label.Text = "Loading poster..";
-                    try
+                    if (inMedia.poster_image is null)
                     {
-                        await inMedia.retrieveMediaImages(inOverrideImageAddressPrefix);                        
-                    }
-                    catch
-                    {
-                        this.imageLoading_label.Text = "Error loading poster";
-                        return;
+                        imageLoading_label.Text = "Loading poster..";
+                        try
+                        {
+                            //await inMedia.retrieveMediaImagesAsync(inOverrideImageAddressPrefix);
+                            inMedia.retrieveMediaImages(inOverrideImageAddressPrefix);
+                        }
+                        catch
+                        {
+                            imageLoading_label.Text = "Error loading poster";
+                            return;
+                        }
                     }
                 }
+                //if (inMedia == (inSender?.SelectedItems[0].Tag))
+                updatePosterImageDisplay();
+                imageLoading_label.Text = string.Empty;
             }
-            //if (inMedia == (inSender?.SelectedItems[0].Tag))
-            this.updatePosterImageDisplay();
-            this.imageLoading_label.Text = string.Empty;
-        }
 
+            Thread thread = new Thread(new ParameterizedThreadStart(delegate { retrievePoster(); }));
+            thread.Start();
+        }
         #endregion
 
         #region Event Handlers
@@ -625,26 +794,27 @@ namespace View_Account
         {
             // Written, 10.12.2019
 
-            this.tabControl_Selected(this.tabControl.SelectedTab.Text, null);
-            this.accountName_label.Text = this.viewAccount.user.name;
-            await this.updateSearchMediaActionsAsync();
-            await this.updateHomeMoviesAsync();
-            await this.updateHomeTvSeriesAsync();
-            //this.initDiscover();
-            this.initYts();
+            tabControl_Selected(tabControl.SelectedTab.Text, null);
+            accountName_label.Text = viewAccount.user.name;
+            await updateSearchMediaActionsAsync();
+            await updateHomeMoviesAsync();
+            await updateHomeTvSeriesAsync();
+            initDiscover();
+            initYts();
+            await initTrending();
         }
         private async void search_button_Click(object sender, EventArgs e)
         {
             // Written, 10.12.2019
 
-            this.searchInput_textBox.Enabled = false;
-            this.search_button.Enabled = false;
-            this.search_button.Text = "Searching..";
-            if (!String.IsNullOrEmpty(this.searchInput_textBox.Text))
+            searchInput_textBox.Enabled = false;
+            search_button.Enabled = false;
+            search_button.Text = "Searching..";
+            if (!String.IsNullOrEmpty(searchInput_textBox.Text))
             {
-                this.preUpdateLists(this.searchResults_listView);
-                await this.updateSearchMediaActionsAsync();
-                MultiSearchResult multiSearch = await MultiSearchResult.searchAsync(this.searchInput_textBox.Text, 1);
+                preUpdateLists(searchResults_listView);
+                await updateSearchMediaActionsAsync();
+                MultiSearchResult multiSearch = await MultiSearchResult.searchAsync(searchInput_textBox.Text, 1);
                 List<ListViewItem> items = new List<ListViewItem>();
                 for (int i = 0; i < ApplicationInfomation.NUMBER_OF_ITEMS_PER_PAGE; i++)
                 {
@@ -665,160 +835,160 @@ namespace View_Account
                         items.Add(new ListViewItem(subItems) { Tag = media });
                     }
                 }
-                this.postUpdateLists(this.searchResults_listView, items.ToArray());
+                postUpdateLists(searchResults_listView, items.ToArray());
             }
-            this.searchInput_textBox.Enabled = true;
-            this.search_button.Enabled = true;
-            this.search_button.Text = "Search";
+            searchInput_textBox.Enabled = true;
+            search_button.Enabled = true;
+            search_button.Text = "Search";
         }
         private async void tabControl_Selected(object sender, TabControlEventArgs e)
         {
             // Written, 10.12.2019
 
             string textChange = e?.TabPage.Text ?? sender as string;
-            this.Text = String.Format("{1} - View Account | {0}", textChange, this.viewAccount.user.username);
-            this.main_groupBox.Text = textChange;
-            this.updatePosterImageDisplay();
-            await this.updateActionButtonsAsync();
+            Text = String.Format("{1} - View Account | {0}", textChange, viewAccount.user.username);
+            main_groupBox.Text = textChange;
+            //updatePosterImageDisplay();
+            await updateActionButtonsAsync();
         }
         private async void searchResults_listView_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Written, 10.12.2019
 
-            await this.updateSearchMediaActionsAsync();
+            await updateSearchMediaActionsAsync();
         }
         private async void favoriteMediaItem_button_Click(object sender, EventArgs e)
         {
             // Written, 17.12.2019
 
-            this.favoriteMediaItem_button.Enabled = false;
-            this.favoriteMediaItem_button.Text = "processing..";
-            MediaSearchResult selectedResult = this.searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
+            favoriteMediaItem_button.Enabled = false;
+            favoriteMediaItem_button.Text = "processing..";
+            MediaSearchResult selectedResult = searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
             MediaTypeEnum mediaType = selectedResult is TvSearchResult ? MediaTypeEnum.tv : MediaTypeEnum.movie;            
             List<IdResultObject> favoritedMedia = new List<IdResultObject>();
-            favoritedMedia.AddRange(this.viewAccount.favoritedMovies);
-            favoritedMedia.AddRange(this.viewAccount.favoritedTvSeries);
+            favoritedMedia.AddRange(viewAccount.favoritedMovies);
+            favoritedMedia.AddRange(viewAccount.favoritedTvSeries);
             bool favorited = favoritedMedia.Any(_fm => _fm.id == selectedResult.id);
-            await this.viewAccount.user.favoriteMediaItem(mediaType, selectedResult.id, !favorited);
+            await viewAccount.user.favoriteMediaItem(mediaType, selectedResult.id, !favorited);
             switch (mediaType) 
             {
                 case MediaTypeEnum.movie:
-                    await this.viewAccount.retrieveFavoriteMoviesAsync();
+                    await viewAccount.retrieveFavoriteMoviesAsync();
                     break;
                 case MediaTypeEnum.tv:
-                    await this.viewAccount.retrieveFavoriteTvSeriesAsync();
+                    await viewAccount.retrieveFavoriteTvSeriesAsync();
                     break;
             }
-            this.favoriteMediaItem_button.Text = "updating..";
+            favoriteMediaItem_button.Text = "updating..";
             if (mediaType == MediaTypeEnum.movie)
-                await this.updateHomeMoviesAsync();
+                await updateHomeMoviesAsync();
             else
-                await this.updateHomeTvSeriesAsync();
-            await this.updateSearchMediaActionsAsync();
-            this.favoriteMediaItem_button.Enabled = true;
+                await updateHomeTvSeriesAsync();
+            await updateSearchMediaActionsAsync();
+            favoriteMediaItem_button.Enabled = true;
         }
         private async void viewDetails_button_Click(object sender, EventArgs e)
         {
             // Written, 31.12.2019
 
-            MediaSearchResult mediaToView = this.getMediaToView();
-            ViewMediaDialog viewMediaDialog = new ViewMediaDialog(mediaToView, this.viewAccount);
+            MediaSearchResult mediaToView = getMediaToView();
+            ViewMediaDialog viewMediaDialog = new ViewMediaDialog(mediaToView, viewAccount);
             viewMediaDialog.ShowDialog();
 
-            if (this.tabControl.SelectedTab == this.search_tabPage)
-                await this.updateSearchMediaActionsAsync();
+            if (tabControl.SelectedTab == search_tabPage)
+                await updateSearchMediaActionsAsync();
             if (mediaToView is TvSearchResult)
             {
-                await this.updateHomeTvSeriesAsync();
+                await updateHomeTvSeriesAsync();
             }
             else if (mediaToView is MovieSearchResult)
             {
-                await this.updateHomeMoviesAsync();
+                await updateHomeMoviesAsync();
             }
         }
         private async void home_listView_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Written, 24.12.2019
             
-            await this.updateHomeMediaActionsAsync(sender as ListView);
+            await updateHomeMediaActionsAsync(sender as ListView);
         }
         private  async void moviesRefresh_button_Click(object sender, EventArgs e)
         {
             // Written, 18.09.2020
 
-            await this.updateHomeMoviesAsync();
+            await updateHomeMoviesAsync();
         }
         private async void refreshWatchlist_button_Click(object sender, EventArgs e)
         {
             // Written, 18.09.2020
 
-            await this.updateHomeTvSeriesAsync();
+            await updateHomeTvSeriesAsync();
         }
         private async void watchMediaItem_button_Click(object sender, EventArgs e)
         {
             // Written, 01.01.2020
 
-            this.watchMediaItem_button.Enabled = false;
-            this.watchMediaItem_button.Text = "processing..";
-            MediaSearchResult selectedResult = this.searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
+            watchMediaItem_button.Enabled = false;
+            watchMediaItem_button.Text = "processing..";
+            MediaSearchResult selectedResult = searchResults_listView.SelectedItems[0].Tag as MediaSearchResult;
             MediaTypeEnum mediaType = selectedResult is TvSearchResult ? MediaTypeEnum.tv : MediaTypeEnum.movie;
             List<IdResultObject> watchlistedMedia = new List<IdResultObject>();
-            watchlistedMedia.AddRange(this.viewAccount.watchlistMovies);
-            watchlistedMedia.AddRange(this.viewAccount.watchlistTvSeries);
+            watchlistedMedia.AddRange(viewAccount.watchlistMovies);
+            watchlistedMedia.AddRange(viewAccount.watchlistTvSeries);
             bool watchlisted = watchlistedMedia.Any(_fm => _fm.id == selectedResult.id);
-            await this.viewAccount.user.watchlistMediaItem(mediaType, selectedResult.id, !watchlisted);
+            await viewAccount.user.watchlistMediaItem(mediaType, selectedResult.id, !watchlisted);
             switch (mediaType)
             {
                 case MediaTypeEnum.movie:
-                    await this.viewAccount.retrieveWatchlistMoviesAsync();
+                    await viewAccount.retrieveWatchlistMoviesAsync();
                     break;
                 case MediaTypeEnum.tv:
-                    await this.viewAccount.retrieveWatchlistTvSeriesAsync();
+                    await viewAccount.retrieveWatchlistTvSeriesAsync();
                     break;
             }
-            this.watchMediaItem_button.Text = "updating..";
+            watchMediaItem_button.Text = "updating..";
             if (mediaType == MediaTypeEnum.movie)
-                await this.updateHomeMoviesAsync();
+                await updateHomeMoviesAsync();
             else
-                await this.updateHomeTvSeriesAsync();
-            await this.updateSearchMediaActionsAsync();
-            this.watchMediaItem_button.Enabled = true;
+                await updateHomeTvSeriesAsync();
+            await updateSearchMediaActionsAsync();
+            watchMediaItem_button.Enabled = true;
         }
         private void main_splitContainer_SplitterMoved(object sender, SplitterEventArgs e)
         {
             // Written, 21.09.2020
 
-            this.updatePosterImageDisplay();
+            updatePosterImageDisplay();
         }        
         private async void yts_button_Click(object sender, EventArgs e)
         {
             // Written, 17.09.2020
 
-            this.yts_button.Enabled = false;
-            this.yts_button.Text = "Searching YTS...";
-            Response<MovieListInfo> response = await YTSManager.searchMovieListAsync(this.getMediaToView().name);
-            this.yts_button.Text = "Search YTS";
+            yts_button.Enabled = false;
+            yts_button.Text = "Searching YTS...";
+            Response<MovieListInfo> response = await YTSManager.searchMovieListAsync(getMediaToView().name);
+            yts_button.Text = "Search YTS";
             using (YTSMovieListResponseDialog dialog = new YTSMovieListResponseDialog(response))
                 dialog.ShowDialog();
-            this.yts_button.Enabled = true;
+            yts_button.Enabled = true;
         }        
         private void viewAccount_Form_ResizeBegin(object sender, EventArgs e)
         {
             // Written, 21.09.2020
 
-            this.formResizing = true;
+            formResizing = true;
         }
         private void viewAccount_Form_ResizeEnd(object sender, EventArgs e)
         {
             // Written, 21.09.2020
 
-            this.formResizing = false;
+            formResizing = false;
         }
         private void viewAccount_Form_Resize(object sender, EventArgs e)
         {
             // Written, 21.09.2020
 
-            this.updatePosterImageDisplay(true);
+            updatePosterImageDisplay(true);
         }
 
         #endregion
@@ -827,30 +997,78 @@ namespace View_Account
         {
             // Written, 21.09.2020
 
-            await this.updateYtsMoviesAsync();
+            await updateYtsMoviesAsync();
         }
 
         private async void ytsNextPage_button_Click(object sender, EventArgs e)
         {
             // Written, 21.09.2020
 
-            this.ytsPage_numericUpDown.Value++;
-            await this.updateYtsMoviesAsync();
+            ytsPage_numericUpDown.Value++;
+            await updateYtsMoviesAsync();
         }
 
         private async void ytsPreviousPage_button_Click(object sender, EventArgs e)
         {
             // Written, 21.09.2020
 
-            this.ytsPage_numericUpDown.Value--;
-            await this.updateYtsMoviesAsync();
+            ytsPage_numericUpDown.Value--;
+            await updateYtsMoviesAsync();
         }
 
-        private async void ytsMovieResults_listView_SelectedIndexChanged(object sender, EventArgs e)
+        private void ytsMovieResults_listView_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Written, 21.09.2020
 
-            await this.updateYtsMediaActionsAsync();
+            updateYtsMediaActions();
+        }
+
+        private async void searchEZTV_button_Click(object sender, EventArgs e)
+        {
+            // Written, 03.10.2022
+
+            TommoJProductions.EzTV.Structure.Response r = await EztvManager.retrieveTorrentsAsync(new TommoJProductions.EzTV.EndPointParameters.GetTorrrentsEndPointParameters() { imdb_id = "2861424" });
+        }
+
+        private async void eztv_button_Click(object sender, EventArgs e)
+        {
+            eztv_button.Enabled = false;
+            eztv_button.Text = "Searching EzTv...";
+
+            if (selectedMediaExternalIds.imdb_id != null)
+            {
+                GetTorrrentsEndPointParameters param = new GetTorrrentsEndPointParameters()
+                {
+                    imdb_id = selectedMediaExternalIds.imdb_id.Replace("tt", "")
+                };
+
+                Response response = await EztvManager.retrieveTorrentsAsync(param);
+                if (response.torrents != null)
+                {
+                    using (EzTvResponseDialog1 dialog = new EzTvResponseDialog1(response, getMediaToView() as TvSearchResult))
+                        dialog.ShowDialog();
+                    eztv_button.Text = "Search EzTv";
+                    eztv_button.Enabled = true;
+                }
+                else
+                {
+                    eztv_button.Text = "Search EzTv: no torrents";
+                }
+            }
+            else
+            {
+                eztv_button.Text = "Search EzTv: imdb id was null";
+            }
+        }
+
+        private async void trending_listView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            await updateTrendingMediaActions();
+        }
+
+        private async void trendingSelectedIndexChanged(object sender, EventArgs e)
+        {
+            await refreshTrendingAsync();
         }
     }
 }

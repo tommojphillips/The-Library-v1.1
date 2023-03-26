@@ -23,7 +23,7 @@ namespace TommoJProductions.TMDB.Find
             // Written, 15.09.2020
 
             string address = String.Format("{0}/find/{2}?api_key={1}&external_source={3}", ApplicationInfomation.TMDB_V3_ADDRESS, ApplicationInfomation.API_KEY, imdbID, "imdb");
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject.ToObject<MultiSearchResult>();
         }
     }

@@ -45,7 +45,7 @@ namespace TommoJProductions.TMDB.Auth
             string address = String.Format("{0}?api_key={1}", ApplicationInfomation.AUTH_SESSION_ADDRESS, ApplicationInfomation.API_KEY);
             JObject sessionData = new JObject(new JProperty("request_token", inRequestToken));
             byte[] sessionDataBytes = System.Text.Encoding.UTF8.GetBytes(sessionData.ToString());
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address), sessionDataBytes));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address), sessionDataBytes));
             return jObject.ToObject<Session>();
         }
         /// <summary>
@@ -61,7 +61,7 @@ namespace TommoJProductions.TMDB.Auth
                 new JProperty("password", inPassword),
                 new JProperty("request_token", inRequestToken));
             byte[] sessionDataBytes = System.Text.Encoding.UTF8.GetBytes(sessionData.ToString());
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address), sessionDataBytes));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address), sessionDataBytes));
             Token token = jObject.ToObject<Token>();
             return await createSessionAsync(token.request_token);
         }

@@ -23,10 +23,10 @@ namespace View_Account
             if (inResponse == null)
             {
                 MessageBox.Show("The provided YTS Response was null\nClosing Response...", "Error - YTS Movie List Response Dialog");
-                this.DialogResult = DialogResult.Cancel;
+                DialogResult = DialogResult.Cancel;
             }
             else
-                this.response = inResponse;
+                response = inResponse;
         }
 
         #region Methods
@@ -35,9 +35,9 @@ namespace View_Account
         {
             // Written, 17.09.2020
 
-            if (this.movies_listView.SelectedItems.Count == 1)
+            if (movies_listView.SelectedItems.Count == 1)
             {
-                MovieInfo selectedInfo = this.movies_listView.SelectedItems[0].Tag as MovieInfo;
+                MovieInfo selectedInfo = movies_listView.SelectedItems[0].Tag as MovieInfo;
 
                 if (selectedInfo != null)
                 {
@@ -53,13 +53,13 @@ namespace View_Account
                         torrentInfo.peers.ToString(),
                         torrentInfo.hash
                         };
-                        this.torrents_listView.Items.Add(new ListViewItem(subItems) { Tag = torrentInfo });
+                        torrents_listView.Items.Add(new ListViewItem(subItems) { Tag = torrentInfo });
                     }
                 }
             }
             else
             {
-                this.torrents_listView.Items.Clear();
+                torrents_listView.Items.Clear();
             }
         }
 
@@ -67,25 +67,25 @@ namespace View_Account
         {
             // Written, 17.09.2020
 
-            if (this.movies_listView.SelectedItems.Count == 1)
+            if (movies_listView.SelectedItems.Count == 1)
             {
-                if (this.torrents_listView.SelectedItems.Count == 1)
+                if (torrents_listView.SelectedItems.Count == 1)
                 {
-                    MovieInfo selectedInfo = this.movies_listView.SelectedItems[0].Tag as MovieInfo;
-                    TorrentInfo selectedTorrentInfo = this.torrents_listView.SelectedItems[0].Tag as TorrentInfo;
-                    this.startDownload_button.Text = String.Format("Download: {0} in {1}", selectedInfo.title, selectedTorrentInfo.quality);
+                    MovieInfo selectedInfo = movies_listView.SelectedItems[0].Tag as MovieInfo;
+                    TorrentInfo selectedTorrentInfo = torrents_listView.SelectedItems[0].Tag as TorrentInfo;
+                    startDownload_button.Text = String.Format("Download: {0} in {1}", selectedInfo.title, selectedTorrentInfo.quality);
 
-                    this.startDownload_button.Enabled = true;
+                    startDownload_button.Enabled = true;
                 }
                 else
                 {
-                    this.startDownload_button.Text = "Download";
-                    this.startDownload_button.Enabled = false;
+                    startDownload_button.Text = "Download";
+                    startDownload_button.Enabled = false;
                 }
             }
             else
             {
-                this.torrents_listView.Items.Clear();
+                torrents_listView.Items.Clear();
             }
         }
 
@@ -104,17 +104,17 @@ namespace View_Account
         {
             // Written, 17.09.2020
 
-            this.responseStatus_label.Text = String.Format("Status: {0}", this.response.status);
-            this.responseMessage_label.Text = String.Format("Message: {0}", this.response.status_message);
-            this.responseMovieListCountLimit_label.Text = String.Format("Movies {0}/{1}", this.response.data.movie_count, this.response.data.limit);
-            this.page_label.Text = "Page " + this.response.data.page_number;
+            responseStatus_label.Text = String.Format("Status: {0}", response.status);
+            responseMessage_label.Text = String.Format("Message: {0}", response.status_message);
+            responseMovieListCountLimit_label.Text = String.Format("Movies {0}/{1}", response.data.movie_count, response.data.limit);
+            page_label.Text = "Page " + response.data.page_number;
 
-            this.refreshTorrentOptions();
-            if (this.response.data.movies != null)
+            refreshTorrentOptions();
+            if (response.data.movies != null)
             {
-                for (int i = 0; i < this.response.data.movies.Length; i++)
+                for (int i = 0; i < response.data.movies.Length; i++)
                 {
-                    MovieInfo info = this.response.data.movies[i];
+                    MovieInfo info = response.data.movies[i];
                     if (info != null)
                     {
                         string[] subItems = new string[]
@@ -125,14 +125,14 @@ namespace View_Account
                         info.runtime + "mins",
                         info.torrents.Length + " available"
                         };
-                        this.movies_listView.Items.Add(new ListViewItem(subItems) { Tag = info });
+                        movies_listView.Items.Add(new ListViewItem(subItems) { Tag = info });
                     }
                 }
             }
             else
             {
-                this.movies_listView.View = View.List;
-                this.movies_listView.Items.Add("No Results found");
+                movies_listView.View = View.List;
+                movies_listView.Items.Add("No Results found");
             }
         }
 
@@ -140,22 +140,22 @@ namespace View_Account
         {
             // Written, 17.09.2020
 
-            this.refreshTorrentListView();
-            this.refreshTorrentOptions();
+            refreshTorrentListView();
+            refreshTorrentOptions();
         }
 
         private void torrents_listView_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Written, 17.09.2020
 
-            this.refreshTorrentOptions();
+            refreshTorrentOptions();
         }
 
         private void startDownload_button_Click(object sender, EventArgs e)
         {
             // Writen, 17.09.2020
 
-            this.startTorrentDownload(this.torrents_listView.SelectedItems[0].Tag as TorrentInfo);
+            startTorrentDownload(torrents_listView.SelectedItems[0].Tag as TorrentInfo);
         }
 
         #endregion

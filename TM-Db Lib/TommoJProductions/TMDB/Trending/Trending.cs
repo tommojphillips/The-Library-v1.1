@@ -42,7 +42,7 @@ namespace TommoJProductions.TMDB.Trending
             // Written, 01.12.2019
 
             string address = String.Format("{0}/{1}/{2}?api_key={3}", ApplicationInfomation.TRENDING_ADDRESS, inTrendingAllowedMediaTypes, inTrendingTimeWindow, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             JArray results = jObject["results"].ToObject<JArray>();
             List<IdResultObject> _results = new List<IdResultObject>();
 

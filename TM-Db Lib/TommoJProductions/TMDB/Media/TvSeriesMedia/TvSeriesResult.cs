@@ -171,9 +171,9 @@ namespace TommoJProductions.TMDB.Media
             // Written, 27.11.2019
 
             string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.TV_ADDRESS, inTvID, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             TvSeriesResult result = jObject.ToObject<TvSeriesResult>();
-            await result.retrieveMediaImages();
+            await result.retrieveMediaImagesAsync();
             return result;
         }
 

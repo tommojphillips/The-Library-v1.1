@@ -46,7 +46,7 @@
             this.poster_pictureBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.poster_pictureBox.Location = new System.Drawing.Point(0, 0);
             this.poster_pictureBox.Name = "poster_pictureBox";
-            this.poster_pictureBox.Size = new System.Drawing.Size(203, 298);
+            this.poster_pictureBox.Size = new System.Drawing.Size(203, 360);
             this.poster_pictureBox.TabIndex = 0;
             this.poster_pictureBox.TabStop = false;
             // 
@@ -78,7 +78,7 @@
             this.mediaDescription_richTextBox.Name = "mediaDescription_richTextBox";
             this.mediaDescription_richTextBox.ReadOnly = true;
             this.mediaDescription_richTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedHorizontal;
-            this.mediaDescription_richTextBox.Size = new System.Drawing.Size(503, 147);
+            this.mediaDescription_richTextBox.Size = new System.Drawing.Size(560, 100);
             this.mediaDescription_richTextBox.TabIndex = 3;
             this.mediaDescription_richTextBox.Text = "";
             // 
@@ -123,7 +123,7 @@
             this.watch_button.UseVisualStyleBackColor = true;
             this.watch_button.Click += new System.EventHandler(this.watch_button_Click);
             // 
-            // button1
+            // favorite_button
             // 
             this.favorite_button.AutoSize = true;
             this.favorite_button.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -132,7 +132,7 @@
             this.favorite_button.FlatAppearance.MouseOverBackColor = System.Drawing.Color.MediumSpringGreen;
             this.favorite_button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.favorite_button.Location = new System.Drawing.Point(3, 3);
-            this.favorite_button.Name = "button1";
+            this.favorite_button.Name = "favorite_button";
             this.favorite_button.Size = new System.Drawing.Size(90, 25);
             this.favorite_button.TabIndex = 7;
             this.favorite_button.Text = "favorite_button";
@@ -147,16 +147,16 @@
             this.viewMediaActions_flowLayoutPanel.Controls.Add(this.watch_button);
             this.viewMediaActions_flowLayoutPanel.Controls.Add(this.viewReviews_button);
             this.viewMediaActions_flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.viewMediaActions_flowLayoutPanel.Location = new System.Drawing.Point(203, 267);
+            this.viewMediaActions_flowLayoutPanel.Location = new System.Drawing.Point(203, 329);
             this.viewMediaActions_flowLayoutPanel.Name = "viewMediaActions_flowLayoutPanel";
-            this.viewMediaActions_flowLayoutPanel.Size = new System.Drawing.Size(525, 31);
+            this.viewMediaActions_flowLayoutPanel.Size = new System.Drawing.Size(582, 31);
             this.viewMediaActions_flowLayoutPanel.TabIndex = 8;
             // 
             // ViewMediaDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(728, 298);
+            this.ClientSize = new System.Drawing.Size(785, 360);
             this.Controls.Add(this.viewMediaActions_flowLayoutPanel);
             this.Controls.Add(this.mediaVotesAvg_label);
             this.Controls.Add(this.mediaDescription_richTextBox);

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TM_Db_Lib.Search;
-using TM_Db_Lib.Discover;
+
+using TommoJProductions.TMDB.Discover;
+using TommoJProductions.TMDB.Search;
 
 namespace Discover_Logic_Testing
 {
@@ -20,13 +21,25 @@ namespace Discover_Logic_Testing
 
             Console.WriteLine("The Library v1.1 Discover logic Test\n");
 
+            Console.WriteLine("What is coming out in the next year...?");
+            discoverParameters = new DiscoverParameters()
+            {
+                primaryReleaseDate_lte = DateTime.Now.Add(TimeSpan.FromDays(365)).ToString("yyyy-MM-dd"),
+                primaryReleaseDate_gte = DateTime.Now.ToString("yyyy-MM-dd"),
+            };
+            MovieSearchResult[] movies = Discover.discoverMoviesAsync(discoverParameters).Result;
+            for (int i = 0; i < movies.Length; i++)
+            {
+                Console.WriteLine("{0}.) {1} {2}", i + 1, movies[i].name, movies[i].release_date);
+            }
+            Console.WriteLine("---------------------");
             Console.WriteLine("What movies are in theatres?");
             discoverParameters = new DiscoverParameters()
             {
                 primaryReleaseDate_lte = DateTime.Now.ToString("yyyy-MM-dd"),
                 primaryReleaseDate_gte = DateTime.Now.Subtract(TimeSpan.FromDays(7)).ToString("yyyy-MM-dd"),
             };
-            MovieSearchResult[] movies = Discover.discoverMoviesAsync(discoverParameters).Result;
+            movies = Discover.discoverMoviesAsync(discoverParameters).Result;
             for (int i = 0; i < movies.Length; i++)
             {
                 Console.WriteLine("{0}.) {1}", i + 1, movies[i].name);

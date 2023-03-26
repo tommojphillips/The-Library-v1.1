@@ -129,7 +129,7 @@ namespace TommoJProductions.TMDB.Media
             // Written, 21.04.2018
 
             string address = String.Format("{0}/{1}/season/{2}?api_key={3}", ApplicationInfomation.TV_ADDRESS, inTvID, inSeasonNumber, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             Season seasonResult;
             seasonResult = jObject.ToObject<Season>();
             this.name = seasonResult.name;

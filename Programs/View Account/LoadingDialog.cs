@@ -19,47 +19,47 @@ namespace View_Account
         {
             get
             {
-                return this.programName_label.Text;
+                return programName_label.Text;
             }
             set 
             {
-                this.programName_label.Text = value;
+                programName_label.Text = value;
             }
         }
         internal string loadingText 
         {
             get 
             {
-                return this.loading_label.Text;
+                return loading_label.Text;
             }
             set 
             {
-                this.loading_label.Text = value;
+                loading_label.Text = value;
             }
         }
         internal string loadingWhatText 
         {
             get 
             {
-                return this.loadingWhat_label.Text;
+                return loadingWhat_label.Text;
             }
             set 
             {
-                this.loadingWhat_label.Text = value;
+                loadingWhat_label.Text = value;
             }
         }
         internal string errorMessage 
         {
             get 
             {
-                return this.error_label.Text;
+                return error_label.Text;
             }
             set 
             {
-                this.ShowInTaskbar = true;
-                this.errorDismiss_button.Visible = true;
-                this.errorRestartApp_button.Visible = true;
-                this.error_label.Text = value;
+                ShowInTaskbar = true;
+                errorDismiss_button.Visible = true;
+                errorRestartApp_button.Visible = true;
+                error_label.Text = value;
             }
         }
         public LoadingDialog(string inProgramName)
@@ -67,11 +67,11 @@ namespace View_Account
             // Written, 31.12.2019
 
             InitializeComponent();
-            this.programNameText = inProgramName;
-            this.error_label.Text = string.Empty;
-            this.errorDismiss_button.Text = "Dismiss error";
-            this.errorRestartApp_button.Text = "Restart";
-            this.Update();
+            programNameText = inProgramName;
+            error_label.Text = string.Empty;
+            errorDismiss_button.Text = "Dismiss error";
+            errorRestartApp_button.Text = "Restart";
+            Update();
         }
 
         private void errorDismiss_button_Click(object sender, EventArgs e)

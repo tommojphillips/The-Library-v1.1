@@ -11,14 +11,14 @@ namespace View_Account
         {
             get
             {
-                return this.username_textBox.Text;
+                return username_textBox.Text;
             }
         }
         public string password
         {
             get
             {
-                return this.password_textBox.Text;
+                return password_textBox.Text;
             }
         }
         public LoginDialog()

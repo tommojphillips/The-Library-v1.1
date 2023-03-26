@@ -67,27 +67,30 @@
             // responseStatus_label
             // 
             this.responseStatus_label.AutoSize = true;
-            this.responseStatus_label.Location = new System.Drawing.Point(3, 0);
+            this.responseStatus_label.Location = new System.Drawing.Point(2, 0);
+            this.responseStatus_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.responseStatus_label.Name = "responseStatus_label";
-            this.responseStatus_label.Size = new System.Drawing.Size(145, 17);
+            this.responseStatus_label.Size = new System.Drawing.Size(108, 13);
             this.responseStatus_label.TabIndex = 0;
             this.responseStatus_label.Text = "responseStatus_label";
             // 
             // responseMessage_label
             // 
             this.responseMessage_label.AutoSize = true;
-            this.responseMessage_label.Location = new System.Drawing.Point(3, 17);
+            this.responseMessage_label.Location = new System.Drawing.Point(2, 13);
+            this.responseMessage_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.responseMessage_label.Name = "responseMessage_label";
-            this.responseMessage_label.Size = new System.Drawing.Size(162, 17);
+            this.responseMessage_label.Size = new System.Drawing.Size(121, 13);
             this.responseMessage_label.TabIndex = 1;
             this.responseMessage_label.Text = "responseMessage_label";
             // 
             // responseMovieListCountLimit_label
             // 
             this.responseMovieListCountLimit_label.AutoSize = true;
-            this.responseMovieListCountLimit_label.Location = new System.Drawing.Point(171, 0);
+            this.responseMovieListCountLimit_label.Location = new System.Drawing.Point(2, 26);
+            this.responseMovieListCountLimit_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.responseMovieListCountLimit_label.Name = "responseMovieListCountLimit_label";
-            this.responseMovieListCountLimit_label.Size = new System.Drawing.Size(230, 17);
+            this.responseMovieListCountLimit_label.Size = new System.Drawing.Size(172, 13);
             this.responseMovieListCountLimit_label.TabIndex = 2;
             this.responseMovieListCountLimit_label.Text = "responseMovieListCountLimit_label";
             // 
@@ -103,9 +106,10 @@
             this.movies_listView.HideSelection = false;
             this.movies_listView.LabelWrap = false;
             this.movies_listView.Location = new System.Drawing.Point(0, 0);
+            this.movies_listView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.movies_listView.MultiSelect = false;
             this.movies_listView.Name = "movies_listView";
-            this.movies_listView.Size = new System.Drawing.Size(1045, 309);
+            this.movies_listView.Size = new System.Drawing.Size(784, 223);
             this.movies_listView.TabIndex = 3;
             this.movies_listView.UseCompatibleStateImageBehavior = false;
             this.movies_listView.View = System.Windows.Forms.View.Details;
@@ -140,8 +144,10 @@
             this.response_groupBox.Controls.Add(this.flowLayoutPanel1);
             this.response_groupBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.response_groupBox.Location = new System.Drawing.Point(0, 0);
+            this.response_groupBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.response_groupBox.Name = "response_groupBox";
-            this.response_groupBox.Size = new System.Drawing.Size(1045, 70);
+            this.response_groupBox.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.response_groupBox.Size = new System.Drawing.Size(784, 57);
             this.response_groupBox.TabIndex = 4;
             this.response_groupBox.TabStop = false;
             this.response_groupBox.Text = "Response Infomation";
@@ -155,24 +161,27 @@
             this.flowLayoutPanel1.Controls.Add(this.page_label);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 18);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 15);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1039, 49);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(780, 40);
             this.flowLayoutPanel1.TabIndex = 3;
             // 
             // page_label
             // 
             this.page_label.AutoSize = true;
-            this.page_label.Location = new System.Drawing.Point(171, 17);
+            this.page_label.Location = new System.Drawing.Point(178, 0);
+            this.page_label.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.page_label.Name = "page_label";
-            this.page_label.Size = new System.Drawing.Size(78, 17);
+            this.page_label.Size = new System.Drawing.Size(59, 13);
             this.page_label.TabIndex = 3;
             this.page_label.Text = "page_label";
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 70);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 57);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -184,8 +193,9 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel2MinSize = 165;
-            this.splitContainer1.Size = new System.Drawing.Size(1045, 481);
-            this.splitContainer1.SplitterDistance = 309;
+            this.splitContainer1.Size = new System.Drawing.Size(784, 391);
+            this.splitContainer1.SplitterDistance = 223;
+            this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 5;
             // 
             // splitContainer2
@@ -194,6 +204,7 @@
             this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer2.IsSplitterFixed = true;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -205,8 +216,9 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.torrentOptions_flowLayoutPanel);
             this.splitContainer2.Panel2MinSize = 40;
-            this.splitContainer2.Size = new System.Drawing.Size(1045, 168);
-            this.splitContainer2.SplitterDistance = 103;
+            this.splitContainer2.Size = new System.Drawing.Size(784, 165);
+            this.splitContainer2.SplitterDistance = 101;
+            this.splitContainer2.SplitterWidth = 3;
             this.splitContainer2.TabIndex = 0;
             // 
             // torrents_listView
@@ -221,8 +233,9 @@
             this.torrents_listView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.torrents_listView.HideSelection = false;
             this.torrents_listView.Location = new System.Drawing.Point(0, 0);
+            this.torrents_listView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.torrents_listView.Name = "torrents_listView";
-            this.torrents_listView.Size = new System.Drawing.Size(1045, 103);
+            this.torrents_listView.Size = new System.Drawing.Size(784, 101);
             this.torrents_listView.TabIndex = 0;
             this.torrents_listView.UseCompatibleStateImageBehavior = false;
             this.torrents_listView.View = System.Windows.Forms.View.Details;
@@ -263,17 +276,19 @@
             this.torrentOptions_flowLayoutPanel.Controls.Add(this.startDownload_button);
             this.torrentOptions_flowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.torrentOptions_flowLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.torrentOptions_flowLayoutPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.torrentOptions_flowLayoutPanel.Name = "torrentOptions_flowLayoutPanel";
-            this.torrentOptions_flowLayoutPanel.Size = new System.Drawing.Size(1045, 61);
+            this.torrentOptions_flowLayoutPanel.Size = new System.Drawing.Size(784, 61);
             this.torrentOptions_flowLayoutPanel.TabIndex = 0;
             // 
             // startDownload_button
             // 
             this.startDownload_button.AutoSize = true;
             this.startDownload_button.Enabled = false;
-            this.startDownload_button.Location = new System.Drawing.Point(3, 3);
+            this.startDownload_button.Location = new System.Drawing.Point(2, 2);
+            this.startDownload_button.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.startDownload_button.Name = "startDownload_button";
-            this.startDownload_button.Size = new System.Drawing.Size(80, 27);
+            this.startDownload_button.Size = new System.Drawing.Size(65, 23);
             this.startDownload_button.TabIndex = 0;
             this.startDownload_button.Text = "Download";
             this.startDownload_button.UseVisualStyleBackColor = true;
@@ -281,12 +296,13 @@
             // 
             // YTSMovieListResponseDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1045, 551);
+            this.ClientSize = new System.Drawing.Size(784, 448);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.response_groupBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "YTSMovieListResponseDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "YTSMovieListResponseDialog";

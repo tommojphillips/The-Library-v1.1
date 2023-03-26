@@ -123,7 +123,7 @@ namespace TommoJProductions.TMDB.Media
             // Written, 29.11.2019
 
             string address = String.Format("{0}/{1}?api_key={2}", ApplicationInfomation.PERSON_ADDRESS, inPersonID, ApplicationInfomation.API_KEY);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject.ToObject<PersonResult>();
         }
         /// <summary>

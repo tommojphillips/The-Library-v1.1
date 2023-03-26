@@ -86,7 +86,7 @@ namespace TommoJProductions.TMDB.Discover
                 parameters += String.Format("&with_runtime_lte={0}", inDiscoverParameters.withRuntime_lte);
             parameters += String.Format("&sort_by={0}.{1}&include_video={2}&include_adult={3}", inDiscoverParameters.sortByMembers, inDiscoverParameters.sortByAscDesc, inDiscoverParameters.includeVideo, inDiscoverParameters.includeAdult);
             string address = String.Format("{0}/movie?api_key={1}&page={2}{3}", ApplicationInfomation.DISCOVER_ADDRESS, ApplicationInfomation.API_KEY, inPage, parameters);
-            JObject jObject = await WebResponse.toJObject(await WebResponse.sendRequestAsync(new Uri(address)));
+            JObject jObject = await WebResponse.toJObjectAsync(await WebResponse.sendRequestAsync(new Uri(address)));
             return jObject["results"].ToObject<MovieSearchResult[]>();
         }
 
